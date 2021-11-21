@@ -1,3 +1,4 @@
+pyvenv.cfg
 .coverage
 .vscode
 *.egg-info
