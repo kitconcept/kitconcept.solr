@@ -1,0 +1,5 @@
+====================
+kitconcept.solr
+====================
+
+User documentation
