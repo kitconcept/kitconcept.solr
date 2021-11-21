@@ -6,11 +6,10 @@ from zope.interface import implementer
 
 @implementer(INonInstallable)
 class HiddenProfiles(object):
-
     def getNonInstallableProfiles(self):
         """Hide uninstall profile from site-creation and quickinstaller"""
         return [
-            'kitconcept.solr:uninstall',
+            "kitconcept.solr:uninstall",
         ]
 
 
@@ -24,9 +23,8 @@ def uninstall(context):
 
 
 def add_catalog_indexes(context, wanted=None):
-    """Method to add our wanted indexes to the portal_catalog.
-    """
-    catalog = api.portal.get_tool('portal_catalog')
+    """Method to add our wanted indexes to the portal_catalog."""
+    catalog = api.portal.get_tool("portal_catalog")
     indexes = catalog.indexes()
     indexables = []
     for name, meta_type in wanted:

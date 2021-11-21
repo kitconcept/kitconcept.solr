@@ -27,16 +27,13 @@ class KitconceptsolrCoreLayer(PloneSandboxLayer):
         self.loadZCML(package=kitconcept.solr)
 
     def setUpPloneSite(self, portal):
-        setRoles(portal, TEST_USER_ID, ['Manager'])
+        setRoles(portal, TEST_USER_ID, ["Manager"])
         login(portal, TEST_USER_NAME)
         api.content.create(
-            type='Document',
-            id='front-page',
-            title='Welcome',
-            container=portal
+            type="Document", id="front-page", title="Welcome", container=portal
         )
         logout()
-        applyProfile(portal, 'kitconcept.solr:default')
+        applyProfile(portal, "kitconcept.solr:default")
 
 
 KITCONCEPTSOLR_CORE_FIXTURE = KitconceptsolrCoreLayer()
@@ -44,13 +41,13 @@ KITCONCEPTSOLR_CORE_FIXTURE = KitconceptsolrCoreLayer()
 
 KITCONCEPTSOLR_CORE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(KITCONCEPTSOLR_CORE_FIXTURE,),
-    name='KitconceptsolrCoreLayer:IntegrationTesting'
+    name="KitconceptsolrCoreLayer:IntegrationTesting",
 )
 
 
 KITCONCEPTSOLR_CORE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(KITCONCEPTSOLR_CORE_FIXTURE, z2.ZSERVER_FIXTURE),
-    name='KitconceptsolrCoreLayer:FunctionalTesting'
+    name="KitconceptsolrCoreLayer:FunctionalTesting",
 )
 
 
@@ -58,7 +55,7 @@ KITCONCEPTSOLR_CORE_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         KITCONCEPTSOLR_CORE_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE
+        z2.ZSERVER_FIXTURE,
     ),
-    name='KitconceptsolrCoreLayer:AcceptanceTesting'
+    name="KitconceptsolrCoreLayer:AcceptanceTesting",
 )

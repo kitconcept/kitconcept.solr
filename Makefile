@@ -10,7 +10,7 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-all: .installed.cfg
+all: build-plone-5.2
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
@@ -22,52 +22,38 @@ help: ## This help message
 update: ## Update Make and Buildout
 	wget -O Makefile https://raw.githubusercontent.com/kitconcept/buildout/master/Makefile
 	wget -O requirements.txt https://raw.githubusercontent.com/kitconcept/buildout/master/requirements.txt
-	wget -O plone-4.3.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-4.3.x.cfg
-	wget -O plone-5.1.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.1.x.cfg
 	wget -O plone-5.2.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.2.x.cfg
 	wget -O versions.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/versions.cfg
 
-.installed.cfg: bin/buildout *.cfg
-	bin/buildout
-
-bin/buildout: bin/pip
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	@touch -c $@
-
-.PHONY: Build Plone 4.3
-build-plone-4.3: .installed.cfg ## Build Plone 4.3
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-4.3.x.cfg
-
-.PHONY: Build Plone 5.0
-build-plone-5.0: .installed.cfg ## Build Plone 5.0
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.0.x.cfg
-
-.PHONY: Build Plone 5.1
-build-plone-5.1: .installed.cfg  ## Build Plone 5.1
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.1.x.cfg
-
+ ## Build Plone 5.2
 .PHONY: Build Plone 5.2
-build-plone-5.2: .installed.cfg  ## Build Plone 5.2
-	bin/pip install --upgrade pip
-	bin/pip install -r requirements.txt
-	bin/buildout -c plone-5.2.x.cfg
-
- ## Build Plone 5.2 with Python 3
-build-py3:  ## Build Plone 5.2 with Python 3
+build-plone-5.2:  ## Build Plone 5.2
 	python3 -m venv .
-	bin/pip install pip --upgrade
 	bin/pip install -r requirements.txt --upgrade
 	bin/buildout -c plone-5.2.x.cfg
 
-bin/python bin/pip:
+ ## Build Plone 6.0
+ .PHONY: Build Plone 6.0
+build-plone-6.0:  ## Build Plone 6.0
 	python3 -m venv .
+	bin/pip install -r requirements.txt --upgrade
+	bin/buildout -c plone-6.0.x.cfg
+
+ .PHONY: black
+black:  ## Black
+	bin/black src/ setup.py
+
+.PHONY: flake8
+flake8:  ## flake8
+	bin/flake8 src/ setup.py
+
+.PHONY: pyroma
+pyroma:  ## pyroma
+	bin/pyroma -n 10 -d .
+
+.PHONY: zpretty
+zpretty:  ## zpretty
+	find src/ -name *.zcml | xargs zpretty -i
 
 .PHONY: Test
 test:  ## Test
