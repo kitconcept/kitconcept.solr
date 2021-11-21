@@ -53,7 +53,7 @@ pyroma:  ## pyroma
 
 .PHONY: zpretty
 zpretty:  ## zpretty
-	find src/ -name *.zcml | xargs zpretty -i
+	find src/ -name *.zcml | xargs bin/zpretty -i
 
 .PHONY: Test
 test:  ## Test
