@@ -6,21 +6,31 @@ from plone.app.testing import setRoles
 from plone.dexterity.interfaces import IDexterityFTI
 from plone import api
 
-from kitconcept.solr.testing import KITCONCEPTSOLR_CORE_INTEGRATION_TESTING  # noqa
+from kitconcept.solr.testing import KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING  # noqa
 from kitconcept.solr.interfaces import IHomepage
+
+try:
+    from Products.CMFPlone.utils import get_installer
+except ImportError:  # Plone < 5.1
+    HAS_INSTALLER = False
+else:
+    HAS_INSTALLER = True
 
 import unittest
 
 
 class HomePageIntegrationTest(unittest.TestCase):
 
-    layer = KITCONCEPTSOLR_CORE_INTEGRATION_TESTING
+    layer = KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""
         self.portal = self.layer["portal"]
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
-        self.installer = api.portal.get_tool("portal_quickinstaller")
+        if HAS_INSTALLER:
+            self.installer = get_installer(self.portal)
+        else:
+            self.installer = api.portal.get_tool("portal_quickinstaller")
         fti = queryUtility(IDexterityFTI, name="Homepage")
         fti.global_allow = True
 

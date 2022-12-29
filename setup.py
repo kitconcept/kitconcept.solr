@@ -49,6 +49,7 @@ setup(
         "Products.GenericSetup>=1.8.2",
         "setuptools",
         "z3c.jbot",
+        "collective.solr",
         # 'plone.restapi',
         # 'Products.PloneFormGen',
         # 'plone.formwidget.captcha',

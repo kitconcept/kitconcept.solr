@@ -9,7 +9,14 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <includeDependencies package="." />
+  <!--includeDependencies package="." /-->
+  <!-- dependencies -->
+  <include package="plone.app.iterate" />
+  <include package="plone.api" />
+  <include package="Products.GenericSetup" />
+  <include package="collective.solr" />
+  <include package="plone.restapi" />
+  <include package="plone.app.caching" />
 
   <include file="upgrades.zcml" />
 
@@ -19,6 +26,15 @@
       description="Installs the kitconcept.solr add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/default"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="kitconcept.solr site (kitconcept.solr)"
+      description="Testing profile for kitconcept.solr tests"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/testing"
       post_handler=".setuphandlers.post_install"
       />
 
@@ -36,12 +52,8 @@
       name="kitconcept.solr-hiddenprofiles"
       />
 
-  <plone:service
-      method="GET"
-      factory=".get.SolrGet"
-      for="zope.interface.Interface"
-      permission="zope2.View"
-      name="@solr"
-      />
+  <include package=".services" />
+
+  <include package="collective.solr" />
 
 </configure>

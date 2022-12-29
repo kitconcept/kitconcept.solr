@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <version>1</version>
+  <dependencies>
+    <dependency>profile-plone.app.multilingual:default</dependency>
+    <dependency>profile-plone.app.iterate:default</dependency>
+    <dependency>profile-collective.solr:default</dependency>
+  </dependencies>
+</metadata>

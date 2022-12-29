@@ -9,6 +9,7 @@ pyvenv.cfg
 .Python
 # dirs
 bin/
+!/solr/bin
 buildout-cache/
 develop-eggs/
 eggs/
@@ -35,3 +36,5 @@ report.html
 !.gitignore
 !.gitkeep
 !.travis.yml
+/data
+/test-data

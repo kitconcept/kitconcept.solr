@@ -25,21 +25,21 @@ update: ## Update Make and Buildout
 	wget -O plone-5.2.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.2.x.cfg
 	wget -O versions.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/versions.cfg
 
- ## Build Plone 5.2
+## Build Plone 5.2
 .PHONY: Build Plone 5.2
 build-plone-5.2:  ## Build Plone 5.2
 	python3 -m venv .
 	bin/pip install -r requirements.txt --upgrade
 	bin/buildout -c plone-5.2.x.cfg
 
- ## Build Plone 6.0
- .PHONY: Build Plone 6.0
+## Build Plone 6.0
+.PHONY: Build Plone 6.0
 build-plone-6.0:  ## Build Plone 6.0
 	python3 -m venv .
 	bin/pip install -r requirements.txt --upgrade
 	bin/buildout -c plone-6.0.x.cfg
 
- .PHONY: black
+.PHONY: black
 black:  ## Black
 	bin/black src/ setup.py
 
@@ -80,3 +80,39 @@ clean:  ## Clean
 	git clean -Xdf
 
 .PHONY: all clean
+
+## Solr docker utils
+
+test-compose-project-name:
+	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,
+	# and the purpose of the container (_DEV, _STACK, _TEST)
+	test -n "$(COMPOSE_PROJECT_NAME)"
+
+SOLR_CONTEXT_FOLDER?=${CURRENT_DIR}/solr
+SOLR_DATA_FOLDER?=${CURRENT_DIR}/data
+SOLR_ONLY_COMPOSE?=${CURRENT_DIR}/devops/stacks/solr-only.yml
+
+.PHONY: solr-start
+solr-start: test-compose-project-name ## Start solr
+	@echo "Start solr"
+	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
+
+.PHONY: solr-start-fg
+solr-start-fg: test-compose-project-name ## Start solr in foreground
+	@echo "Start solr in foreground"
+	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up
+
+.PHONY: solr-stop
+solr-stop: test-compose-project-name ## Stop solr
+	@echo "Stop solr"
+	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} down
+
+.PHONY: solr-logs
+solr-logs: test-compose-project-name ## Show solr logs
+	@echo "Show solr logs"
+	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
+
+# .PHONY: solr-activate-and-reindex
+# solr-activate-and-reindex: backend/instance/etc/zope.ini ## Activate and reindex solr
+# 	cd backend; PYTHONWARNINGS=ignore ./bin/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py
+

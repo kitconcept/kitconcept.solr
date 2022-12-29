@@ -1,0 +1,36 @@
+{
+  "searchTabs": [
+    {
+      "label": "All",
+      "filter": "Type(*)"
+    },
+    {
+      "label": "Pages",
+      "filter": "Type:(Page)"
+    },
+    {
+      "label": "Reports",
+      "filter": "Type:(Meldung)"
+    },
+    {
+      "label": "Events",
+      "filter": "Type:(Event)"
+    },
+    {
+      "label": "Images",
+      "filter": "Type:(Image)"
+    },
+    {
+      "label": "Files",
+      "filter": "Type:(File)"
+    },
+    {
+      "label": "People",
+      "filter": "Type:(Member)"
+    },
+    {
+      "label": "Job offers",
+      "filter": "Type:(Joboffer)"
+    }
+  ]
+}

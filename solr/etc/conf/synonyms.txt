@@ -1,0 +1,6 @@
+# pkw, auto, automobil
+# pkw => mercedes, opel, audi
+# fruits => bananas, apples
+
+# example synonym used by Cypress acceptance test
+house, residence
