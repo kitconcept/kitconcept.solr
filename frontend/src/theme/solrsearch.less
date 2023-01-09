@@ -1,0 +1,182 @@
+@solr-grey: var(--solr-grey, #c0c0c0);
+@solr-total-result-font-size: var(--solr-total-font-size, 1rem);
+@solr-total-title-font-size: var(--solr-total-font-size, 2rem);
+@solr-color-interactive-blue: var(--solr-color-interactive-blue, #0066cc);
+@solr-search-facet-tab-inactive-color: var(
+  --solr-search-facet-tab-inactive-color,
+  #f0f0f0
+);
+
+.section-search,
+.section-\@\@search {
+  .total-bar {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    color: #000000;
+    font-size: @solr-total-result-font-size;
+    font-weight: 700;
+    line-height: 1.333rem;
+
+    .results {
+      font-size: 1rem;
+      line-height: 1.333rem;
+    }
+
+    h2 {
+      margin-top: 0.4em;
+      color: #000000;
+      font-size: @solr-total-title-font-size;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 4rem;
+    }
+  }
+
+  .sorting-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    color: @solr-grey;
+
+    .sort-field {
+      margin-left: auto;
+
+      .sort-by {
+        padding-right: 0.3em;
+        margin-right: 0.5em;
+        color: #000000;
+        font-weight: 400;
+        line-height: 1.4;
+      }
+
+      .sort-select {
+        display: inline-block;
+        width: 14em;
+        .react-select__control {
+          border-bottom: 0;
+        }
+
+        .react-select__menu {
+          border-top: 1px solid #c7d5d8;
+        }
+
+        .react-select__indicators svg {
+          fill: @solr-color-interactive-blue;
+          vertical-align: middle;
+        }
+
+        .react-select__value-container > .react-select__single-value {
+          color: @solr-color-interactive-blue;
+        }
+      }
+    }
+  }
+
+  #content-core {
+    .tileItem {
+      margin-bottom: 1.5em;
+
+      h2 {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  .search-footer {
+    text-align: center;
+  }
+}
+
+// Facets
+
+.section-search,
+.section-\@\@search {
+  .ui.tabular.menu .item.searchTab.inactive {
+    border: none;
+    background: @solr-search-facet-tab-inactive-color;
+  }
+
+  .ui.tabular.menu .item.searchTab {
+    display: inline-block;
+  }
+
+  .searchTabs.ui.tabular.menu {
+    display: block;
+    border-bottom: none;
+    margin-bottom: 16px;
+    background: @solr-search-facet-tab-inactive-color;
+
+    .searchTab {
+      &.results {
+        cursor: pointer;
+      }
+
+      .searchCounter {
+        margin-left: 6px;
+        vertical-align: baseline;
+
+        &.white {
+          background: white;
+        }
+      }
+    }
+  }
+
+  .search-localized {
+    margin-bottom: 8px;
+    text-align: center;
+
+    label {
+      padding-left: 20px;
+    }
+
+    .radio {
+      margin-left: 20px;
+    }
+  }
+}
+
+// Content types
+
+.section-search,
+.section-\@\@search {
+  .contentTypeLabel {
+    padding: 2px 10px;
+    background: lightgrey;
+    border-radius: 10px;
+    color: white;
+    float: right;
+    font-size: 0.9rem;
+  }
+
+  .memberResultItem {
+    @baseColor: #006b96;
+
+    .itemWrapper {
+      display: flex;
+
+      .itemImageWrapper {
+        flex: none;
+        margin-right: 20px;
+      }
+
+      .itemContent {
+        flex: 1 1 auto;
+
+        .itemPhoneEmailBar {
+          color: @solr-grey;
+
+          .itemPhone {
+            margin-right: 16px;
+          }
+
+          .itemIcon {
+            margin-right: 4px;
+            vertical-align: text-bottom;
+          }
+        }
+      }
+    }
+  }
+}
