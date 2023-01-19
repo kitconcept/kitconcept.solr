@@ -28,9 +28,9 @@ export function solrSearchContent(url, options, subrequest = null) {
 
   const arrayOptions = pickBy(options, (item) => isArray(item));
 
-  // XXX Note: The `portal_type` and `review_state` terms are
+  // XXX Note: The `review_state` term is
   // currently ignored by the `@@solr` backend service. However
-  // their implementation on the front-end is ready.
+  // its implementation on the front-end is ready.
 
   const pathPrefix =
     (options.local || '').toLowerCase() === 'true' && options.path_prefix;

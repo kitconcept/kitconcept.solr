@@ -1,58 +1,15 @@
 /**
- * OVERRIDE Volto Search.jsx
- * REASON: Add Solr term highlighting
- * FILE: https://github.com/plone/volto/blob/master/src/components/theme/Search/Search.jsx
- * FILE VERSION: Volto 14.0.0-alpha.40
- * PULL REQUEST: https://github.com/kitconcept/fzj-internet/pull/789
- * TICKET: https://jugit.fz-juelich.de/fzj-internet/dlr/-/issues/10
- * DATE: 2021-12-10
- * DEVELOPER: @tisto
- * CHANGELOG:
- *  - Add Solr term highlighting (2021-12-10) @tisto
- *
- * Every change is marked with a JSX comment at the beginning and end of the change:
- *
- *   START CUSTOMIZATION
- *   <CUSTOMIZATION>
- *   END CUSTOMIZATION
- */
-
-/**
- * OVERRIDE Volto Search.jsx
- * REASON: Add Solr search page
- * FILE: https://github.com/plone/volto/blob/master/src/components/theme/Search/Search.jsx
- * FILE VERSION: Volto 14.0.0-alpha.40
- * PULL REQUEST: https://github.com/kitconcept/fzj-internet/pull/869
- * TICKET: https://jugit.fz-juelich.de/fzj-internet/dlr/-/issues/20
- * DATE: 2021-12-27
- * DEVELOPER: @reebalazs
- * CHANGELOG:
- *  - Add solr route, fix search page issues, add content type customizations #869 @reebalazs
- *
- * Every change is marked with a JSX comment at the beginning and end of the change:
- *
- *   START CUSTOMIZATION
- *   <CUSTOMIZATION>
- *   END CUSTOMIZATION
- */
-
-/**
  * Search component.
  * @module components/theme/Search/Search
  */
 
-// START CUSTOMIZATION
 import React, { Component, createElement, createRef, forwardRef } from 'react';
-// END CUSTOMIZATION
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-// START CUSTOMIZATION
-// END CUSTOMIZATION
 import { asyncConnect } from '@plone/volto/helpers';
 import { FormattedMessage } from 'react-intl';
 import { Portal } from 'react-portal';
-// START CUSTOMIZATION
 import {
   Container,
   Segment,
@@ -63,7 +20,6 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import { injectIntl, useIntl, defineMessages } from 'react-intl';
-// END CUSTOMIZATION
 import qs from 'query-string';
 
 import config from '@plone/volto/registry';
@@ -72,8 +28,6 @@ import { Toolbar, Icon } from '@plone/volto/components';
 
 import paginationLeftSVG from '@plone/volto/icons/left-key.svg';
 import paginationRightSVG from '@plone/volto/icons/right-key.svg';
-
-// START CUSTOMIZATION
 // These imports and the legacySearchProps are only for the legacy search
 import { searchContent } from '@plone/volto/actions';
 import { DefaultResultItem } from './resultItems';
@@ -156,7 +110,6 @@ const LocalCheckbox = ({ onChange, checked }) => {
     </div>
   );
 };
-// END CUSTOMIZATION
 
 /**
  * SolrSearch class.
@@ -171,12 +124,11 @@ class SolrSearch extends Component {
    */
   static propTypes = {
     searchContent: PropTypes.func.isRequired,
-    // START CUSTOMIZATION
     searchAction: PropTypes.func,
     getSearchReducer: PropTypes.func,
+    showSearchInput: PropTypes.bool,
     contentTypeSearchResultViews: PropTypes.object,
     contentTypeSearchResultDefaultView: PropTypes.func,
-    // END CUSTOMIZATION
     searchableText: PropTypes.string,
     subject: PropTypes.string,
     path: PropTypes.string,
@@ -188,7 +140,6 @@ class SolrSearch extends Component {
         description: PropTypes.string,
       }),
     ),
-    // START CUSTOMIZATION
     loaded: PropTypes.bool,
     loading: PropTypes.bool,
     total: PropTypes.number,
@@ -200,7 +151,6 @@ class SolrSearch extends Component {
       next: PropTypes.string,
     }),
     pathname: PropTypes.string.isRequired,
-    // END CUSTOMIZATION
   };
 
   /**
@@ -210,12 +160,10 @@ class SolrSearch extends Component {
    */
   static defaultProps = {
     items: [],
-    // START CUSTOMIZATION
     loaded: false,
     loading: false,
     total: 0,
     batching: null,
-    // END CUSTOMIZATION
     searchableText: null,
     subject: null,
     path: null,
@@ -223,7 +171,6 @@ class SolrSearch extends Component {
 
   constructor(props) {
     super(props);
-    // START CUSTOMIZATION
     this.state = {
       currentPage: 1,
       isClient: false,
@@ -233,7 +180,6 @@ class SolrSearch extends Component {
       local: false,
     };
     this.inputRef = createRef();
-    // END CUSTOMIZATION
   }
 
   /**
@@ -243,7 +189,6 @@ class SolrSearch extends Component {
    */
   componentDidMount() {
     this.doSearch();
-    // START CUSTOMIZATION
     const location = this.props.history.location;
     const qoptions = qs.parse(location.search);
     this.setState({
@@ -254,8 +199,9 @@ class SolrSearch extends Component {
       local: (qoptions.local || '').toLowerCase() === 'true',
     });
     // put focus to the search input field
-    this.inputRef.current.focus();
-    // END CUSTOMIZATION
+    if (this.props.showSearchInput) {
+      this.inputRef.current.focus();
+    }
   }
 
   /**
@@ -280,7 +226,6 @@ class SolrSearch extends Component {
    */
 
   doSearch = () => {
-    // START CUSTOMIZATION
     const location = this.props.history.location;
     const qoptions = qs.parse(location.search);
     this.setState({ currentPage: 1 });
@@ -291,14 +236,12 @@ class SolrSearch extends Component {
       metadata_fields: ['effective', 'UID', 'start'],
       hl: 'true',
     };
-    // END CUSTOMIZATION
     this.props.searchContent('', options);
   };
 
   handleQueryPaginationChange = (e, { activePage }) => {
     const { settings } = config;
     window.scrollTo(0, 0);
-    // START CUSTOMIZATION
     const qoptions = qs.parse(this.props.history.location.search);
     const options = {
       ...qoptions,
@@ -306,7 +249,6 @@ class SolrSearch extends Component {
       metadata_fields: ['effective', 'UID', 'start'],
       hl: 'true',
     };
-    // END CUSTOMIZATION
 
     this.setState({ currentPage: activePage }, () => {
       this.props.searchContent('', {
@@ -317,7 +259,6 @@ class SolrSearch extends Component {
   };
 
   onSortChange = (selectedOption, sort_order) => {
-    // START CUSTOMIZATION
     const qoptions = qs.parse(this.props.history.location.search);
     const options = {
       ...qoptions,
@@ -325,7 +266,6 @@ class SolrSearch extends Component {
       metadata_fields: ['effective', 'UID', 'start'],
       hl: 'true',
     };
-    // END CUSTOMIZATION
     options.sort_on = selectedOption;
     options.sort_order = sort_order || 'ascending';
     if (selectedOption === 'relevance') {
@@ -341,7 +281,6 @@ class SolrSearch extends Component {
     });
   };
 
-  // START CUSTOMIZATION
   setGroupSelect = (groupSelect) => {
     const qoptions = qs.parse(this.props.history.location.search);
     const options = {
@@ -371,9 +310,7 @@ class SolrSearch extends Component {
       });
     });
   };
-  // END CUSTOMIZATION
 
-  // START CUSTOMIZATION
   onSubmit = (event) => {
     this.props.history.push({
       pathname: this.props.pathname,
@@ -386,7 +323,6 @@ class SolrSearch extends Component {
     });
     event.preventDefault();
   };
-  // END CUSTOMIZATION
 
   /**
    * Render method.
@@ -395,31 +331,32 @@ class SolrSearch extends Component {
    */
   render() {
     const { settings } = config;
-    // START CUSTOMIZATION
     // The next line is only needed for the legacy search component.
     const resultTypeMapper = (contentType) =>
       this.props.contentTypeSearchResultViews[contentType] ||
       this.props.contentTypeSearchResultDefaultView;
-    // END CUSTOMIZATION
     return (
       <Segment basic id="page-search" className="header-wrapper">
         <Helmet title="Search" />
         <Container>
-          {/* START CUSTOMIZATION */}
-          <div className="search-input">
-            <form onSubmit={this.onSubmit}>
-              <TranslatedInput
-                ref={this.inputRef}
-                placeholder={messages.TypeSearchWords}
-                className="searchinput"
-                value={this.state.searchword}
-                onChange={(e) => this.setState({ searchword: e.target.value })}
-              />
-              <Button onClick={this.onSubmit}>
-                <FormattedMessage id="Search" defaultMessage="Search" />{' '}
-              </Button>
-            </form>
-          </div>
+          {this.props.showSearchInput ? (
+            <div className="search-input">
+              <form onSubmit={this.onSubmit}>
+                <TranslatedInput
+                  ref={this.inputRef}
+                  placeholder={messages.TypeSearchWords}
+                  className="searchinput"
+                  value={this.state.searchword}
+                  onChange={(e) =>
+                    this.setState({ searchword: e.target.value })
+                  }
+                />
+                <Button onClick={this.onSubmit}>
+                  <FormattedMessage id="Search" defaultMessage="Search" />{' '}
+                </Button>
+              </form>
+            </div>
+          ) : null}
           {getPathPrefix(this.props.history.location) !== undefined ? (
             <LocalCheckbox
               onChange={(checked) => this.setLocal(checked)}
@@ -435,10 +372,8 @@ class SolrSearch extends Component {
             setGroupSelect={(groupSelect) => this.setGroupSelect(groupSelect)}
             groupCounts={this.props.groupCounts}
           />
-          {/* END CUSTOMIZATION */}
           <article id="content">
             <header>
-              {/* START CUSTOMIZATION */}
               {this.props.total > 0 ? (
                 <div className="sorting-bar">
                   <SelectSorting
@@ -447,12 +382,10 @@ class SolrSearch extends Component {
                       this.onSortChange(selectedOption, order);
                     }}
                   />
-                  {/* END CUSTOMIZATION */}
                 </div>
               ) : null}
             </header>
             <section id="content-core">
-              {/* START CUSTOMIZATION */}
               <div>
                 <Dimmer active={this.props.loading} inverted>
                   <Loader indeterminate size="small">
@@ -470,13 +403,10 @@ class SolrSearch extends Component {
               ))}
               {this.props.batching && (
                 <div className="search-footer">
-                  {/* END CUSTOMIZATION */}
                   <Pagination
                     activePage={this.state.currentPage}
                     totalPages={Math.ceil(
-                      /* START CUSTOMIZATION */
                       this.props.total / settings.defaultPageSize,
-                      /* END CUSTOMIZATION */
                     )}
                     onPageChange={this.handleQueryPaginationChange}
                     firstItem={null}
@@ -484,18 +414,14 @@ class SolrSearch extends Component {
                     prevItem={{
                       content: <Icon name={paginationLeftSVG} size="18px" />,
                       icon: true,
-                      /* START CUSTOMIZATION */
                       'aria-disabled': !this.props.batching.prev,
                       className: !this.props.batching.prev ? 'disabled' : null,
-                      /* END CUSTOMIZATION */
                     }}
                     nextItem={{
                       content: <Icon name={paginationRightSVG} size="18px" />,
                       icon: true,
-                      /* START CUSTOMIZATION */
                       'aria-disabled': !this.props.batching.next,
                       className: !this.props.batching.next ? 'disabled' : null,
-                      /* END CUSTOMIZATION */
                     }}
                   />
                 </div>
@@ -517,7 +443,6 @@ class SolrSearch extends Component {
   }
 }
 
-// START CUSTOMIZATION
 // The xxxWithDefault functions are only to support the legacy search component.
 const searchActionWithDefault = (searchAction) =>
   searchAction !== undefined ? searchAction : searchContent;
@@ -619,4 +544,3 @@ export default compose(
     },
   ]),
 )(SolrSearch);
-// END CUSTOMIZATION

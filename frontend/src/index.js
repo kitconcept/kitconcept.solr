@@ -1,5 +1,8 @@
 import { solrSearchContent } from '@kitconcept/volto-solr/actions';
-import { SolrSearch } from '@kitconcept/volto-solr/components';
+import {
+  SolrSearch,
+  SolrFormattedDate,
+} from '@kitconcept/volto-solr/components';
 import * as searchResultItems from '@kitconcept/volto-solr/components/theme/SolrSearch/resultItems';
 import reducers from './reducers';
 import routes from './routes';
@@ -25,18 +28,20 @@ const applyConfig = (config) => {
   config.views.contentTypeSearchResultDefaultView =
     searchResultItems.DefaultResultItem;
 
+  // Options for solr search which can be customized
+  config.settings.solrSearchOptions = config.settings.solrSearchDefaultOptions = {
+    searchAction: solrSearchContent,
+    getSearchReducer: (state) => state.solrsearch,
+    contentTypeSearchResultViews: config.views.contentTypeSearchResultViews,
+    contentTypeSearchResultDefaultView:
+      config.views.contentTypeSearchResultDefaultView,
+    showSearchInput: true,
+  };
+
   // Wrapper for a customized Solr Search component that can be used
-  // directly as a route. On long term these parameters could be acquired from Search.jsx and
-  // this wrapper could go away.
-  config.widgets.SolrSearch = (props) =>
-    SolrSearch({
-      ...props,
-      searchAction: solrSearchContent,
-      getSearchReducer: (state) => state.solrsearch,
-      contentTypeSearchResultViews: config.views.contentTypeSearchResultViews,
-      contentTypeSearchResultDefaultView:
-        config.views.contentTypeSearchResultDefaultView,
-    });
+  // directly as a route.
+  config.widgets.SolrSearch = SolrSearch;
+  config.widgets.SolrFormattedDate = SolrFormattedDate;
 
   config.addonReducers = { ...config.addonReducers, ...reducers };
   config.addonRoutes = [...config.addonRoutes, ...routes(config)];
