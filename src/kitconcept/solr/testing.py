@@ -26,9 +26,7 @@ from time import sleep
 
 # Use `solr_start`, `solr_stop` scripts directly from `solr/bin`
 BIN_DIR = os.path.realpath(
-    os.path.join(
-        os.path.dirname(__file__), "..", "..", "..", "solr", "bin"
-    )
+    os.path.join(os.path.dirname(__file__), "..", "..", "..", "solr", "bin")
 )
 
 

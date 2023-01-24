@@ -42,11 +42,11 @@ solr_config = {
         },
         {
             "label": "News Items",
-            "filter": "Type:(\"News Item\")",
+            "filter": 'Type:("News Item")',
         },
         {
             "label": "Pages and News Items",
-            "filter": "Type:(Page OR \"News Item\")",
+            "filter": 'Type:(Page OR "News Item")',
         },
     ]
 }
@@ -58,7 +58,12 @@ class ServicesSolrFacetUtilsTestCase(unittest.TestCase):
     def test_get_filters(self):
         self.assertEqual(
             solr_facet_utils.get_filters(),
-            ["Type(*)", "Type:(Page)", "Type:(\"News Item\")", "Type:(Page OR \"News Item\")"],
+            [
+                "Type(*)",
+                "Type:(Page)",
+                'Type:("News Item")',
+                'Type:(Page OR "News Item")',
+            ],
         )
 
 
@@ -524,15 +529,15 @@ solr_config_for_perms = {
         },
         {
             "label": "News Items",
-            "filter": "Type:(\"News Item\")",
+            "filter": 'Type:("News Item")',
         },
         {
             "label": "Images and News Items",
-            "filter": "Type:(Image OR \"News Item\")",
+            "filter": 'Type:(Image OR "News Item")',
         },
         {
             "label": "Pages and News Items",
-            "filter": "Type:(Page OR \"News Item\")",
+            "filter": 'Type:(Page OR "News Item")',
         },
         {
             "label": "Contacts",
@@ -542,7 +547,9 @@ solr_config_for_perms = {
 }
 
 
-@mock.patch("kitconcept.solr.services.solr_facet_utils.solr_config", solr_config_for_perms)
+@mock.patch(
+    "kitconcept.solr.services.solr_facet_utils.solr_config", solr_config_for_perms
+)
 @mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
 class ServicesSolrPermissionsTestCase(unittest.TestCase):
 
