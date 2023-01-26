@@ -87,10 +87,19 @@ class SolrSearch(Service):
         is_multilinqual_txt = self.request.form.get("is_multilingual", "true")
         is_multilingual = is_multilinqual_txt.lower() == "true"
         portal = api.portal.get()
-        portal_path = "/".join(portal.getPhysicalPath())
+        portal_path_segments = portal.getPhysicalPath()
+        portal_path = "/".join(portal_path_segments)
 
         if not query:
             raise BadRequest("Property 'q' is required")
+
+        if not path_prefix:
+            # The path_prefix can optionally be used, but the root url is
+            # used as default, in case path_prefix is undefined.
+            context_path_segments = self.context.getPhysicalPath()
+            # Acuqire relative path
+            path_prefix_segments = context_path_segments[len(portal_path_segments):]
+            path_prefix = "/".join(path_prefix_segments)
 
         # Get the solr connection
         manager = queryUtility(ISolrConnectionManager)

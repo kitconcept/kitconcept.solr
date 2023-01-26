@@ -279,9 +279,27 @@ class ServicesSolrLocalizedTestCase(unittest.TestCase):
 
     def test_solr_local_on_object_context(self):
         """search for all matching objects in a folder, including the parent.
-        Called on object context."""
-        # Calling solr on any object context makes no difference right now.
-        # So path_prefix is the decisive path for prefix filtering.
+        Called on object context, no path_prefix parameter."""
+        api.content.create(
+            container=self.portal,
+            type="Folder",
+            id="myotherfolder",
+            title="My other Folder",
+        )
+        transaction.commit()
+        response = self.api_session.get(
+            f"{self.portal_url}/myfolder/@solr?q=chomsky"
+        )
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/noamchomsky", path_strings)
+        self.assertIn("/plone/myfolder/mydocument", path_strings)
+        self.assertIn("/plone/myfolder/mynews", path_strings)
+        self.assertIn("/plone/myfolder", path_strings)
+
+    def test_solr_local_on_object_context_with_prefix(self):
+        """search for all matching objects in a folder, including the parent.
+        Called on object context with path_prefix which overrides the context."""
         api.content.create(
             container=self.portal,
             type="Folder",
@@ -301,9 +319,7 @@ class ServicesSolrLocalizedTestCase(unittest.TestCase):
 
     def test_portal_path_on_object_context_with_prefix(self):
         """search for all matching objects in a folder, including the parent.
-        Called on object context."""
-        # Calling solr on any object context makes no difference right now.
-        # So path_prefix is the decisive path for prefix filtering.
+        Called on object context with path_prefix which overrides the context."""
         api.content.create(
             container=self.portal,
             type="Folder",
