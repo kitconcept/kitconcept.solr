@@ -9,10 +9,6 @@
       "filter": "Type:(Page)"
     },
     {
-      "label": "Reports",
-      "filter": "Type:(Meldung)"
-    },
-    {
       "label": "Events",
       "filter": "Type:(Event)"
     },
@@ -23,14 +19,6 @@
     {
       "label": "Files",
       "filter": "Type:(File)"
-    },
-    {
-      "label": "People",
-      "filter": "Type:(Member)"
-    },
-    {
-      "label": "Job offers",
-      "filter": "Type:(Joboffer)"
     }
   ]
 }
