@@ -16,14 +16,14 @@ logger.setLevel(logging.DEBUG)
 indexer_logger = logging.getLogger("collective.solr.indexer")
 
 
-def solr_is_running():
-    manager = queryUtility(ISolrConnectionManager)
+def solr_is_running(portal):
+    manager = queryUtility(ISolrConnectionManager, context=portal)
     schema = manager.getSchema()
     return schema is not None
 
 
-def solr_must_be_running():
-    if not solr_is_running():
+def solr_must_be_running(portal):
+    if not solr_is_running(portal):
         logger.fatal("*** Solr must be running! (make solr-start) ***")
         sys.exit(1)
 
@@ -67,7 +67,7 @@ site_id = "Plone"
 portal = app.unrestrictedTraverse(site_id)
 setSite(portal)
 
-solr_must_be_running()
+solr_must_be_running(portal)
 
 activate()
 reindex(portal)
