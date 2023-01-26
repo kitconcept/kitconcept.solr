@@ -287,9 +287,7 @@ class ServicesSolrLocalizedTestCase(unittest.TestCase):
             title="My other Folder",
         )
         transaction.commit()
-        response = self.api_session.get(
-            f"{self.portal_url}/myfolder/@solr?q=chomsky"
-        )
+        response = self.api_session.get(f"{self.portal_url}/myfolder/@solr?q=chomsky")
         self.assertIn("response", response.json())
         path_strings = get_path_strings(response)
         self.assertNotIn("/plone/noamchomsky", path_strings)

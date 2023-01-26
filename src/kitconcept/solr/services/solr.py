@@ -98,7 +98,7 @@ class SolrSearch(Service):
             # used as default, in case path_prefix is undefined.
             context_path_segments = self.context.getPhysicalPath()
             # Acuqire relative path
-            path_prefix_segments = context_path_segments[len(portal_path_segments):]
+            path_prefix_segments = context_path_segments[len(portal_path_segments) :]
             path_prefix = "/".join(path_prefix_segments)
 
         # Get the solr connection
