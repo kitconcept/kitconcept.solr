@@ -177,6 +177,7 @@ class SolrSearch extends Component {
       active: 'relevance',
       searchword: '',
       groupSelect: 0,
+      allowLocal: false,
       local: false,
     };
     this.inputRef = createRef();
@@ -196,6 +197,7 @@ class SolrSearch extends Component {
       searchword: this.props.searchableText || '',
       active: qoptions.sort_on || 'relevance',
       groupSelect: parseInt(qoptions.group_select) || 0,
+      allowLocal: (qoptions.allow_local || '').toLowerCase() === 'true',
       local: (qoptions.local || '').toLowerCase() === 'true',
     });
     // put focus to the search input field
@@ -318,6 +320,7 @@ class SolrSearch extends Component {
         SearchableText: this.state.searchword,
         active: this.state.active,
         group_select: this.state.groupSelect,
+        allow_local: this.state.allowLocal || undefined,
         local: this.state.local,
       }),
     });
@@ -357,7 +360,8 @@ class SolrSearch extends Component {
               </form>
             </div>
           ) : null}
-          {getPathPrefix(this.props.history.location) !== undefined ? (
+          {this.state.allowLocal &&
+          getPathPrefix(this.props.history.location) !== undefined ? (
             <LocalCheckbox
               onChange={(checked) => this.setLocal(checked)}
               checked={this.state.local}
