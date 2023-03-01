@@ -1,4 +1,7 @@
-import { solrSearchContent } from '@kitconcept/volto-solr/actions';
+import {
+  solrSearchContent,
+  copyContentForSolr,
+} from '@kitconcept/volto-solr/actions';
 import {
   SolrSearch,
   SolrFormattedDate,
@@ -11,7 +14,7 @@ import './theme/solrsearch.less';
 const applyConfig = (config) => {
   config.settings.nonContentRoutes = [
     ...config.settings.nonContentRoutes,
-    /.*\/@@search/,
+    /\/@@search$/,
   ];
 
   // --
@@ -32,6 +35,7 @@ const applyConfig = (config) => {
   config.settings.solrSearchOptions = config.settings.solrSearchDefaultOptions = {
     searchAction: solrSearchContent,
     getSearchReducer: (state) => state.solrsearch,
+    copyContentForSolrAction: copyContentForSolr,
     contentTypeSearchResultViews: config.views.contentTypeSearchResultViews,
     contentTypeSearchResultDefaultView:
       config.views.contentTypeSearchResultDefaultView,
