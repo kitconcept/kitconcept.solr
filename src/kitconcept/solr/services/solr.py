@@ -82,9 +82,12 @@ class SolrSearch(Service):
         group_select = self.request.form.get("group_select", None)
         path_prefix = self.request.form.get("path_prefix", "")
         portal_type = self.request.form.get("portal_type", None)
+        lang = self.request.form.get("lang", None)
 
-        # search in multilingual path_prefix by default
-        is_multilinqual_txt = self.request.form.get("is_multilingual", "true")
+        # search in multilingual path_prefix by default - unless lang is specified
+        is_multilinqual_txt = self.request.form.get(
+            "is_multilingual", "true" if lang is None else "false"
+        )
         is_multilingual = is_multilinqual_txt.lower() == "true"
         portal = api.portal.get()
         portal_path_segments = portal.getPhysicalPath()
@@ -100,6 +103,11 @@ class SolrSearch(Service):
             # Acuqire relative path
             path_prefix_segments = context_path_segments[len(portal_path_segments) :]
             path_prefix = "/".join(path_prefix_segments)
+
+        if lang and is_multilingual:
+            raise BadRequest(
+                "Property 'lang` and `is_multilingual` are mutually exclusive"
+            )
 
         # Get the solr connection
         manager = queryUtility(ISolrConnectionManager)
@@ -204,6 +212,9 @@ class SolrSearch(Service):
                 + " OR ".join(map(lambda txt: '"' + escape(txt) + '"', portal_type))
                 + ")"
             ]
+        if lang:
+            d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
+
         raw_result = connection.search(**d).read()
 
         result = json.loads(raw_result)

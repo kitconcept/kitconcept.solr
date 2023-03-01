@@ -809,3 +809,80 @@ class ServicesSolrPortalTypeTestCase(unittest.TestCase):
         self.assertIn("/plone/news2", path_strings)
         self.assertNotIn("/plone/redandblue", path_strings)
         self.assertIn("/plone/newsblue", path_strings)
+
+
+class ServicesSolrLanguageDependantTestCase(unittest.TestCase):
+
+    layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
+
+    def makeTranslation(self, first, second):
+        ILanguage(first).set_language("en")
+        ILanguage(second).set_language("ca")
+        ITranslationManager(first).register_translation("ca", second)
+
+    def setUp(self):
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
+        self.portal_url = self.portal.absolute_url()
+        activateAndReindex(self.portal)
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.maintenance = self.portal.unrestrictedTraverse("solr-maintenance")
+
+        self.api_session = RelativeSession(self.portal_url)
+        self.api_session.headers.update({"Accept": "application/json"})
+        self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        # Contents
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document1",
+            title="Everything about  Prof. Dr. Noam Chomsky",
+        )
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document1_ca",
+            title="Everything about  Prof. Dr. Noam Chomsky, in Canadian",
+        )
+        self.makeTranslation(self.portal.document1, self.portal.document1_ca)
+        api.content.create(
+            container=self.portal,
+            type="Image",
+            id="image1",
+            title="Image of Prof. Dr. Noam Chomsky",
+        )
+        api.content.create(
+            container=self.portal,
+            type="Image",
+            id="image1_ca",
+            title="Image of Prof. Dr. Noam Chomsky in Canadian",
+        )
+        self.makeTranslation(self.portal.image1, self.portal.image1_ca)
+        transaction.commit()
+
+    def test_basic(self):
+        response = self.api_session.get(f"{self.portal_url}/@solr?q=chomsky&lang=en")
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertIn("/plone/document1", path_strings)
+        self.assertIn("/plone/image1", path_strings)
+        self.assertNotIn("/plone/document1_ca", path_strings)
+        self.assertNotIn("/plone/image1_ca", path_strings)
+        response = self.api_session.get(f"{self.portal_url}/@solr?q=chomsky&lang=ca")
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/document1", path_strings)
+        self.assertNotIn("/plone/image1", path_strings)
+        self.assertIn("/plone/document1_ca", path_strings)
+        self.assertIn("/plone/image1_ca", path_strings)
+
+    def test_lang_not_is_multilingual(self):
+        response = self.api_session.get(
+            f"{self.portal_url}/@solr?q=chomsky&lang=en&is_multilingual=true"
+        )
+        json = response.json()
+        self.assertEqual(json["type"], "BadRequest")
+        self.assertEqual(
+            json["message"],
+            "Property 'lang` and `is_multilingual` are mutually exclusive",
+        )
