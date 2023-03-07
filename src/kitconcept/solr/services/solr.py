@@ -115,7 +115,7 @@ class SolrSearch(Service):
         connection = manager.getConnection()
 
         # XXX: we need to filter the query to avoid injection attacks
-        term = query
+        term = escape(query)
 
         # Search
         #  q: query parameter

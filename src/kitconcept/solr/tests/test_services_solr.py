@@ -886,3 +886,97 @@ class ServicesSolrLanguageDependantTestCase(unittest.TestCase):
             json["message"],
             "Property 'lang` and `is_multilingual` are mutually exclusive",
         )
+
+
+class ServicesSolrEncodingTestCase(unittest.TestCase):
+
+    layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
+        self.portal_url = self.portal.absolute_url()
+        activateAndReindex(self.portal)
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.maintenance = self.portal.unrestrictedTraverse("solr-maintenance")
+
+        self.api_session = RelativeSession(self.portal_url)
+        self.api_session.headers.update({"Accept": "application/json"})
+        self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        # Contents
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="document1",
+            title="Document 1",
+        )
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="redandblue",
+            title="This is a title",
+        )
+        api.content.create(
+            container=self.portal,
+            type="News Item",
+            id="newsblue",
+            title="This is a blue news item",
+        )
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="withcolon",
+            title="Something: with a colon",
+        )
+        api.content.create(
+            container=self.portal,
+            type="Document",
+            id="withspam",
+            title="Something:+-&|!(){}[]^+~*?/ with spam",
+        )
+        transaction.commit()
+
+    def test_colon(self):
+        # We test both with and without html encoding, to be on the safe side.
+        response = self.api_session.get(f"{self.portal_url}/@solr?q=something: colon")
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/document1", path_strings)
+        self.assertNotIn("/plone/redandblue", path_strings)
+        self.assertNotIn("/plone/newsblue", path_strings)
+        self.assertIn("/plone/withcolon", path_strings)
+        self.assertIn("/plone/withspam", path_strings)
+        response = self.api_session.get(
+            f"{self.portal_url}/@solr?q=something%3a20colon"
+        )
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/document1", path_strings)
+        self.assertNotIn("/plone/redandblue", path_strings)
+        self.assertNotIn("/plone/newsblue", path_strings)
+        self.assertIn("/plone/withcolon", path_strings)
+        self.assertIn("/plone/withspam", path_strings)
+
+    def test_spam(self):
+        # We test both with and without html encoding, to be on the safe side.
+        response = self.api_session.get(
+            f"{self.portal_url}/@solr?q=something:+-&|!()${'{}'}[]^+~*?/ spam"
+        )
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/document1", path_strings)
+        self.assertNotIn("/plone/redandblue", path_strings)
+        self.assertNotIn("/plone/newsblue", path_strings)
+        self.assertIn("/plone/withcolon", path_strings)
+        self.assertIn("/plone/withspam", path_strings)
+        response = self.api_session.get(
+            f"{self.portal_url}/@solr?q=something%3A%2B-%26%7C!()%7B%7D%5B%5D%"
+            + "5E%2B~*%3F%2F spam"
+        )
+        self.assertIn("response", response.json())
+        path_strings = get_path_strings(response)
+        self.assertNotIn("/plone/document1", path_strings)
+        self.assertNotIn("/plone/redandblue", path_strings)
+        self.assertNotIn("/plone/newsblue", path_strings)
+        self.assertIn("/plone/withcolon", path_strings)
+        self.assertIn("/plone/withspam", path_strings)
