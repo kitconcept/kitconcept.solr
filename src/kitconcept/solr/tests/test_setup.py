@@ -42,7 +42,6 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING
 
     def setUp(self):

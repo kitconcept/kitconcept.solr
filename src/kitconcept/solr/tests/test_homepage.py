@@ -20,7 +20,6 @@ import unittest
 
 
 class HomePageIntegrationTest(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING
 
     def setUp(self):

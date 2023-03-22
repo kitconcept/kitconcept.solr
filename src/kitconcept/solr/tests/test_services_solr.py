@@ -1,7 +1,7 @@
 from collective.solr.testing import activateAndReindex
 from kitconcept.solr.services import solr_facet_utils
 from kitconcept.solr.testing import KITCONCEPT_SOLR_FUNCTIONAL_TESTING
-from kitconcept import api
+from plone import api
 from plone.app.multilingual.interfaces import ITranslationManager
 from plone.app.testing import login
 from plone.app.testing import setRoles
@@ -70,7 +70,6 @@ class ServicesSolrFacetUtilsTestCase(unittest.TestCase):
 @mock.patch("kitconcept.solr.services.solr_facet_utils.solr_config", solr_config)
 @mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
 class ServicesSolrFacetsTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -191,7 +190,6 @@ class ServicesSolrFacetsTestCase(unittest.TestCase):
 
 
 class ServicesSolrLocalizedTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -415,7 +413,6 @@ def _get_file() -> NamedBlobFile:
 
 
 class ServicesSolrContentFieldsTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -566,7 +563,6 @@ solr_config_for_perms = {
 )
 @mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
 class ServicesSolrPermissionsTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -724,7 +720,6 @@ class ServicesSolrPermissionsTestCase(unittest.TestCase):
 
 
 class ServicesSolrPortalTypeTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -812,7 +807,6 @@ class ServicesSolrPortalTypeTestCase(unittest.TestCase):
 
 
 class ServicesSolrLanguageDependantTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def makeTranslation(self, first, second):
@@ -889,7 +883,6 @@ class ServicesSolrLanguageDependantTestCase(unittest.TestCase):
 
 
 class ServicesSolrEncodingTestCase(unittest.TestCase):
-
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
     def setUp(self):

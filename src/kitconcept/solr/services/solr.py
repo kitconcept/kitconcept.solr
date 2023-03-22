@@ -70,7 +70,6 @@ re_is_excluding = re.compile("/$")
 
 class SolrSearch(Service):
     def reply(self):
-
         # Disable CSRF protection
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
             alsoProvides(self.request, plone.protect.interfaces.IDisableCSRFProtection)
