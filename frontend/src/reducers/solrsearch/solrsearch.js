@@ -8,7 +8,7 @@ import {
   RESET_SOLR_SEARCH_CONTENT,
   SOLR_SEARCH_CONTENT,
   COPY_CONTENT_FOR_SOLR,
-} from '@kitconcept/volto-solr/actions/solrsearch/solrsearch';
+} from '../../actions/solrsearch/solrsearch';
 
 const initialState = {
   error: null,

@@ -3,7 +3,7 @@ import {
   RESET_SOLR_SEARCH_CONTENT,
   SOLR_SEARCH_CONTENT,
   COPY_CONTENT_FOR_SOLR,
-} from '@kitconcept/volto-solr/actions/solrsearch/solrsearch';
+} from '../../actions/solrsearch/solrsearch';
 
 describe('SOLR search reducer', () => {
   it('should return the initial state', () => {

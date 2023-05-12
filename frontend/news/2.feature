@@ -1,0 +1,1 @@
+Add solr support @reebalazs

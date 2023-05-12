@@ -3,18 +3,83 @@
   "version": "0.1.0",
   "description": "@kitconcept/volto-solr: Volto add-on front-end component of Solr support",
   "main": "src/index.js",
-  "license": "MIT",
-  "keywords": [
-    "volto-addon",
-    "volto",
-    "plone",
-    "react"
-  ],
   "scripts": {
-    "i18n": "rm -rf build/messages && NODE_ENV=production i18n --addon"
+    "i18n": "rm -rf build/messages && NODE_ENV=production i18n -a",
+    "cypress:open": "NODE_ENV=production ../../../node_modules/cypress/bin/cypress open",
+    "cypress:run": "NODE_ENV=test ../../../node_modules/cypress/bin/cypress run",
+    "cypress:start-frontend": "cd ../../../ && RAZZLE_API_PATH=http://localhost:55001/plone yarn start",
+    "ci:test-acceptance-server": "make test-acceptance-server",
+    "cy:test:fixture:setup": "node cypress/support/reset-fixture.js",
+    "cy:test:fixture:teardown": "node cypress/support/reset-fixture.js teardown",
+    "dry-release": "release-it --dry-run",
+    "release": "release-it",
+    "release-major-alpha": "release-it major --preRelease=alpha",
+    "release-alpha": "release-it --preRelease=alpha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kitconcept/volto-blocks-grid.git"
+  },
+  "author": "kitconcept, GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kitconcept/volto-blocks-grid/issues"
+  },
+  "homepage": "https://github.com/kitconcept/volto-blocks-grid#readme",
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.overrides",
+        "options": {
+          "parser": "less"
+        }
+      }
+    ]
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-idiomatic-order"
+    ],
+    "plugins": [
+      "stylelint-prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.less"
+        ],
+        "customSyntax": "postcss-less"
+      },
+      {
+        "files": [
+          "**/*.overrides"
+        ],
+        "customSyntax": "postcss-less"
+      }
+    ],
+    "rules": {
+      "prettier/prettier": true,
+      "rule-empty-line-before": [
+        "always-multi-line",
+        {
+          "except": [
+            "first-nested"
+          ],
+          "ignore": [
+            "after-comment"
+          ]
+        }
+      ]
+    }
   },
   "devDependencies": {
-    "@plone/scripts": "*"
+    "@plone/scripts": "^2.3.0",
+    "release-it": "^15.6.0"
   },
-  "dependencies": {}
+  "peerDependencies": {
+    "@plone/volto": ">=16.0.0"
+  },
+  "packageManager": "yarn@3.5.1"
 }
