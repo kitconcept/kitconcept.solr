@@ -95,22 +95,22 @@ SOLR_ONLY_COMPOSE?=${CURRENT_DIR}/devops/stacks/solr-only.yml
 .PHONY: solr-start
 solr-start: test-compose-project-name ## Start solr
 	@echo "Start solr"
-	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
 
 .PHONY: solr-start-fg
 solr-start-fg: test-compose-project-name ## Start solr in foreground
 	@echo "Start solr in foreground"
-	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up
 
 .PHONY: solr-stop
 solr-stop: test-compose-project-name ## Stop solr
 	@echo "Stop solr"
-	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} down
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} down
 
 .PHONY: solr-logs
 solr-logs: test-compose-project-name ## Show solr logs
 	@echo "Show solr logs"
-	COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
 
 # .PHONY: solr-activate-and-reindex
 # solr-activate-and-reindex: backend/instance/etc/zope.ini ## Activate and reindex solr
