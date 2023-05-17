@@ -52,10 +52,13 @@ def silence_logger():
 def reindex(portal):
     """reindex the existing content in solr"""
     maintenance = portal.unrestrictedTraverse("@@solr-maintenance")
-    maintenance.clear()
+    if "--clear" in sys.argv:
+        logger.info("Clearing solr...")
+        maintenance.clear()
     # Avoid throwing a lot of errors which are actually not errors,
     # but the indexer keeps throwing them when it tries to traverse everything.
     reactivate_logger = silence_logger()
+    logger.info("Reindexing solr...")
     maintenance.reindex()
     reactivate_logger()
 

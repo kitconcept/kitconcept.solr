@@ -114,5 +114,5 @@ solr-logs: test-compose-project-name ## Show solr logs
 
 # .PHONY: solr-activate-and-reindex
 # solr-activate-and-reindex: backend/instance/etc/zope.ini ## Activate and reindex solr
-# 	cd backend; PYTHONWARNINGS=ignore ./bin/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py
+# 	cd backend; PYTHONWARNINGS=ignore ./bin/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --clear
 
