@@ -70,9 +70,12 @@ site_id = "Plone"
 portal = app.unrestrictedTraverse(site_id)
 setSite(portal)
 
-solr_must_be_running(portal)
-
+# Activate before confirming solr is running,
+# because the confirmation only works if solr is enabled in the registry.
+# If solr isn't running, we'll exit
+# before committing the transaction with the activation.
 activate()
+solr_must_be_running(portal)
 reindex(portal)
 
 transaction.commit()
