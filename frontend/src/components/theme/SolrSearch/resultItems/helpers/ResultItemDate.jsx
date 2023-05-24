@@ -3,7 +3,7 @@ import config from '@plone/volto/registry';
 
 // Add one day to the earliest date to make sure that differences
 // because of timezones are still under the threshold
-const thresholdDate = new Date(null);
+export const thresholdDate = new Date(null);
 thresholdDate.setDate(thresholdDate.getDate() + 1);
 
 const ResultItemDate = ({ date, hasExcerpt, showTime }) => {

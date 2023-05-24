@@ -27,6 +27,7 @@ const applyConfig = (config) => {
   config.views.contentTypeSearchResultViews = {
     Event: searchResultItems.EventResultItem,
     Image: searchResultItems.ImageResultItem,
+    'News Item': searchResultItems.NewsItemResultItem,
   };
   config.views.contentTypeSearchResultDefaultView =
     searchResultItems.DefaultResultItem;
