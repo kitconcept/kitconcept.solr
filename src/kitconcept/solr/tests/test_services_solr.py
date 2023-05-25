@@ -1,5 +1,5 @@
 from collective.solr.testing import activateAndReindex
-from kitconcept.solr.services import solr_facet_utils
+from kitconcept.solr.services import solr_utils
 from kitconcept.solr.testing import KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 from plone import api
 from plone.app.multilingual.interfaces import ITranslationManager
@@ -31,6 +31,20 @@ def get_path_strings(response):
 # Note that the Document type has to be searched as Page,
 # ie: portal_type=Document, but Type=Page.
 solr_config = {
+    "fieldList": [
+        "UID",
+        "Title",
+        "Description",
+        "Type",
+        "effective",
+        "start",
+        "created",
+        "end",
+        "path_string",
+        "phone",
+        "email",
+        "location"
+    ],
     "searchTabs": [
         {
             "label": "All",
@@ -52,12 +66,21 @@ solr_config = {
 }
 
 
-@mock.patch("kitconcept.solr.services.solr_facet_utils.solr_config", solr_config)
-@mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
-class ServicesSolrFacetUtilsTestCase(unittest.TestCase):
+solr_config_invalid_field_list = {
+    "fieldList": [
+        "foo,bar",
+    ],
+    "searchTabs": [],
+}
+
+
+@mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
+class ServicesSolrUtilsTestCase(unittest.TestCase):
+    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
     def test_get_filters(self):
         self.assertEqual(
-            solr_facet_utils.get_filters(),
+            solr_utils.get_filters(),
             [
                 "Type(*)",
                 "Type:(Page)",
@@ -65,10 +88,21 @@ class ServicesSolrFacetUtilsTestCase(unittest.TestCase):
                 'Type:(Page OR "News Item")',
             ],
         )
+    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
+    def test_solr_field_list(self):
+        self.assertEqual(
+            solr_utils.solr_field_list(),
+            "UID,Title,Description,Type,effective,start,created,end,path_string,phone,email,location"
+        )
+    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config_invalid_field_list)
+    def test_solr_field_list_invalid_char(self):
+        with self.assertRaisesRegex(RuntimeError, 'fieldList item contains comma'):
+            solr_utils.solr_field_list()
 
 
-@mock.patch("kitconcept.solr.services.solr_facet_utils.solr_config", solr_config)
-@mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
+@mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrFacetsTestCase(unittest.TestCase):
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 
@@ -532,6 +566,20 @@ SECOND_USER_PW = "secret"
 # Note that the Document type has to be searched as Page,
 # ie: portal_type=Document, but Type=Page.
 solr_config_for_perms = {
+    "fieldList": [
+        "UID",
+        "Title",
+        "Description",
+        "Type",
+        "effective",
+        "start",
+        "created",
+        "end",
+        "path_string",
+        "phone",
+        "email",
+        "location"
+    ],
     "searchTabs": [
         {
             "label": "All",
@@ -562,9 +610,10 @@ solr_config_for_perms = {
 
 
 @mock.patch(
-    "kitconcept.solr.services.solr_facet_utils.solr_config", solr_config_for_perms
+    "kitconcept.solr.services.solr_utils.solr_config", solr_config_for_perms
 )
-@mock.patch("kitconcept.solr.services.solr_facet_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrPermissionsTestCase(unittest.TestCase):
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
 

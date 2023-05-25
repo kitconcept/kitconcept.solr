@@ -4,4 +4,4 @@
 
 ROOT=$( cd -P "$( dirname "${BASH_SOURCE[0]}" )/../.." >/dev/null 2>&1 && pwd )
 
-cd $ROOT; COMPOSE_PROJECT_NAME=KITCONCEPT_SOLR_TEST make solr-stop
+cd $ROOT; COMPOSE_PROJECT_NAME=kitconcept_solr_test make solr-stop

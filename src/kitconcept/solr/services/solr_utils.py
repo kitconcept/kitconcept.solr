@@ -12,7 +12,7 @@ if not SOLR_CONTEXT_FOLDER:
     # / or:
     # raise RuntimeError("SOLR_CONTEXT_FOLDER must be defined")
 
-solr_config_path = os.path.join(SOLR_CONTEXT_FOLDER, "etc", "solr-facets.json")
+solr_config_path = os.path.join(SOLR_CONTEXT_FOLDER, "etc", "solr-config.json")
 
 try:
     with open(solr_config_path) as solr_config_file:
@@ -22,6 +22,7 @@ except Exception:  # noqa
 
 
 filters = None
+field_list = None
 
 
 def get_filters():
@@ -42,3 +43,30 @@ def solr_select_condition(group_select):
 
 def solr_facet_query():
     return list(map(lambda item: "{!ex=typefilter}" + item, get_filters()))
+
+
+class SolrConfigError(RuntimeError):
+    pass
+
+
+def solr_field_list():
+    global field_list
+    def check_item(item):
+        if ',' in item:
+            raise SolrConfigError(
+                f"Error parsing json config from {solr_config_path} {solr_config}, fieldList item contains comma (,) which is prohibited"
+            )
+        return item
+    if field_list is None:
+        try:
+            field_list = ",".join(map(check_item, solr_config["fieldList"]))
+        except Exception as err:  # noqa
+            if isinstance(err, SolrConfigError):
+                raise
+            else:
+                raise SolrConfigError(
+                    f"Error parsing json config from {solr_config_path} {solr_config}"
+                )
+    return field_list
+
+    return

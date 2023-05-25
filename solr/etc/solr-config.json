@@ -1,4 +1,18 @@
 {
+  "fieldList": [
+    "UID",
+    "Title",
+    "Description",
+    "Type",
+    "effective",
+    "start",
+    "created",
+    "end",
+    "path_string",
+    "phone",
+    "email",
+    "location"
+  ],
   "searchTabs": [
     {
       "label": "All",

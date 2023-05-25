@@ -1,5 +1,6 @@
-from .solr_facet_utils import solr_facet_query
-from .solr_facet_utils import solr_select_condition
+from .solr_utils import solr_facet_query
+from .solr_utils import solr_select_condition
+from .solr_utils import solr_field_list
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
@@ -149,7 +150,7 @@ class SolrSearch(Service):
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
             "fq": [security_filter()],
-            "fl": "UID,Title,Description,Type,effective,start,created,path_string,phone,email,location,job_offer_institute,job_offer_location",  # noqa
+            "fl": solr_field_list(),
             "facet": "true",
         }
         if start is not None:
