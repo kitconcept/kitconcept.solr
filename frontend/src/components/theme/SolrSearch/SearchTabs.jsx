@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import solrConfig from './solr-facets';
+import solrConfig from './solr-config';
 import messages from './solr-facets-i18n';
 
 export const SearchTabs = ({ groupSelect, setGroupSelect, groupCounts }) => {
