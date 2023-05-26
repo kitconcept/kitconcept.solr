@@ -9,6 +9,7 @@
     "created",
     "end",
     "path_string",
+    "mime_type",
     "phone",
     "email",
     "location"
