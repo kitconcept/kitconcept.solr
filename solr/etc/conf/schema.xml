@@ -355,17 +355,24 @@
       name="text" type="text" indexed="true" stored="true" />
 
     <!-- Autocomplete suggest fields -->
-    <field name="suggest"
-      type="text_suggest" indexed="true" stored="false" />
-    <field name="suggest_ngram"
-      type="text_suggest_ngram" indexed="true" stored="false" />
-    <field
-      name="suggest_searchwords_ngram" type="text_suggest_ngram" indexed="true" stored="false"
+    <field name="suggest" type="text_suggest" indexed="true" stored="false" />
+    <field name="suggest_ngram" type="text_suggest_ngram" indexed="true" stored="false" />
+    <field name="suggest_searchwords_ngram" type="text_suggest_ngram" indexed="true" stored="false"
       multiValued="true" />
     <copyField source="Title" dest="suggest" />
-    <copyField source="Title"
-      dest="suggest_ngram" />
+    <copyField source="Title" dest="suggest_ngram" />
     <copyField source="searchwords" dest="suggest_searchwords_ngram" />
+
+    <!-- Preview image -->
+    <field name="hasPreviewImage" type="boolean" indexed="true" stored="true" />
+    <field name="image_field" type="text" indexed="true" stored="true" />
+    <field name="credit" type="text" indexed="false" stored="true" />
+    <copyField source="hasPreviewImage" dest="default" />
+    <copyField source="image_field" dest="default" />
+    <field name="image_scales" type="string" indexed="false" stored="true" />
+    <field name="getObjSize" type="string" indexed="false" stored="true" />
+    <field name="mime_type" type="string" indexed="false" stored="true" />
+    <field name="allow_image_download" type="boolean" indexed="false" stored="true" />
 
   </fields>
 
