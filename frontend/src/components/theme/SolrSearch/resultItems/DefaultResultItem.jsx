@@ -53,6 +53,7 @@ const DefaultResultItem = ({ item }) => (
             Date(item?.extras?.start ? item.extras.start : item?.effective) >
             thresholdDate
           }
+          if2={false}
         >
           <Icon className="itemIcon" size="20px" name={documentSVG} />
           <ResultItemDate

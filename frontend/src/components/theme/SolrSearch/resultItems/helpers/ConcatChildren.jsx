@@ -1,4 +1,4 @@
-const ConcatChildren = ({ if1, if2, children }) => (
+const ConcatChildren = ({ if1 = true, if2 = true, children }) => (
   //  if1 || if2 ? (
   <>
     {children[0]}
