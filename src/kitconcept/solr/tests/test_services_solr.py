@@ -43,7 +43,7 @@ solr_config = {
         "path_string",
         "phone",
         "email",
-        "location"
+        "location",
     ],
     "searchTabs": [
         {
@@ -62,7 +62,7 @@ solr_config = {
             "label": "Pages and News Items",
             "filter": 'Type:(Page OR "News Item")',
         },
-    ]
+    ],
 }
 
 
@@ -88,15 +88,20 @@ class ServicesSolrUtilsTestCase(unittest.TestCase):
                 'Type:(Page OR "News Item")',
             ],
         )
+
     @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
     def test_solr_field_list(self):
         self.assertEqual(
             solr_utils.solr_field_list(),
-            "UID,Title,Description,Type,effective,start,created,end,path_string,phone,email,location"
+            "UID,Title,Description,Type,effective,start,created,end,path_string,phone,email,location",
         )
-    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config_invalid_field_list)
+
+    @mock.patch(
+        "kitconcept.solr.services.solr_utils.solr_config",
+        solr_config_invalid_field_list,
+    )
     def test_solr_field_list_invalid_char(self):
-        with self.assertRaisesRegex(RuntimeError, 'fieldList item contains comma'):
+        with self.assertRaisesRegex(RuntimeError, "fieldList item contains comma"):
             solr_utils.solr_field_list()
 
 
@@ -578,7 +583,7 @@ solr_config_for_perms = {
         "path_string",
         "phone",
         "email",
-        "location"
+        "location",
     ],
     "searchTabs": [
         {
@@ -605,13 +610,11 @@ solr_config_for_perms = {
             "label": "Contacts",
             "filter": "Type:(Image)",
         },
-    ]
+    ],
 }
 
 
-@mock.patch(
-    "kitconcept.solr.services.solr_utils.solr_config", solr_config_for_perms
-)
+@mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config_for_perms)
 @mock.patch("kitconcept.solr.services.solr_utils.filters", None)
 @mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrPermissionsTestCase(unittest.TestCase):

@@ -51,12 +51,14 @@ class SolrConfigError(RuntimeError):
 
 def solr_field_list():
     global field_list
+
     def check_item(item):
-        if ',' in item:
+        if "," in item:
             raise SolrConfigError(
                 f"Error parsing json config from {solr_config_path} {solr_config}, fieldList item contains comma (,) which is prohibited"
             )
         return item
+
     if field_list is None:
         try:
             field_list = ",".join(map(check_item, solr_config["fieldList"]))
