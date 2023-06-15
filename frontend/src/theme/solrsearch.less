@@ -92,15 +92,15 @@
       }
 
       h2.tileHeadline {
+        padding: 0;
         // margin: 0.25rem 0 0.5rem 0;
         margin: 0;
-        padding: 0;
 
         &,
         & a {
+          color: @solr-color;
           font-style: normal;
           font-weight: @solr-highlight-weight;
-          color: @solr-color;
         }
 
         :hover {
@@ -120,6 +120,7 @@
       .tileBody {
         margin: 0.5rem 0 0.5rem 0;
         color: @solr-color;
+
         em {
           font-style: normal;
           font-weight: bold;
@@ -132,6 +133,7 @@
         * {
           vertical-align: middle;
         }
+
         .itemIcon {
           margin-right: 4px;
         }
