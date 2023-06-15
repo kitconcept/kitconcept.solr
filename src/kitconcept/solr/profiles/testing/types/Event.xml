@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        meta_type="Dexterity FTI"
+        name="Event"
+        i18n:domain="plone"
+>
+
+  <property name="global_allow">False</property>
+
+  <property name="behaviors"
+            purge="true"
+  >
+    <element value="plone.textindexer" />
+    <element value="plone.eventbasic" />
+    <element value="plone.eventrecurrence" />
+    <element value="plone.eventlocation" />
+    <element value="plone.eventattendees" />
+    <element value="plone.eventcontact" />
+    <element value="plone.dublincore" />
+    <element value="plone.namefromtitle" />
+    <element value="plone.translatable" />
+    <element value="plone.versioning" />
+    <element value="plone.locking" />
+    <element value="plone.constraintypes" />
+    <element value="volto.blocks" />
+    <element value="volto.navtitle" />
+    <element value="plone.shortname" />
+  </property>
+</object>

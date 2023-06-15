@@ -43,12 +43,14 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=3.8",
     install_requires=[
         "plone.api",
         "plone.restapi",
         "Products.GenericSetup>=1.8.2",
         "setuptools",
         "z3c.jbot",
+        "collective.solr",
         # 'plone.restapi',
         # 'Products.PloneFormGen',
         # 'plone.formwidget.captcha',
@@ -62,6 +64,7 @@ setup(
             "plone.testing",
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
+            "collective.MockMailHost",
         ],
     },
     entry_points="""

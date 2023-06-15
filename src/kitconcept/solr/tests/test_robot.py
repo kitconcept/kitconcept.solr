@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from kitconcept.solr.testing import KITCONCEPTSOLR_CORE_ACCEPTANCE_TESTING  # noqa
+from kitconcept.solr.testing import KITCONCEPT_SOLR_ACCEPTANCE_TESTING  # noqa
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
@@ -22,7 +22,7 @@ def test_suite():
         robottestsuite.level = ROBOT_TEST_LEVEL
         suite.addTests(
             [
-                layered(robottestsuite, layer=KITCONCEPTSOLR_CORE_ACCEPTANCE_TESTING),
+                layered(robottestsuite, layer=KITCONCEPT_SOLR_ACCEPTANCE_TESTING),
             ]
         )
     return suite

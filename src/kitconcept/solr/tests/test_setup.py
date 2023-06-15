@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from kitconcept.solr.testing import KITCONCEPTSOLR_CORE_INTEGRATION_TESTING  # noqa
+from kitconcept.solr.testing import KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING  # noqa
 from plone import api
 
 try:
@@ -16,7 +16,7 @@ import unittest
 class TestSetup(unittest.TestCase):
     """Test that kitconcept.solr is properly installed."""
 
-    layer = KITCONCEPTSOLR_CORE_INTEGRATION_TESTING
+    layer = KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""
@@ -42,8 +42,7 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-
-    layer = KITCONCEPTSOLR_CORE_INTEGRATION_TESTING
+    layer = KITCONCEPT_SOLR_CORE_INTEGRATION_TESTING
 
     def setUp(self):
         self.portal = self.layer["portal"]
