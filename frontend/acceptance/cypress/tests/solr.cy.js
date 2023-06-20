@@ -1,7 +1,7 @@
 context('Search Acceptance Tests (Features)', () => {
   beforeEach(() => {
     // Docker compose setup requires host: solr-acceptance
-    cy.setRegistry('collective.solr.host', 'solr');
+    cy.setRegistry('collective.solr.host', 'solr-acceptance');
     cy.setRegistry('collective.solr.active', true);
     cy.reindexSolr();
   });
