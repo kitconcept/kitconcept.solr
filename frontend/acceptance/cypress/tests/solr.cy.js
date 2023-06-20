@@ -1,7 +1,7 @@
 context('Search Acceptance Tests (Features)', () => {
   beforeEach(() => {
     // Docker compose setup requires host: solr-acceptance
-    cy.setRegistry('collective.solr.host', 'solr-acceptance');
+    cy.setRegistry('collective.solr.host', 'solr');
     cy.setRegistry('collective.solr.active', true);
     cy.reindexSolr();
   });
@@ -27,15 +27,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless',
       contentTitle: 'Colorless',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -53,7 +53,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless'
     cy.get('#content-core').contains('Colorless');
   });
@@ -79,15 +79,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentId: 'colorless-green-ideas',
       contentTitle: 'Colorless Green Ideas',
       contentDescription: 'Sleep Furiously',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -105,7 +105,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
@@ -132,7 +132,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless'
     cy.get('#content-core').contains('Lorem ipsum');
   });
@@ -155,15 +155,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless-green-ideas',
       contentTitle: 'Colorless Green Ideas',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -181,7 +181,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
@@ -204,15 +204,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless-green-ideas',
       contentTitle: 'colorless green ideas',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -230,7 +230,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('colorless green ideas');
   });
@@ -256,15 +256,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentId: 'colorless',
       contentTitle: 'Colorless',
       contentText: 'Colorless green ideas sleep furiously',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -282,7 +282,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless'
     cy.get('#content-core').contains('Colorless');
     // and the search results should include 'Colorless green ideas sleep furiously'
@@ -309,15 +309,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless-green-ideas',
       contentTitle: 'Colorless Green Ideas',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -335,7 +335,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
@@ -358,15 +358,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless-green-ideas',
       contentTitle: 'Colorless Green Ideas',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -384,7 +384,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
@@ -410,15 +410,15 @@ context('Search Acceptance Tests (Features)', () => {
   //     contentId: 'colorless-green-ideas',
   //     contentTitle: 'Colorless Green Ideas',
   //     contentDescription: 'Sleep Furiously',
-  //     path: '/en',
+  //     path: '/',
   //   });
   //   // cy.setWorkflow({
-  //   //   path: '/en/colorless-green-ideas',
+  //   //   path: '//colorless-green-ideas',
   //   //   workflow_state: 'published',
   //   // });
   //   cy.request({
   //     method: 'POST',
-  //     url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+  //     url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
   //     headers: {
   //       Accept: 'application/json',
   //     },
@@ -436,7 +436,7 @@ context('Search Acceptance Tests (Features)', () => {
   //   cy.get('.search-input button').click();
 
   //   // THEN: the search returns '1' results
-  //   cy.get('.items_total').contains('1');
+  //   cy.get('.total-bar .results').contains('1');
   //   // and the search results should include 'Colorless Green Ideas'
   //   cy.get('#content-core').contains('Colorless Green Ideas');
   // });
@@ -460,15 +460,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'house',
       contentTitle: 'House',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/house/@workflow/publish`,
+      url: `http://localhost:55001/plone/house/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -486,7 +486,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'House'
     cy.get('#content-core').contains('House');
   });
@@ -509,15 +509,15 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless-green-ideas',
       contentTitle: 'Colorless Green Ideas',
-      path: '/en',
+      path: '/',
     });
     // cy.setWorkflow({
-    //   path: '/en/colorless-green-ideas',
+    //   path: '//colorless-green-ideas',
     //   workflow_state: 'published',
     // });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless-green-ideas/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless-green-ideas/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -535,7 +535,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     // and the search results should include 'Colorless Green Ideas'
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
@@ -545,11 +545,11 @@ context('Search Acceptance Tests (Features)', () => {
       contentType: 'Document',
       contentId: 'colorless',
       contentTitle: 'Colorless',
-      path: '/en',
+      path: '/',
     });
     cy.request({
       method: 'POST',
-      url: `http://localhost:55001/plone/en/colorless/@workflow/publish`,
+      url: `http://localhost:55001/plone/colorless/@workflow/publish`,
       headers: {
         Accept: 'application/json',
       },
@@ -585,14 +585,14 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('.searchinput').type('Colorless');
     cy.get('.search-input button').click();
 
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     cy.get('#content-core').contains('Colorless');
 
     cy.intercept('GET', '/plone/++api++/@solr*').as('solr');
     cy.get('.language-selector').contains('de').click();
     cy.wait('@solr');
 
-    cy.get('.items_total').contains('1');
+    cy.get('.total-bar .results').contains('1');
     cy.get('#content-core').contains('Colorless German');
   });
 });
