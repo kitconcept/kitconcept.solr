@@ -48,9 +48,12 @@ services:
     environment:
       ZSERVER_HOST: 0.0.0.0
       ZSERVER_PORT: 55001
-      ADDONS: 'plone.app.robotframework==2.0.0 plone.app.contenttypes plone.restapi kitconcept.volto kitconcept.solr@git+https://github.com/kitconcept/kitconcept.solr.git@main'
-      APPLY_PROFILES: plone.app.contenttypes:plone-content,plone.restapi:default,kitconcept.volto:default-homepage,kitconcept.solr:default
-      CONFIGURE_PACKAGES: plone.app.contenttypes,plone.restapi,kitconcept.volto,kitconcept.volto.cors,kitconcept.solr
+      # Use plone.volto rather than kitconcept.volto for the acceptance
+      # testing, which makes login in tests "more conventional". - otherwise
+      # it's no difference, both could make sense.
+      ADDONS: 'plone.app.robotframework==2.0.0 plone.app.contenttypes plone.restapi plone.volto kitconcept.solr@git+https://github.com/kitconcept/kitconcept.solr.git@main'
+      APPLY_PROFILES: plone.app.contenttypes:plone-content,plone.restapi:default,plone.volto:default-homepage,kitconcept.solr:default
+      CONFIGURE_PACKAGES: plone.app.contenttypes,plone.restapi,plone.volto,plone.volto.cors,kitconcept.solr
       SOLR_HOST: solr
       SOLR_PORT: 8983
       SOLR_BASE: /var/solr/data/plone
