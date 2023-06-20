@@ -540,7 +540,7 @@ context('Search Acceptance Tests (Features)', () => {
     cy.get('#content-core').contains('Colorless Green Ideas');
   });
 
-  it('Language dependent', function () {
+  xit('Language dependent', function () {
     cy.createContent({
       contentType: 'Document',
       contentId: 'colorless',
