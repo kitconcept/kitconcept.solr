@@ -52,11 +52,11 @@ services:
       # testing, which makes login in tests "more conventional". - otherwise
       # it's no difference, both could make sense.
       ADDONS: 'plone.app.robotframework==2.0.0 plone.app.contenttypes plone.restapi plone.volto kitconcept.solr@git+https://github.com/kitconcept/kitconcept.solr.git@main'
-      APPLY_PROFILES: plone.app.contenttypes:plone-content,plone.restapi:default,plone.volto:default-homepage,kitconcept.solr:default
-      CONFIGURE_PACKAGES: plone.app.contenttypes,plone.restapi,plone.volto,plone.volto.cors,kitconcept.solr
-      SOLR_HOST: solr
+      APPLY_PROFILES: plone.app.contenttypes:plone-content,plone.restapi:default,plone.volto:default-homepage,kitconcept.solr:default,collective.solr:default
+      CONFIGURE_PACKAGES: plone.app.contenttypes,plone.restapi,plone.volto,plone.volto.cors,kitconcept.solr,collective.solr
+      SOLR_HOST: solr-acceptance
       SOLR_PORT: 8983
-      SOLR_BASE: /var/solr/data/plone
+      SOLR_BASE: /solr/plone
       SOLR_CONTEXT_FOLDER: /var/solr-etc
     ports:
       - 55001:55001
