@@ -357,8 +357,6 @@
     <copyField
       source="contact_name" dest="default" />
     <copyField source="event_url" dest="default" />
-    <field
-      name="text" type="text" indexed="true" stored="true" />
 
     <!-- Autocomplete suggest fields -->
     <field name="suggest" type="text_suggest" indexed="true" stored="false" />
