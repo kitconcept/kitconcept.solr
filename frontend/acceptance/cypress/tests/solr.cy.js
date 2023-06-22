@@ -3,6 +3,7 @@ context('Search Acceptance Tests (Features)', () => {
     // Docker compose setup requires host: solr-acceptance
     cy.setRegistry('collective.solr.host', 'solr-acceptance');
     cy.setRegistry('collective.solr.active', true);
+    cy.setRegistry('collective.solr.use_tika', true);
     cy.reindexSolr();
   });
   afterEach(() => {
@@ -248,13 +249,14 @@ context('Search Acceptance Tests (Features)', () => {
   //    Then the search returns '1' results
   //     and the search results should include 'Colorless green ideas sleep furiously'
   //     and the search results should highlight 'green ideas'
-  it('Search Term Highlighting', function () {
+  it.only('Search Term Highlighting', function () {
     // Given a public document with the title 'Colorless'
     //   and the description 'Colorless green ideas sleep furiously'
     cy.createContent({
       contentType: 'Document',
       contentId: 'colorless',
       contentTitle: 'Colorless',
+      contentDescription: 'Colorless green ideas sleep furiously',
       contentText: 'Colorless green ideas sleep furiously',
       path: '/',
     });
