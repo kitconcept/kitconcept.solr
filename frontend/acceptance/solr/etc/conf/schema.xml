@@ -345,7 +345,6 @@
     <field name="text" type="text" indexed="true" stored="true" />
     <copyField source="text" dest="default" />
 
-
     <!-- custom content type: Event -->
     <field
       name="contact_email" type="text" indexed="true" stored="false" />
