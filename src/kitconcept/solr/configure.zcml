@@ -53,6 +53,7 @@
       />
 
   <include package=".services" />
+  <include package=".indexers" />
 
   <include package="collective.solr" />
 
