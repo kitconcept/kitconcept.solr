@@ -249,14 +249,13 @@ context('Search Acceptance Tests (Features)', () => {
   //    Then the search returns '1' results
   //     and the search results should include 'Colorless green ideas sleep furiously'
   //     and the search results should highlight 'green ideas'
-  it.only('Search Term Highlighting', function () {
+  it('Search Term Highlighting', function () {
     // Given a public document with the title 'Colorless'
     //   and the description 'Colorless green ideas sleep furiously'
     cy.createContent({
       contentType: 'Document',
       contentId: 'colorless',
       contentTitle: 'Colorless',
-      contentDescription: 'Colorless green ideas sleep furiously',
       contentText: 'Colorless green ideas sleep furiously',
       path: '/',
     });
