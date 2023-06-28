@@ -12,7 +12,9 @@
     "mime_type",
     "phone",
     "email",
-    "location"
+    "location",
+    "image_scales",
+    "image_field"
   ],
   "searchTabs": [
     {
