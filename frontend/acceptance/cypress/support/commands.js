@@ -1,5 +1,7 @@
 import '@plone/volto-testing/cypress/support/commands';
 
+const PLONE_API_URL = `http://localhost:55001/plone`;
+
 // --- AUTOLOGIN -------------------------------------------------------------
 Cypress.Commands.add('autologin', (usr, pass) => {
   let api_url, user, password;

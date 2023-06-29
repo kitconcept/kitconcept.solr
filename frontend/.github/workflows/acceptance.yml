@@ -26,6 +26,8 @@ jobs:
         env:
           BABEL_ENV: production
           CYPRESS_RETRIES: 2
+          CURRENT_DIR: '${{ github.workspace }}'
+          SOLR_CONTEXT_FOLDER: '${{ github.workspace }}/acceptance/solr'
         with:
           parallel: false
           browser: chrome
@@ -33,8 +35,13 @@ jobs:
           spec: cypress/tests/*.js
           install: false
           start: |
-            docker compose -f ci.yml --profile prod up
-          wait-on: 'npx wait-on --httpTimeout 20000 http-get://localhost:55001/plone http://localhost:3000'
+            docker compose -f docker-compose.yml --profile dev up
+          wait-on:
+            'npx wait-on --httpTimeout 20000 http-get://localhost:55001/plone http://localhost:3000 http://localhost:8983'
+
+            # XXX XXX This should be working with prod!
+            # docker compose -f docker-compose.yml --profile prod up
+            # XXX XXX This currently works with dev.
 
       # Upload Cypress screenshots
       - uses: actions/upload-artifact@v3
