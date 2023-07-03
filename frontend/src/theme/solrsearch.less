@@ -6,6 +6,9 @@
   --solr-search-facet-tab-inactive-color,
   #f0f0f0
 );
+@solr-color: var(--solr-footer-color, #000);
+@solr-highlight-weight: var(--solr-highlight-weight, 600);
+@solr-footer-color: var(--solr-footer-color, #808080);
 
 .section-search,
 .section-\@\@search {
@@ -53,6 +56,7 @@
       .sort-select {
         display: inline-block;
         width: 14em;
+
         .react-select__control {
           border-bottom: 0;
         }
@@ -74,12 +78,70 @@
   }
 
   #content-core {
-    .tileItem {
-      margin-bottom: 1.5em;
+    margin-top: 1.5em;
 
-      h2 {
-        margin-bottom: 0.5rem;
+    article.tileItem {
+      // margin-bottom: 30px;
+      margin-bottom: 2em;
+
+      p.url {
+        // margin: 0 0 0.25rem 0;
+        margin: 0;
+        color: grey;
+        font-size: 0.9rem;
       }
+
+      h2.tileHeadline {
+        padding: 0;
+        // margin: 0.25rem 0 0.5rem 0;
+        margin: 0;
+
+        &,
+        & a {
+          color: @solr-color;
+          font-style: normal;
+          font-weight: @solr-highlight-weight;
+        }
+
+        :hover {
+          text-decoration: underline;
+        }
+      }
+
+      img.previewImage {
+        width: 250px;
+        margin-top: 0.5em;
+        margin-right: 0.5em;
+        aspect-ratio: 2;
+        float: right;
+        object-fit: cover;
+      }
+
+      .tileBody {
+        margin: 0.5rem 0 0.5rem 0;
+        color: @solr-color;
+
+        em {
+          font-style: normal;
+          font-weight: bold;
+        }
+      }
+
+      .tileFooter {
+        color: @solr-footer-color;
+
+        * {
+          vertical-align: middle;
+        }
+
+        .itemIcon {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .visualClear {
+      clear: both;
     }
   }
 

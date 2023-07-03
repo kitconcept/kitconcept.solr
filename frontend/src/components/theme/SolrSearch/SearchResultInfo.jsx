@@ -18,9 +18,9 @@ export const SearchResultInfo = ({ searchableText, total }) => (
     <span className="results">
       {searchableText ? (
         <FormattedMessage {...messages.totalResultsFor} values={{ total }} />
-      ) : (
+      ) : messages.totalResults > 0 ? (
         <FormattedMessage {...messages.totalResults} values={{ total }} />
-      )}
+      ) : null}
     </span>
     <h2>{searchableText || '\u00A0'}</h2>
   </div>

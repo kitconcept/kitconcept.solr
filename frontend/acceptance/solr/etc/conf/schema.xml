@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema name="plone" version="1.5">
+
+  <!-- UID: unique id for Solr to identify the item. Stores the uuid field from Plone. -->
+  <uniqueKey>UID</uniqueKey>
+
+  <types>
+    <!-- ================================================================== -->
+    <!-- === DEFAULT FIELD TYPES (copied from default managed-schema) ===== -->
+    <!-- ================================================================== -->
+    <fieldType name="long" class="solr.TrieLongField" positionIncrementGap="0" precisionStep="0" />
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" />
+    <fieldType name="date" class="solr.TrieDateField" positionIncrementGap="0" precisionStep="0" />
+    <fieldType name="tfloat" class="solr.TrieFloatField" positionIncrementGap="0" precisionStep="8" />
+    <fieldType name="tfloats" class="solr.TrieFloatField" positionIncrementGap="0"
+      multiValued="true" precisionStep="8" />
+    <fieldType name="tint" class="solr.TrieIntField" positionIncrementGap="0" precisionStep="8" />
+    <fieldType name="tints" class="solr.TrieIntField" positionIncrementGap="0" multiValued="true"
+      precisionStep="8" />
+    <fieldType name="tlong" class="solr.TrieLongField" positionIncrementGap="0" precisionStep="8" />
+    <fieldType name="tlongs" class="solr.TrieLongField" positionIncrementGap="0" multiValued="true"
+      precisionStep="8" />
+    <fieldType name="point" class="solr.PointType" subFieldSuffix="_d" dimension="2" />
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="strings" class="solr.StrField" sortMissingLast="true" multiValued="true" />
+    <fieldType name="tdate" class="solr.TrieDateField" positionIncrementGap="0" precisionStep="6" />
+    <fieldType name="tdates" class="solr.TrieDateField" positionIncrementGap="0" multiValued="true"
+      precisionStep="6" />
+    <fieldType name="tdouble" class="solr.TrieDoubleField" positionIncrementGap="0"
+      precisionStep="8" />
+    <fieldType name="tdoubles" class="solr.TrieDoubleField" positionIncrementGap="0"
+      multiValued="true" precisionStep="8" />
+    <fieldType name="pdouble" class="solr.DoublePointField" docValues="true" />
+    <fieldType name="pdate" class="solr.DatePointField" docValues="true" />
+    <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true" />
+
+    <!-- A specialized field for geospatial search. If indexed, this fieldType must not be
+    multivalued. -->
+    <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true" />
+
+    <!-- ================================================================== -->
+    <!-- === TEXT GENERAL (copied from default managed-schema) ============ -->
+    <!-- ================================================================== -->
+    <!-- A general text field that has reasonable, generic
+         cross-language defaults: it
+    tokenizes with StandardTokenizer,
+         removes stop words from case-insensitive
+    "stopwords.txt"
+         (empty by default), and down cases.  At query time only, it
+         also
+    applies synonyms.
+    -->
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100"
+      multiValued="true">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <!-- in this example, we will only use synonyms at query time
+        <filter
+        class="solr.SynonymGraphFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true"
+        expand="false"/>
+        <filter class="solr.FlattenGraphFilterFactory"/>
+        -->
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+          expand="true" />
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- ================================================================== -->
+    <!-- === TEXT (copied from default managed-schema) ==================== -->
+    <!-- ================================================================== -->
+    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt" />
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+          expand="false" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.WordDelimiterGraphFilterFactory" splitOnCaseChange="1"
+          splitOnNumerics="1" stemEnglishPossessive="1" generateWordParts="1"
+          generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"
+          preserveOriginal="0" />
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.ReversedWildcardFilterFactory" withOriginal="true" maxPosAsterisk="2"
+          maxPosQuestion="1" minTrailing="2" maxFractionAsterisk="0" />
+        <filter class="solr.FlattenGraphFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt" />
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+          expand="true" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.WordDelimiterGraphFilterFactory" splitOnCaseChange="1"
+          splitOnNumerics="1" stemEnglishPossessive="1" generateWordParts="1"
+          generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"
+          preserveOriginal="0" />
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- ================================================================== -->
+    <!-- === PREFIX SEARCH ================================================ -->
+    <!-- ================================================================== -->
+    <!-- text_prefix field type:
+        stores all possible prefixes of a given term
+        example:
+    term "bananas" stores: ban, bana, banan, banana, bananas
+        source:
+    http://blog.florian-hopf.de/2014/03/prefix-and-suffix-matches-in-solr.html
+      -->
+    <fieldType name="text_prefix" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <!-- lower case: Bananas -> bananas -->
+        <tokenizer class="solr.LowerCaseTokenizerFactory" />
+        <!-- create ngrams: bananas -> ban/bana/banan/banana/bananas -->
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="15" />
+      </analyzer>
+      <analyzer type="query">
+        <!-- lower case: Bananas -> bananas -->
+        <tokenizer class="solr.LowerCaseTokenizerFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- ================================================================== -->
+    <!-- === SUFFIX SEARCH ================================================ -->
+    <!-- ================================================================== -->
+    <!-- text_suffix field type:
+        stores all possible suffixes of a given term
+        example:
+    term "bananas" stores: ananas, nanas, anas, nas, as
+        source:
+    http://blog.florian-hopf.de/2014/03/prefix-and-suffix-matches-in-solr.html
+      -->
+    <fieldType name="text_suffix" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <!-- lower case: Bananas -> bananas -->
+        <tokenizer class="solr.LowerCaseTokenizerFactory" />
+        <!-- reverse: bananas -> sananab -->
+        <filter class="solr.ReverseStringFilterFactory" />
+        <!-- create ngrams: sananab -> sa/san/sana/sanan/sanana/sananab -->
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="15" />
+        <!-- reverse the reverse ngram: as/nas/anas/nanas/bananas -->
+        <filter class="solr.ReverseStringFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <!-- lower case: Ananas -> ananas -->
+        <tokenizer class="solr.LowerCaseTokenizerFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- Phone number search -->
+    <fieldType name="phonenumber" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt" />
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+          expand="false" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.WordDelimiterGraphFilterFactory" splitOnCaseChange="1"
+          splitOnNumerics="1" stemEnglishPossessive="1" generateWordParts="1"
+          generateNumberParts="0" catenateWords="1" catenateNumbers="0" catenateAll="0"
+          preserveOriginal="0" />
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.ReversedWildcardFilterFactory" withOriginal="true" maxPosAsterisk="40"
+          maxPosQuestion="40" minTrailing="1" maxFractionAsterisk="0" />
+        <filter class="solr.FlattenGraphFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt" />
+        <tokenizer class="solr.StandardTokenizerFactory" />
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true"
+          expand="true" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.WordDelimiterGraphFilterFactory" splitOnCaseChange="1"
+          splitOnNumerics="1" stemEnglishPossessive="1" generateWordParts="1"
+          generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0"
+          preserveOriginal="0" />
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- lowercases the entire field value, keeping it as a single token.  -->
+    <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- auto suggest -->
+    <fieldType name="text_suggest" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.UAX29URLEmailTokenizerFactory" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.ASCIIFoldingFilterFactory" />
+        <filter class="solr.EnglishPossessiveFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text_suggest_ngram" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.UAX29URLEmailTokenizerFactory" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.ASCIIFoldingFilterFactory" />
+        <filter class="solr.EnglishPossessiveFilterFactory" />
+        <filter class="solr.EdgeNGramFilterFactory" maxGramSize="10" minGramSize="2" />
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.UAX29URLEmailTokenizerFactory" />
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.ASCIIFoldingFilterFactory" />
+        <filter class="solr.EnglishPossessiveFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+  </types>
+
+
+  <!-- Fields -->
+
+  <fields>
+    <field name="id" type="string" indexed="true" stored="true" required="false" />
+    <field
+      name="_version_" type="long" indexed="true" stored="true" />
+
+    <field name="default" type="text"
+      indexed="true" stored="false" multiValued="true" />
+
+    <!-- Plone Core Fields -->
+    <field name="allowedRolesAndUsers"
+      type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="created"
+      type="date" indexed="true" stored="true" />
+    <field name="Creator" type="string" indexed="true"
+      stored="true" />
+    <field name="Date" type="date" indexed="true" stored="true" />
+    <field
+      name="Description" type="text" indexed="true" stored="true" />
+    <field name="effective"
+      type="date" indexed="true" stored="true" />
+    <field name="start" type="date" indexed="true"
+      stored="true" />
+    <field name="end" type="date" indexed="true" stored="true" />
+    <field
+      name="exclude_from_nav" type="boolean" indexed="false" stored="true" />
+    <field name="nav_title"
+      type="string" indexed="true" stored="true" />
+    <field name="expires" type="date" indexed="true"
+      stored="true" />
+    <field name="getIcon" type="string" indexed="false" stored="true" />
+    <field
+      name="getId" type="string" indexed="false" stored="true" />
+    <field name="getRemoteUrl"
+      type="string" indexed="false" stored="true" />
+    <field name="is_folderish" type="boolean"
+      indexed="true" stored="true" />
+    <field name="Language" type="string" indexed="true"
+      stored="true" />
+    <field name="modified" type="date" indexed="true" stored="true" />
+    <field
+      name="object_provides" type="string" indexed="true" stored="true" multiValued="true" />
+    <field
+      name="path_depth" type="tint" indexed="true" stored="true" />
+    <field name="path_parents"
+      type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="path_string"
+      type="string" indexed="true" stored="true" />
+    <field name="portal_type" type="string"
+      indexed="true" stored="true" />
+    <field name="review_state" type="string" indexed="true"
+      stored="true" />
+    <field name="searchwords" type="string" indexed="true" stored="true"
+      multiValued="true" />
+    <field name="showinsearch" type="boolean" indexed="true" stored="true" />
+    <field
+      name="sortable_title" type="string" indexed="true" stored="true" />
+    <field name="Subject"
+      type="string" indexed="true" stored="true" multiValued="true" />
+    <field name="Title"
+      type="text" indexed="true" stored="true" />
+    <field name="Type" type="string" indexed="true"
+      stored="true" />
+    <field name="UID" type="string" indexed="true" stored="true" required="false" />
+    <field
+      name="listCreators" type="string" indexed="true" stored="true" multiValued="true" />
+
+    <!-- Event -->
+    <field
+      name="location" type="string" indexed="true" stored="true" />
+
+    <!-- Main body of document extracted by SolrCell.
+    NOTE: This field is not indexed by
+    default, since it is also copied to "text"
+    using copyField below. This is to save space. Use
+    this field for returning and
+    highlighting document content. Use the "text" field to search
+    the content. -->
+    <field name="content"
+      type="text_general" indexed="false" stored="true" multiValued="true" />
+    <copyField
+      source="content" dest="default" />
+
+    <!-- The body_text index contains the entire body text of a Plone content object. -->
+    <field name="body_text" type="text" indexed="true"
+      stored="true" multiValued="false" />
+    <copyField source="body_text" dest="content" />
+
+    <!-- SearchableText needs to be indexed=true to being searchable -->
+    <!-- SearchableText needs to be stored=true for highlighting to work -->
+    <!-- SearchableText needs to be multiValued=true to being able to hold multiple values -->
+    <field
+      name="SearchableText" type="text" indexed="true" stored="true" multiValued="true" />
+
+    <!--
+      The geolocation field and the additionalFieldConfig is purely optional and
+      just
+    included in this configuration, to be able to run tests for the
+      geospatial solr features
+    -->
+    <field
+      name="geolocation" type="location" indexed="true" stored="true" />
+
+    <field name="text_prefix"
+      type="text_prefix" indexed="true" stored="false" />
+    <copyField source="SearchableText"
+      dest="text_prefix" />
+
+    <field name="text_suffix" type="text_suffix" indexed="true"
+      stored="false" />
+    <copyField source="SearchableText" dest="text_suffix" />
+
+    <!-- XXX: 'text' is a horrible name -->
+    <field name="text" type="text" indexed="true" stored="true" />
+    <copyField source="text" dest="default" />
+
+    <!-- custom content type: Event -->
+    <field
+      name="contact_email" type="text" indexed="true" stored="false" />
+    <field name="contact_name"
+      type="text" indexed="true" stored="false" />
+    <field name="event_url" type="text" indexed="true"
+      stored="false" />
+    <copyField source="contact_email" dest="default" />
+    <copyField
+      source="contact_name" dest="default" />
+    <copyField source="event_url" dest="default" />
+
+    <!-- Autocomplete suggest fields -->
+    <field name="suggest" type="text_suggest" indexed="true" stored="false" />
+    <field name="suggest_ngram" type="text_suggest_ngram" indexed="true" stored="false" />
+    <field name="suggest_searchwords_ngram" type="text_suggest_ngram" indexed="true" stored="false"
+      multiValued="true" />
+    <copyField source="Title" dest="suggest" />
+    <copyField source="Title" dest="suggest_ngram" />
+    <copyField source="searchwords" dest="suggest_searchwords_ngram" />
+
+    <!-- Preview image -->
+    <field name="hasPreviewImage" type="boolean" indexed="true" stored="true" />
+    <field name="image_field" type="text" indexed="true" stored="true" />
+    <field name="credit" type="text" indexed="false" stored="true" />
+    <copyField source="hasPreviewImage" dest="default" />
+    <copyField source="image_field" dest="default" />
+    <field name="image_scales" type="string" indexed="false" stored="true" />
+    <field name="getObjSize" type="string" indexed="false" stored="true" />
+    <field name="mime_type" type="string" indexed="false" stored="true" />
+    <field name="allow_image_download" type="boolean" indexed="false" stored="true" />
+
+  </fields>
+
+</schema>

@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@plone/volto/components';
 import ResultItemDate from './helpers/ResultItemDate';
 import locationSVG from '../icons/location.svg';
-import calendarSVG from '../icons/calendar.svg';
+import calendarSVG from '@plone/volto/icons/calendar.svg';
 
 const EventResultItem = ({ item }) => (
   <article className="tileItem">
     {/* <span className="contentTypeLabel">
       <FormattedMessage id={mapContentTypes(item['@type'])} />
     </span> */}
+    <p className="url">{item['@id']}</p>
     <h2 className="tileHeadline">
       <Link to={item['@id']} className="summary url" title={item['@type']}>
         {item.title}
       </Link>
     </h2>
-    <p className="url">{item['@id']}</p>
     {item?.highlighting && item.highlighting.length > 0 ? (
       <div className="tileBody">
         <span
@@ -37,17 +37,21 @@ const EventResultItem = ({ item }) => (
         </span>
       </div>
     )}
-    <div className="itemDetailsBar">
+    <div className="tileFooter">
       <div>
-        <Icon className="itemIcon" size="18px" name={calendarSVG} />
+        <Icon className="itemIcon" size="20px" name={calendarSVG} />
         <ResultItemDate
           date={item?.extras?.start ? item.extras.start : item?.effective}
           showTime={true}
+          hasExcerpt={item?.extras?.end}
         />
+        {item?.extras?.end ? (
+          <ResultItemDate date={item?.extras?.end} showTime={true} />
+        ) : null}
       </div>
       {item.extras?.location ? (
         <div>
-          <Icon className="itemIcon" size="18px" name={locationSVG} />
+          <Icon className="itemIcon" size="20px" name={locationSVG} />
           {item.extras.location}
         </div>
       ) : null}

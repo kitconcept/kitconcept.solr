@@ -1,8 +1,10 @@
 import {
   solrSearchContent,
   resetSolrSearchContent,
+  copyContentForSolr,
   SOLR_SEARCH_CONTENT,
   RESET_SOLR_SEARCH_CONTENT,
+  COPY_CONTENT_FOR_SOLR,
 } from './solrsearch';
 
 describe('SOLR search action', () => {
@@ -213,6 +215,24 @@ describe('SOLR search action', () => {
       const action = resetSolrSearchContent('my-subrequest');
 
       expect(action.type).toEqual(RESET_SOLR_SEARCH_CONTENT);
+      expect(action.subrequest).toEqual('my-subrequest');
+    });
+  });
+
+  describe('copyContentForSolr', () => {
+    it('can be called', () => {
+      const action = copyContentForSolr('{CONTENT}', 'QUERY');
+      expect(action.content).toEqual('{CONTENT}');
+      expect(action.query).toEqual('QUERY');
+      expect(action.type).toEqual(COPY_CONTENT_FOR_SOLR);
+      expect(action.subrequest).toBe(null);
+    });
+
+    it('can be called with a subrequest', () => {
+      const action = copyContentForSolr('{CONTENT}', 'QUERY', 'my-subrequest');
+      expect(action.type).toEqual(COPY_CONTENT_FOR_SOLR);
+      expect(action.content).toEqual('{CONTENT}');
+      expect(action.query).toEqual('QUERY');
       expect(action.subrequest).toEqual('my-subrequest');
     });
   });

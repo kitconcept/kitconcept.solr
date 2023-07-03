@@ -10,10 +10,7 @@ SHELL:=bash
 MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules
 
-# Project settings
-
-DIR=$(shell basename $$(pwd))
-ADDON ?= "volto-solr"
+CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 # Recipe snippets for reuse
 
@@ -24,35 +21,70 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
+PLONE_VERSION=6
+VOLTO_VERSION=16.10.0
 
-# Top-level targets
+ADDON_NAME='@kitconcept/volto-solr'
+ADDON_PATH='volto-solr'
+DEV_COMPOSE=dockerfiles/docker-compose.yml
+ACCEPTANCE_COMPOSE=acceptance/docker-compose.yml
+SOLR_CONTEXT_FOLDER=${CURRENT_DIR}/acceptance/solr
+CMD=CURRENT_DIR=${CURRENT_DIR} ADDON_NAME=${ADDON_NAME} ADDON_PATH=${ADDON_PATH} VOLTO_VERSION=${VOLTO_VERSION} PLONE_VERSION=${PLONE_VERSION} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose
+# CMD=CURRENT_DIR=${CURRENT_DIR} ADDON_NAME=${ADDON_NAME} ADDON_PATH=${ADDON_PATH} VOLTO_VERSION=${VOLTO_VERSION} PLONE_VERSION=${PLONE_VERSION} docker compose
+DOCKER_COMPOSE=${CMD} -p ${ADDON_PATH} -f ${DEV_COMPOSE}
+ACCEPTANCE=${CMD} -p ${ADDON_PATH}-acceptance -f ${ACCEPTANCE_COMPOSE}
 
-.PHONY: project
-project:
-	npm install -g yo
-	npm install -g @plone/generator-volto
-	npm install -g mrs-developer
-	yo @plone/volto project --addon ${ADDON} --workspace "src/addons/${DIR}" --no-interactive
-	ln -sf $$(pwd) project/src/addons/
-	cp .project.eslintrc.js .eslintrc.js
-	cd project && yarn
-	@echo "-------------------"
-	@echo "$(GREEN)Volto project is ready!$(RESET)"
-	@echo "$(RED)Now run: cd project && yarn start$(RESET)"
+# Dev Helpers
+.PHONY: i18n
+i18n: ## Sync i18n
+	${DOCKER_COMPOSE} run addon-dev i18n
 
-.PHONY: all
-all: project
+.PHONY: format
+format: ## Format codebase
+	${DOCKER_COMPOSE} run addon-dev lint:fix
+	${DOCKER_COMPOSE} run addon-dev prettier:fix
+	${DOCKER_COMPOSE} run addon-dev stylelint:fix
 
-.PHONY: start-test-backend
-start-test-backend: ## Start Test Plone Backend
-	@echo "$(GREEN)==> Start Test Plone Backend$(RESET)"
-	docker run -i --rm -e ZSERVER_HOST=0.0.0.0 -e ZSERVER_PORT=55001 -p 55001:55001 -e SITE=plone -e APPLY_PROFILES=plone.app.contenttypes:plone-content,plone.restapi:default,plone.volto:default-homepage -e CONFIGURE_PACKAGES=plone.app.contenttypes,plone.restapi,plone.volto,plone.volto.cors -e ADDONS='plone.app.robotframework plone.app.contenttypes plone.restapi plone.volto' plone ./bin/robot-server plone.app.robotframework.testing.PLONE_ROBOT_TESTING
+.PHONY: lint
+lint: ## Lint Codebase
+	${DOCKER_COMPOSE} run addon-dev lint
+	${DOCKER_COMPOSE} run addon-dev prettier
+	${DOCKER_COMPOSE} run addon-dev stylelint
 
-.PHONY: start-backend-docker
-start-backend-docker:		## Starts a Docker-based backend
-	@echo "$(GREEN)==> Start Docker-based Plone Backend$(RESET)"
-	docker run -it --rm --name=plone -p 8080:8080 -e SITE=Plone -e ADDONS="plone.volto" -e ZCML="plone.volto.cors" plone
+.PHONY: test
+test: ## Run unit tests
+	${DOCKER_COMPOSE} run addon-dev test --watchAll
 
-.PHONY: help
-help:		## Show this help.
-	@echo -e "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' | column -c2 -t -s :)"
+.PHONY: test-ci
+test-ci: ## Run unit tests in CI
+	${DOCKER_COMPOSE} run -e CI=1 addon-dev test
+
+## Acceptance
+.PHONY: install-acceptance
+install-acceptance: ## Install Cypress, build containers
+	(cd acceptance && yarn)
+	${ACCEPTANCE} --profile dev --profile prod build
+
+.PHONY: start-test-acceptance-server
+start-test-acceptance-server: ## Start acceptance server
+	${ACCEPTANCE} --profile dev up -d
+
+.PHONY: start-test-acceptance-server-prod
+start-test-acceptance-server-prod: ## Start acceptance server
+	${ACCEPTANCE} --profile prod up -d
+
+.PHONY: test-acceptance
+test-acceptance: ## Start Cypress
+	(cd acceptance && ./node_modules/.bin/cypress open)
+
+.PHONY: test-acceptance-headless
+test-acceptance-headless: ## Run cypress tests in CI
+	(cd acceptance && ./node_modules/.bin/cypress run)
+
+.PHONY: stop-test-acceptance-server
+stop-test-acceptance-server: ## Stop acceptance server
+	${ACCEPTANCE} down
+
+.PHONY: status-test-acceptance-server
+status-test-acceptance-server: ## Status of Acceptance Server
+	${ACCEPTANCE} ps

@@ -12,6 +12,7 @@ import config from '@plone/volto/registry';
 
 export const SOLR_SEARCH_CONTENT = 'SOLR_SEARCH_CONTENT';
 export const RESET_SOLR_SEARCH_CONTENT = 'RESET_SOLR_SEARCH_CONTENT';
+export const COPY_CONTENT_FOR_SOLR = 'COPY_CONTENT_FOR_SOLR';
 
 /**
  * Search content function.
@@ -28,9 +29,9 @@ export function solrSearchContent(url, options, subrequest = null) {
 
   const arrayOptions = pickBy(options, (item) => isArray(item));
 
-  // XXX Note: The `portal_type` and `review_state` terms are
+  // XXX Note: The `review_state` term is
   // currently ignored by the `@@solr` backend service. However
-  // their implementation on the front-end is ready.
+  // its implementation on the front-end is ready.
 
   const pathPrefix =
     (options.local || '').toLowerCase() === 'true' && options.path_prefix;
@@ -129,6 +130,29 @@ export function solrSearchContent(url, options, subrequest = null) {
 export function resetSolrSearchContent(subrequest = null) {
   return {
     type: RESET_SOLR_SEARCH_CONTENT,
+    subrequest,
+  };
+}
+
+/**
+ * Copy content for Solr.
+ *
+ * This copies the history (optionally) and the query string that can
+ * be used switching the languages in the search page in a way that
+ * both the localization and the translations work, even after the actual
+ * content gets resetted.
+ *
+ * @function copyContentForSolr
+ * @param {Object} content The original content as in `state.content.data`.
+ * @param {string} query The query string of the search.
+ * @param {string} subrequest Key of the subrequest.
+ * @returns {Object} Search content action.
+ */
+export function copyContentForSolr(content, query, subrequest = null) {
+  return {
+    type: COPY_CONTENT_FOR_SOLR,
+    content,
+    query,
     subrequest,
   };
 }

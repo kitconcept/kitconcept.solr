@@ -1,14 +1,26 @@
 import React from 'react';
-import { format, parse, deLocale, enLocale } from 'date-fns';
-import { useIntl } from 'react-intl';
+import config from '@plone/volto/registry';
+import { defineMessages, FormattedMessage } from 'react-intl';
+
+const messages = defineMessages({
+  notPublishedDate: {
+    id: 'not published yet',
+    defaultMessage: 'not published yet',
+  },
+});
 
 // Add one day to the earliest date to make sure that differences
 // because of timezones are still under the threshold
-const thresholdDate = new Date(null);
+export const thresholdDate = new Date(null);
 thresholdDate.setDate(thresholdDate.getDate() + 1);
 
-const ResultItemDate = ({ date, hasExcerpt, showTime }) => {
-  const intl = useIntl();
+const ResultItemDate = ({
+  date,
+  hasExcerpt,
+  showTime,
+  showIfNotPublished = false,
+}) => {
+  const SolrFormattedDate = config.widgets.SolrFormattedDate;
   // Do not display dates of unix datestamp zero. (default)
   // Also tolerate a one day margin, because the earliest date in UTC
   // might come with a bit of difference because of timezones.
@@ -17,14 +29,12 @@ const ResultItemDate = ({ date, hasExcerpt, showTime }) => {
   // but in general we don't care as we only consider a granularity of days.
   return new Date(date) > thresholdDate ? (
     <span className="date">
-      {intl.locale === 'de'
-        ? format(parse(date), showTime ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY', {
-            locale: deLocale,
-          }) + (showTime ? ' Uhr' : '')
-        : format(parse(date), showTime ? 'DD/MM/YYYY HH:mm' : 'DD/MM/YYYY', {
-            locale: enLocale,
-          })}
+      <SolrFormattedDate date={date} showTime={showTime} />
       {hasExcerpt ? ' — ' : ' '}
+    </span>
+  ) : showIfNotPublished ? (
+    <span className="date not-published-date">
+      <FormattedMessage {...messages.notPublishedDate} />
     </span>
   ) : null;
 };

@@ -2,14 +2,14 @@ const { DefinePlugin } = require('webpack');
 const path = require('path');
 const fs = require('fs');
 
-const getSolrFacets = () => {
+const getSolrConfig = () => {
   const folder = process.env.SOLR_CONTEXT_FOLDER;
 
   if (!folder) {
     return undefined;
   }
 
-  const jsonPath = path.resolve(folder, 'etc', 'solr-facets.json');
+  const jsonPath = path.resolve(folder, 'etc', 'solr-config.json');
 
   let jsonString;
   try {
@@ -30,7 +30,7 @@ const plugins = (defaultPlugins) => {
 const modify = (config, { target, dev }, webpack) => {
   config.plugins.push(
     new DefinePlugin({
-      'process.env.SOLR_FACETS': getSolrFacets(),
+      'process.env.SOLR_CONFIG': getSolrConfig(),
     }),
   );
   return config;

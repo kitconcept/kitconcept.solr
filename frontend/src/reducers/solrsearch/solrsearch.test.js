@@ -2,7 +2,8 @@ import search from './solrsearch';
 import {
   RESET_SOLR_SEARCH_CONTENT,
   SOLR_SEARCH_CONTENT,
-} from '@kitconcept/volto-solr/actions/solrsearch/solrsearch';
+  COPY_CONTENT_FOR_SOLR,
+} from '../../actions/solrsearch/solrsearch';
 
 describe('SOLR search reducer', () => {
   it('should return the initial state', () => {
@@ -268,6 +269,199 @@ describe('SOLR search reducer', () => {
       ),
     ).toEqual({
       subrequests: {},
+    });
+  });
+
+  describe('should handle COPY_CONTENT_FOR_SOLR', () => {
+    describe('normal', () => {
+      it('no subrequest', () => {
+        expect(
+          search(undefined, {
+            type: COPY_CONTENT_FOR_SOLR,
+            content: {
+              '@id': '@id-en',
+              language: { token: 'en' },
+              '@components': {
+                translations: {
+                  items: [
+                    { '@id': '@id-de', language: 'de' },
+                    { '@id': '@id-ca', language: 'ca' },
+                  ],
+                  root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+                },
+              },
+            },
+            query: '?foo=bar&bar=baz',
+          }),
+        ).toEqual({
+          error: null,
+          items: [],
+          groupCounts: [],
+          total: 0,
+          loaded: false,
+          loading: false,
+          batching: {},
+          subrequests: {},
+          query: '?foo=bar&bar=baz',
+          translations: {
+            items: [
+              { '@id': '@id-de', language: 'de' },
+              { '@id': '@id-ca', language: 'ca' },
+              { '@id': '@id-en', language: 'en' },
+            ],
+            root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+          },
+        });
+      });
+
+      it('with subrequest', () => {
+        expect(
+          search(undefined, {
+            type: COPY_CONTENT_FOR_SOLR,
+            content: {
+              '@id': '@id-en',
+              language: { token: 'en' },
+              '@components': {
+                translations: {
+                  items: [
+                    { '@id': '@id-de', language: 'de' },
+                    { '@id': '@id-ca', language: 'ca' },
+                  ],
+                  root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+                },
+              },
+            },
+            query: '?foo=bar&bar=baz',
+            subrequest: 'my-subrequest',
+          }),
+        ).toEqual({
+          error: null,
+          items: [],
+          groupCounts: [],
+          total: 0,
+          loaded: false,
+          loading: false,
+          batching: {},
+          subrequests: {
+            'my-subrequest': {
+              query: '?foo=bar&bar=baz',
+              translations: {
+                items: [
+                  { '@id': '@id-de', language: 'de' },
+                  { '@id': '@id-ca', language: 'ca' },
+                  { '@id': '@id-en', language: 'en' },
+                ],
+                root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+              },
+            },
+          },
+        });
+      });
+    });
+
+    describe('preserves translation if content is not specified', () => {
+      it('normal', () => {
+        expect(
+          search(
+            {
+              error: null,
+              items: [],
+              groupCounts: [],
+              total: 0,
+              loaded: false,
+              loading: false,
+              batching: {},
+              subrequests: {},
+              translations: {
+                items: [
+                  { '@id': '@id-de', language: 'de' },
+                  { '@id': '@id-ca', language: 'ca' },
+                  { '@id': '@id-en', language: 'en' },
+                ],
+                root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+              },
+            },
+            {
+              type: COPY_CONTENT_FOR_SOLR,
+              query: '?foo=bar&bar=baz',
+            },
+          ),
+        ).toEqual({
+          error: null,
+          items: [],
+          groupCounts: [],
+          total: 0,
+          loaded: false,
+          loading: false,
+          batching: {},
+          subrequests: {},
+          query: '?foo=bar&bar=baz',
+          translations: {
+            items: [
+              { '@id': '@id-de', language: 'de' },
+              { '@id': '@id-ca', language: 'ca' },
+              { '@id': '@id-en', language: 'en' },
+            ],
+            root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+          },
+        });
+      });
+
+      it('with subrequest', () => {
+        expect(
+          search(
+            {
+              error: null,
+              items: [],
+              groupCounts: [],
+              total: 0,
+              loaded: false,
+              loading: false,
+              batching: {},
+              subrequests: {
+                'other-subrequest': '{OTHER-SUB}',
+                'my-subrequest': {
+                  translations: {
+                    items: [
+                      { '@id': '@id-de', language: 'de' },
+                      { '@id': '@id-ca', language: 'ca' },
+                      { '@id': '@id-en', language: 'en' },
+                    ],
+                    root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+                  },
+                },
+              },
+            },
+            {
+              type: COPY_CONTENT_FOR_SOLR,
+              query: '?foo=bar&bar=baz',
+              subrequest: 'my-subrequest',
+            },
+          ),
+        ).toEqual({
+          error: null,
+          items: [],
+          groupCounts: [],
+          total: 0,
+          loaded: false,
+          loading: false,
+          batching: {},
+          subrequests: {
+            'other-subrequest': '{OTHER-SUB}',
+            'my-subrequest': {
+              query: '?foo=bar&bar=baz',
+              translations: {
+                items: [
+                  { '@id': '@id-de', language: 'de' },
+                  { '@id': '@id-ca', language: 'ca' },
+                  { '@id': '@id-en', language: 'en' },
+                ],
+                root: { en: '@root-en', de: '@root-de', ca: '@root-ca' },
+              },
+            },
+          },
+        });
+      });
     });
   });
 });
