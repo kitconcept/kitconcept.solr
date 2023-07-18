@@ -1,48 +1,39 @@
-from pathlib import Path
-
-import json
-import os
-import os.path
-
-SOLR_CONTEXT_FOLDER = os.environ.get("SOLR_CONTEXT_FOLDER")
-if not SOLR_CONTEXT_FOLDER:
-    # Use the default from the current package
-    current = Path(__file__).parent.resolve()
-    SOLR_CONTEXT_FOLDER = os.path.join(current, "..", "..", "..", "..", "solr")
-    # / or:
-    # raise RuntimeError("SOLR_CONTEXT_FOLDER must be defined")
-
-solr_config_path = os.path.join(SOLR_CONTEXT_FOLDER, "etc", "solr-config.json")
-
-try:
-    with open(solr_config_path) as solr_config_file:
-        solr_config = json.load(solr_config_file)
-except Exception:  # noqa
-    raise RuntimeError(f"Error loading json config from {solr_config_path}")
+from ..configuration.config import get_solr_config
 
 
 filters = None
 field_list = None
+labels = None
 
 
-def get_filters():
+def get_filters(solr_config):
     global filters
     if filters is None:
         try:
             filters = list(map(lambda item: item["filter"], solr_config["searchTabs"]))
         except Exception:  # noqa
-            raise RuntimeError(
-                f"Error parsing json config from {solr_config_path} {solr_config}"
-            )
+            raise RuntimeError(f"Error parsing solr config {solr_config}")
     return filters
 
 
+def get_labels(solr_config):
+    global labels
+    if labels is None:
+        try:
+            labels = list(map(lambda item: item["label"], solr_config["searchTabs"]))
+        except Exception:  # noqa
+            raise RuntimeError(f"Error parsing solr config {solr_config}")
+    return labels
+
+
 def solr_select_condition(group_select):
-    return "{!tag=typefilter}" + get_filters()[group_select]
+    solr_config = get_solr_config()
+    return "{!tag=typefilter}" + get_filters(solr_config)[group_select]
 
 
 def solr_facet_query():
-    return list(map(lambda item: "{!ex=typefilter}" + item, get_filters()))
+    solr_config = get_solr_config()
+    return list(map(lambda item: "{!ex=typefilter}" + item, get_filters(solr_config)))
 
 
 class SolrConfigError(RuntimeError):
@@ -51,11 +42,12 @@ class SolrConfigError(RuntimeError):
 
 def solr_field_list():
     global field_list
+    solr_config = get_solr_config()
 
     def check_item(item):
         if "," in item:
             raise SolrConfigError(
-                f"Error parsing json config from {solr_config_path} {solr_config}, fieldList item contains comma (,) which is prohibited"
+                f"Error parsing solr config {solr_config}, fieldList item contains comma (,) which is prohibited"
             )
         return item
 
@@ -66,9 +58,10 @@ def solr_field_list():
             if isinstance(err, SolrConfigError):
                 raise
             else:
-                raise SolrConfigError(
-                    f"Error parsing json config from {solr_config_path} {solr_config}"
-                )
+                raise SolrConfigError(f"Error parsing solr config {solr_config}")
     return field_list
 
-    return
+
+def solr_labels():
+    solr_config = get_solr_config()
+    return get_labels(solr_config)

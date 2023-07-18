@@ -52,6 +52,7 @@
       name="kitconcept.solr-hiddenprofiles"
       />
 
+  <include package=".configuration" />
   <include package=".services" />
   <include package=".indexers" />
 

@@ -75,12 +75,15 @@ solr_config_invalid_field_list = {
 
 
 @mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.labels", None)
 @mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrUtilsTestCase(unittest.TestCase):
-    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
+    @mock.patch(
+        "kitconcept.solr.services.solr_utils.get_solr_config", lambda: solr_config
+    )
     def test_get_filters(self):
         self.assertEqual(
-            solr_utils.get_filters(),
+            solr_utils.get_filters(solr_config),
             [
                 "Type(*)",
                 "Type:(Page)",
@@ -89,7 +92,9 @@ class ServicesSolrUtilsTestCase(unittest.TestCase):
             ],
         )
 
-    @mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
+    @mock.patch(
+        "kitconcept.solr.services.solr_utils.get_solr_config", lambda: solr_config
+    )
     def test_solr_field_list(self):
         self.assertEqual(
             solr_utils.solr_field_list(),
@@ -97,16 +102,17 @@ class ServicesSolrUtilsTestCase(unittest.TestCase):
         )
 
     @mock.patch(
-        "kitconcept.solr.services.solr_utils.solr_config",
-        solr_config_invalid_field_list,
+        "kitconcept.solr.services.solr_utils.get_solr_config",
+        lambda: solr_config_invalid_field_list,
     )
     def test_solr_field_list_invalid_char(self):
         with self.assertRaisesRegex(RuntimeError, "fieldList item contains comma"):
             solr_utils.solr_field_list()
 
 
-@mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config)
+@mock.patch("kitconcept.solr.services.solr_utils.get_solr_config", lambda: solr_config)
 @mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.labels", None)
 @mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrFacetsTestCase(unittest.TestCase):
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
@@ -151,13 +157,16 @@ class ServicesSolrFacetsTestCase(unittest.TestCase):
         self.assertNotIn("/plone/noamchomsky", path_strings)
         self.assertNotIn("/plone/mynews", path_strings)
 
+    def assert_facet_groups(self, response):
+        self.assertEqual(
+            response.json().get("facet_groups"),
+            [["All", 3], ["Pages", 1], ["News Items", 1], ["Pages and News Items", 2]],
+        )
+
     def test_facet_all_group_default(self):
         response = self.api_session.get("%s/@solr?q=chomsky" % self.portal_url)
         self.assertIn("response", response.json())
-        self.assertEqual(
-            response.json().get("group_counts"),
-            [3, 1, 1, 2],
-        )
+        self.assert_facet_groups(response)
         path_strings = get_path_strings(response)
         self.assertIn("/plone/mydocument", path_strings)
         self.assertIn("/plone/noamchomsky", path_strings)
@@ -169,10 +178,7 @@ class ServicesSolrFacetsTestCase(unittest.TestCase):
             "%s/@solr?q=chomsky&group_select=0" % self.portal_url
         )
         self.assertIn("response", response.json())
-        self.assertEqual(
-            response.json().get("group_counts"),
-            [3, 1, 1, 2],
-        )
+        self.assert_facet_groups(response)
         path_strings = get_path_strings(response)
         self.assertIn("/plone/mydocument", path_strings)
         self.assertIn("/plone/noamchomsky", path_strings)
@@ -184,10 +190,7 @@ class ServicesSolrFacetsTestCase(unittest.TestCase):
             "%s/@solr?q=chomsky&group_select=1" % self.portal_url
         )
         self.assertIn("response", response.json())
-        self.assertEqual(
-            response.json().get("group_counts"),
-            [3, 1, 1, 2],
-        )
+        self.assert_facet_groups(response)
         path_strings = get_path_strings(response)
         self.assertIn("/plone/mydocument", path_strings)
         self.assertNotIn("/plone/noamchomsky", path_strings)
@@ -199,10 +202,7 @@ class ServicesSolrFacetsTestCase(unittest.TestCase):
             "%s/@solr?q=chomsky&group_select=3" % self.portal_url
         )
         self.assertIn("response", response.json())
-        self.assertEqual(
-            response.json().get("group_counts"),
-            [3, 1, 1, 2],
-        )
+        self.assert_facet_groups(response)
         path_strings = get_path_strings(response)
         self.assertIn("/plone/mydocument", path_strings)
         self.assertNotIn("/plone/noamchomsky", path_strings)
@@ -614,8 +614,11 @@ solr_config_for_perms = {
 }
 
 
-@mock.patch("kitconcept.solr.services.solr_utils.solr_config", solr_config_for_perms)
+@mock.patch(
+    "kitconcept.solr.services.solr_utils.get_solr_config", lambda: solr_config_for_perms
+)
 @mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.labels", None)
 @mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
 class ServicesSolrPermissionsTestCase(unittest.TestCase):
     layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
@@ -1028,3 +1031,59 @@ class ServicesSolrEncodingTestCase(unittest.TestCase):
         self.assertNotIn("/plone/newsblue", path_strings)
         self.assertIn("/plone/withcolon", path_strings)
         self.assertIn("/plone/withspam", path_strings)
+
+
+@mock.patch("kitconcept.solr.services.solr_utils.get_solr_config", lambda: solr_config)
+@mock.patch("kitconcept.solr.services.solr_utils.filters", None)
+@mock.patch("kitconcept.solr.services.solr_utils.labels", None)
+@mock.patch("kitconcept.solr.services.solr_utils.field_list", None)
+class ServicesSolrResponseTestCase(unittest.TestCase):
+    layer = KITCONCEPT_SOLR_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
+        self.portal_url = self.portal.absolute_url()
+        activateAndReindex(self.portal)
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.maintenance = self.portal.unrestrictedTraverse("solr-maintenance")
+
+        self.api_session = RelativeSession(self.portal_url)
+        self.api_session.headers.update({"Accept": "application/json"})
+        self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        self.portal.invokeFactory(
+            "Image",
+            id="noamchomsky",
+            title="Prof. Dr. Noam Chomsky",
+        )
+        self.portal.noamchomsky.setSubject(["mymembersubject", "mymembersubjecttwo"])
+        self.portal.invokeFactory(
+            "Document",
+            id="mydocument",
+            title="My Document about Noam Chomsky",
+        )
+        self.portal.invokeFactory(
+            "News Item",
+            id="mynews",
+            title="My News Item with Noam Chomsky",
+        )
+        transaction.commit()
+
+    def test_keep_full_solr_response_default(self):
+        response = self.api_session.get("%s/@solr?q=chomsky" % self.portal_url)
+        self.assertIn("response", response.json())
+        self.assertNotIn("facet_counts", response.json())
+
+    def test_keep_full_solr_response_is_false(self):
+        response = self.api_session.get(
+            "%s/@solr?q=chomsky&keep_full_solr_response=false" % self.portal_url
+        )
+        self.assertIn("response", response.json())
+        self.assertNotIn("facet_counts", response.json())
+
+    def test_keep_full_solr_response_is_true(self):
+        response = self.api_session.get(
+            "%s/@solr?q=chomsky&keep_full_solr_response=true" % self.portal_url
+        )
+        self.assertIn("response", response.json())
+        self.assertIn("facet_counts", response.json())
