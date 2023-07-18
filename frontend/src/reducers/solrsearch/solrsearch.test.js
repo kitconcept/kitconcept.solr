@@ -10,7 +10,7 @@ describe('SOLR search reducer', () => {
     expect(search()).toEqual({
       error: null,
       items: [],
-      groupCounts: [],
+      facetGroups: [],
       total: 0,
       loaded: false,
       loading: false,
@@ -27,7 +27,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
-      groupCounts: [],
+      facetGroups: [],
       total: 0,
       loaded: false,
       loading: true,
@@ -72,7 +72,7 @@ describe('SOLR search reducer', () => {
           review_state: undefined,
         },
       ],
-      groupCounts: [],
+      facetGroups: [],
       total: 1,
       loaded: true,
       loading: false,
@@ -90,7 +90,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: 'failed',
       items: [],
-      groupCounts: [],
+      facetGroups: [],
       total: 0,
       loaded: false,
       loading: false,
@@ -107,7 +107,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
-      groupCounts: [],
+      facetGroups: [],
       total: 0,
       loaded: false,
       loading: false,
@@ -125,7 +125,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
-      groupCounts: [],
+      facetGroups: [],
       total: 0,
       loaded: false,
       loading: false,
@@ -134,7 +134,7 @@ describe('SOLR search reducer', () => {
         'my-subrequest': {
           error: null,
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: true,
@@ -152,7 +152,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: [],
-              groupCounts: [],
+              facetGroups: [],
               total: 0,
               loaded: false,
               loading: true,
@@ -176,7 +176,12 @@ describe('SOLR search reducer', () => {
             },
             highlighting: { UID1: ['<em>Blah</em>'] },
             portal_path: '/Plone',
-            group_counts: [1, 2, 3, 4],
+            facet_groups: [
+              ['One', 1],
+              ['Two', 2],
+              ['Three', 3],
+              ['Four', 4],
+            ],
           },
         },
       ),
@@ -199,7 +204,12 @@ describe('SOLR search reducer', () => {
               review_state: undefined,
             },
           ],
-          groupCounts: [1, 2, 3, 4],
+          facetGroups: [
+            ['One', 1],
+            ['Two', 2],
+            ['Three', 3],
+            ['Four', 4],
+          ],
           total: 1,
           loaded: true,
           loading: false,
@@ -217,7 +227,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: [],
-              groupCounts: [],
+              facetGroups: [],
               total: 0,
               loaded: false,
               loading: true,
@@ -236,7 +246,7 @@ describe('SOLR search reducer', () => {
         'my-subrequest': {
           error: 'failed',
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: false,
@@ -254,7 +264,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: ['random'],
-              groupCounts: [],
+              facetGroups: [],
               total: 1,
               loaded: true,
               loading: false,
@@ -296,7 +306,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: false,
@@ -337,7 +347,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: false,
@@ -366,7 +376,7 @@ describe('SOLR search reducer', () => {
             {
               error: null,
               items: [],
-              groupCounts: [],
+              facetGroups: [],
               total: 0,
               loaded: false,
               loading: false,
@@ -389,7 +399,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: false,
@@ -413,7 +423,7 @@ describe('SOLR search reducer', () => {
             {
               error: null,
               items: [],
-              groupCounts: [],
+              facetGroups: [],
               total: 0,
               loaded: false,
               loading: false,
@@ -441,7 +451,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
-          groupCounts: [],
+          facetGroups: [],
           total: 0,
           loaded: false,
           loading: false,

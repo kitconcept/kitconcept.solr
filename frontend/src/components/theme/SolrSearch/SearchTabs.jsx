@@ -1,14 +1,13 @@
 import { FormattedMessage } from 'react-intl';
-import solrConfig from './solr-config';
 import messages from './solr-facets-i18n';
 
-export const SearchTabs = ({ groupSelect, setGroupSelect, groupCounts }) => {
-  groupCounts = groupCounts || [];
+export const SearchTabs = ({ groupSelect, setGroupSelect, facetGroups }) => {
+  facetGroups = facetGroups || [];
   return (
     <div className="searchTabs ui top attached tabular menu">
-      {solrConfig.searchTabs.map((item, index) => {
+      {facetGroups.map(([label, counter], index) => {
         const isActive = index === groupSelect;
-        const hasResults = groupCounts[index];
+        const hasResults = counter;
         return (
           <span
             onClick={() => hasResults && setGroupSelect(index)}
@@ -23,10 +22,10 @@ export const SearchTabs = ({ groupSelect, setGroupSelect, groupCounts }) => {
             }
           >
             <span>
-              {messages[item.label] ? (
-                <FormattedMessage {...messages[item.label]} />
+              {messages[label] ? (
+                <FormattedMessage {...messages[label]} />
               ) : (
-                item.label
+                label
               )}
               <span
                 className={
@@ -34,7 +33,7 @@ export const SearchTabs = ({ groupSelect, setGroupSelect, groupCounts }) => {
                   (isActive ? ' blue' : 'white')
                 }
               >
-                {hasResults ? groupCounts[index] : '0'}
+                {hasResults ? counter : '0'}
               </span>
             </span>
           </span>
