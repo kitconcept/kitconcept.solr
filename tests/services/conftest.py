@@ -8,6 +8,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.namedfile import NamedBlobImage
 from plone.restapi.testing import RelativeSession
 from typing import List
+from urllib3 import exceptions as exc
 from zope.component.hooks import setSite
 
 import pytest
@@ -108,7 +109,7 @@ def is_responsive():
             response = requests.get(url)
             if response.status_code == 200:
                 return b"""<str name="status">OK</str>""" in response.content
-        except ConnectionError:
+        except (ConnectionError, exc.ProtocolError, exc.TimeoutError):
             return False
 
     return func
