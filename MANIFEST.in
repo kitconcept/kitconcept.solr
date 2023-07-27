@@ -1,4 +1,14 @@
-graft src/kitconcept/solr
+graft src/kitconcept
+graft devops
 graft docs
-include *.rst
+graft scripts
+graft solr
+graft tests
+include .coveragerc
+include .editorconfig
+include Makefile
+include docker-compose.yml
+include *.yaml
+include *.md
+include *.txt
 global-exclude *.pyc

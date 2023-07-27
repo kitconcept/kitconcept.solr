@@ -1,0 +1,45 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "b3ba013b"
+
+[pyproject]
+codespell_skip = "*"
+codespell_ignores = "vew"
+dependencies_ignores = "['plone.volto', 'zestreleaser.towncrier', 'zest.releaser', 'pytest', 'pytest-cov', 'pytest-plone', 'pytest-docker']"
+dependencies_mappings = [
+    "Plone = ['Products.CMFPlone', 'Products.CMFCore', 'Products.GenericSetup']",
+    ]
+check_manifest_ignores = """
+    "news/*",
+    "constraints-mxdev.txt",
+    "requirements-mxdev.txt",
+"""
+towncrier_issue_format = "[#{issue}](https://github.com/kitconcept/kitconcept.solr/issues/{issue})"
+extra_lines = """
+[tool.coverage.run]
+omit = ["*/locales/*"]
+"""
+
+[gitignore]
+extra_lines = """
+constraints-mxdev.txt
+requirements-mxdev.txt
+"""
+
+[tox]
+test_runner = "pytest"
+test_path = "/tests"
+use_mxdev = true
+
+[github]
+ref = "1.0.0"
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    ]

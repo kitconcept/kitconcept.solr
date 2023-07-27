@@ -1,26 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <config>
   <luceneMatchVersion>4.5</luceneMatchVersion>
 
   <dataDir>${solr.data.dir:}</dataDir>
 
-  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}" />
+  <directoryFactory class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"
+                    name="DirectoryFactory"
+  />
 
   <codecFactory class="solr.SchemaCodecFactory" />
   <schemaFactory class="ClassicIndexSchemaFactory" />
 
   <!-- TIKA START -->
   <!-- Load Data Import Handler and Apache Tika (extraction) libraries -->
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/dist/"
+       regex="solr-dataimporthandler-.*\.jar"
+  />
 
-  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-cell-\d.*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib"
+       regex=".*\.jar"
+  />
+  <lib dir="${solr.install.dir:../../../..}/dist/"
+       regex="solr-cell-\d.*\.jar"
+  />
 
-  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-langid-\d.*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/"
+       regex=".*\.jar"
+  />
+  <lib dir="${solr.install.dir:../../../..}/dist/"
+       regex="solr-langid-\d.*\.jar"
+  />
 
-  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib"
+       regex=".*\.jar"
+  />
+  <lib dir="${solr.install.dir:../../../..}/dist/"
+       regex="solr-velocity-\d.*\.jar"
+  />
 
   <!-- Request Dispatcher
        This section contains instructions for how the SolrDispatchFilter
@@ -51,7 +67,11 @@
     <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="-1" formdataUploadLimitInKB="-1" addHttpRequestToContext="false"/>
       -->
 
-    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="-1" formdataUploadLimitInKB="-1" addHttpRequestToContext="false" />
+    <requestParsers addHttpRequestToContext="false"
+                    enableRemoteStreaming="true"
+                    formdataUploadLimitInKB="-1"
+                    multipartUploadLimitInKB="-1"
+    />
 
     <!-- HTTP Caching
          Set HTTP caching related parameters (for proxy caches and clients).
@@ -99,7 +119,10 @@
   <!-- Solr Cell Update Request Handler
        http://wiki.apache.org/solr/ExtractingRequestHandler
     -->
-  <requestHandler name="/update/extract" startup="lazy" class="solr.extraction.ExtractingRequestHandler">
+  <requestHandler class="solr.extraction.ExtractingRequestHandler"
+                  name="/update/extract"
+                  startup="lazy"
+  >
     <lst name="defaults">
       <str name="lowernames">true</str>
       <str name="uprefix">ignored_</str>
@@ -180,7 +203,9 @@
 
   </updateHandler>
 
-  <requestHandler name="/select" class="solr.SearchHandler">
+  <requestHandler class="solr.SearchHandler"
+                  name="/select"
+  >
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <int name="rows">10</int>
@@ -189,9 +214,13 @@
     </lst>
   </requestHandler>
 
-  <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+  <requestHandler class="solr.UpdateRequestHandler"
+                  name="/update"
+  />
 
-  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+  <requestHandler class="solr.PingRequestHandler"
+                  name="/admin/ping"
+  >
     <lst name="invariants">
       <str name="q">solrpingquery</str>
     </lst>
@@ -202,7 +231,9 @@
 
   <!-- Autocomplete/suggest -->
 
-  <requestHandler class="org.apache.solr.handler.component.SearchHandler" name="/suggest">
+  <requestHandler class="org.apache.solr.handler.component.SearchHandler"
+                  name="/suggest"
+  >
     <lst name="defaults">
       <str name="echoParams">none</str>
       <str name="wt">json</str>
@@ -218,7 +249,9 @@
     </lst>
   </requestHandler>
 
-  <searchComponent class="solr.SpellCheckComponent" name="suggest">
+  <searchComponent class="solr.SpellCheckComponent"
+                   name="suggest"
+  >
     <lst name="spellchecker">
       <str name="name">suggestDictionary</str>
       <str name="classname">org.apache.solr.spelling.suggest.Suggester</str>

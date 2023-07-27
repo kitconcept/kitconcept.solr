@@ -1,39 +1,36 @@
-# -*- coding: utf-8 -*-
 """Installer for the kitconcept.solr package."""
-
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
 
-long_description = "\n\n".join(
-    [
-        open("README.rst").read(),
-        open("CONTRIBUTORS.rst").read(),
-        open("CHANGES.rst").read(),
-    ]
-)
+long_description = f"""
+{Path("README.md").read_text()}\n
+{Path("CHANGES.md").read_text()}\n
+"""
 
 
 setup(
     name="kitconcept.solr",
     version="1.0.0a1",
-    description="Plone Add-on for Solr",
+    description="An opinionated Solr integration for Plone",
     long_description=long_description,
-    # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    long_description_content_type="text/markdown",
     classifiers=[
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
-        "Development Status :: 1 - Planning",
         "Framework :: Plone",
-        "Framework :: Plone :: 5.2",
+        "Framework :: Plone :: Addon",
+        "Framework :: Plone :: 6.0",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     ],
-    keywords="Python Plone",
+    keywords="Python Plone Solr",
     author="kitconcept GmbH",
     author_email="info@kitconcept.com",
     url="https://github.com/kitconcept/kitconcept.solr",
@@ -44,31 +41,34 @@ setup(
     include_package_data=True,
     zip_safe=False,
     python_requires=">=3.8",
+    project_urls={
+        "PyPI": "https://pypi.python.org/pypi/kitconcept.solr",
+        "Source": "https://github.com/kitconcept/kitconcept.solr",
+        "Tracker": "https://github.com/kitconcept/kitconcept.portal/issues",
+    },
     install_requires=[
+        "Plone>=6.0.0",
+        "plone.restapi>=8.40.0",
         "plone.api",
-        "plone.restapi",
-        "Products.GenericSetup>=1.8.2",
         "setuptools",
-        "z3c.jbot",
         "collective.solr",
-        # 'plone.restapi',
-        # 'Products.PloneFormGen',
-        # 'plone.formwidget.captcha',
     ],
     extras_require={
         "test": [
+            "zest.releaser[recommended]",
+            "zestreleaser.towncrier",
             "plone.app.testing",
-            # Plone KGS does not use this version, because it would break
-            # Remove if your package shall be part of coredev.
-            # plone_coredev tests as of 2016-04-01.
-            "plone.testing",
-            "plone.app.contenttypes",
-            "plone.app.robotframework[debug]",
-            "collective.MockMailHost",
+            "plone.restapi[test]",
+            "pytest",
+            "pytest-cov",
+            "pytest-docker",
+            "pytest-plone>=0.2.0",
         ],
     },
     entry_points="""
     [z3c.autoinclude.plugin]
     target = plone
+    [console_scripts]
+    update_locale = kitconcept.solr.locales.update:update_locale
     """,
 )

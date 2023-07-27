@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registry xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="kitconcept.solr"
+>
+
+  <records interface="kitconcept.solr.interfaces.IKitconceptSolrSettings"
+           prefix="kitconcept.solr"
+  >
+    <value key="config"
+           purge="false"
+    >{
+  "fieldList": [
+    "UID",
+    "Title",
+    "Description",
+    "Type",
+    "effective",
+    "start",
+    "created",
+    "end",
+    "path_string",
+    "mime_type",
+    "phone",
+    "email",
+    "location",
+    "image_scales",
+    "image_field"
+  ],
+  "searchTabs": [
+    {
+      "label": "All",
+      "filter": "Type(*)"
+    },
+    {
+      "label": "Pages",
+      "filter": "Type:(Page)"
+    },
+    {
+      "label": "Events",
+      "filter": "Type:(Event)"
+    },
+    {
+      "label": "Images",
+      "filter": "Type:(Image)"
+    },
+    {
+      "label": "Files",
+      "filter": "Type:(File)"
+    }
+  ]
+}</value>
+  </records>
+</registry>

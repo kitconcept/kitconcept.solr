@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    >
+
+  <genericsetup:registerProfile
+      name="default"
+      title="kitconcept.solr site (kitconcept.solr)"
+      description="Installs the kitconcept.solr add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="kitconcept.solr site (kitconcept.solr)"
+      description="Testing profile for kitconcept.solr tests"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/testing"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="kitconcept.solr site (kitconcept.solr): uninstall"
+      description="Uninstalls the kitconcept.solr add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="kitconcept.solr-hiddenprofiles"
+      />
+
+  <include package=".upgrades" />
+
+</configure>
