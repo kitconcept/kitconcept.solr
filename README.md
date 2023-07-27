@@ -26,7 +26,7 @@
 
 ## Features
 
-`kitconcept.solr` is an opinionated Solr integration package for Plone sites. It leverages (and depends on) [`collective.solr`](https://github.com/collective/collective.solr).
+`kitconcept.solr` is an opinionated Solr integration package for Plone sites. It leverages (and depends on) [`collective.solr`](https://github.com/collective/collective.solr), by adding a new endpoint `@solr` that supports search requests with facetted results.
 
 ### Endpoints
 
@@ -72,14 +72,14 @@ You can create an issue in the issue tracker, or contact a maintainer.
 - [Issue Tracker](https://github.com/kitconcept/kitconcept.solr/issues)
 - [Source Code](https://github.com/kitconcept/kitconcept.solr/)
 
-### Requirements
+### Development requirements
 
 * Python 3.8 or later
 * Docker
 
-### Development setup
+### Setup
 
-Install the dependencies and a development instance using:
+Install all development dependencies -- including Plone -- and create a new instance using:
 
 ```bash
 make install
@@ -87,7 +87,7 @@ make install
 
 By default, we use the latest Plone version in the 6.x series.
 
-### Development configurations
+### Configurations
 
 Most of the development configuration is managed with [`plone.meta`](https://github.com/plone/plone.meta), so avoid manually editing the following files:
 
