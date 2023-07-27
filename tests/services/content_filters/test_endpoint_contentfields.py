@@ -65,4 +65,4 @@ class TestEndpointContentFieldsTitle(TestEndpointContentFields):
         docs = self.data["response"]["docs"]
         item = docs[idx]
         assert item["Title"] == title
-        assert item["location"] == location
+        assert item.get("location", "") == location

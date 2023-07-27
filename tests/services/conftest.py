@@ -17,11 +17,13 @@ import transaction
 
 @pytest.fixture
 def users() -> List:
+    """Additional users to be created."""
     return []
 
 
 @pytest.fixture
 def contents() -> List:
+    """Content to be created."""
     return [
         {
             "_container": "",
@@ -54,6 +56,8 @@ def contents() -> List:
 
 @pytest.fixture
 def all_path_string():
+    """Helper fixture to extract path information from Solr result."""
+
     def func(data: dict) -> List[str]:
         return [item["path_string"] for item in data["response"]["docs"]]
 
@@ -62,6 +66,8 @@ def all_path_string():
 
 @pytest.fixture
 def create_contents(contents):
+    """Helper fixture to create initial content."""
+
     def func(portal) -> dict:
         ids = defaultdict(list)
         for item in contents:
@@ -93,25 +99,32 @@ def create_contents(contents):
     return func
 
 
-def is_responsive(url):
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return """<str name="status">OK</str>""" in response.content
-    except ConnectionError:
-        return False
+@pytest.fixture()
+def is_responsive():
+    """Helper fixture to check if Solr is up and running."""
+
+    def func(url):
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                return b"""<str name="status">OK</str>""" in response.content
+        except ConnectionError:
+            return False
+
+    return func
 
 
 @pytest.fixture(scope="session")
 def docker_compose_file(pytestconfig):
+    """Fixture pointing to the docker-compose file to be used."""
     return Path(str(pytestconfig.rootdir)).resolve() / "docker-compose.yml"
 
 
 @pytest.fixture
-def solr_service(docker_ip, docker_services):
+def solr_service(docker_ip, docker_services, is_responsive):
     """Ensure that Solr service is up and responsive."""
     port = docker_services.port_for("solr", 8983)
-    url = f"http://{docker_ip}:{port}/admin/ping?wt=xml"
+    url = f"http://{docker_ip}:{port}/solr/plone/admin/ping?wt=xml"
     docker_services.wait_until_responsive(
         timeout=30.0, pause=0.1, check=lambda: is_responsive(url)
     )
@@ -130,11 +143,13 @@ def http_request(functional):
 
 @pytest.fixture()
 def registry_config() -> dict:
+    """Fixture with plone.app.registry settings."""
     return {"collective.solr.active": 1}
 
 
 @pytest.fixture()
-def portal(app, docker_services, http_request, users, registry_config):
+def portal(app, solr_service, http_request, users, registry_config):
+    """Plone portal with additional users, and registry configuration set."""
     portal = app["plone"]
     setSite(portal)
     current_values = {}
@@ -157,6 +172,7 @@ def portal(app, docker_services, http_request, users, registry_config):
 
 @pytest.fixture()
 def portal_with_content(app, portal, create_contents):
+    """Plone portal with initial content."""
     with api.env.adopt_roles(["Manager"]):
         content_ids = create_contents(portal)
     transaction.commit()
@@ -171,6 +187,7 @@ def portal_with_content(app, portal, create_contents):
 
 @pytest.fixture()
 def maintenance(portal, http_request):
+    """Return browser view for solr maintenance."""
     with api.env.adopt_roles(["Manager"]):
         view = api.content.get_view("solr-maintenance", portal, http_request)
     return view
@@ -178,7 +195,9 @@ def maintenance(portal, http_request):
 
 @pytest.fixture()
 def request_factory(portal):
-    def factory():
+    """Fixture returning a session to call the API."""
+
+    def factory() -> RelativeSession:
         url = portal.absolute_url()
         api_session = RelativeSession(url)
         api_session.headers.update({"Accept": "application/json"})
@@ -189,11 +208,13 @@ def request_factory(portal):
 
 @pytest.fixture()
 def anon_request(request_factory):
+    """Anonymous API requests."""
     return request_factory()
 
 
 @pytest.fixture()
 def manager_request(request_factory):
+    """Manager API requests."""
     request = request_factory()
     request.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
     yield request
