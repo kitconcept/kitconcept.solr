@@ -18,6 +18,10 @@ check_manifest_ignores = """
     "requirements-mxdev.txt",
 """
 towncrier_issue_format = "[#{issue}](https://github.com/kitconcept/kitconcept.solr/issues/{issue})"
+extra_lines = """
+[tool.coverage.run]
+omit = ["*/locales/*"]
+"""
 
 [gitignore]
 extra_lines = """

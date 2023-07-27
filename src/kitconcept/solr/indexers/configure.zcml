@@ -1,23 +1,8 @@
-<configure
-    xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="dlr.internet"
-    >
-
-  <!--adapter
-      factory=".searchable_text.searchable_text_image"
-      name="SearchableText"
-      /-->
+<configure xmlns="http://namespaces.zope.org/zope">
 
   <adapter
       factory=".text.body_text_blocks"
       name="body_text"
       />
-
-  <!-- index News item attachment in solr using Tika -->
-  <!--adapter
-      factory="collective.solr.indexer.DXFileBinaryAdder"
-      for="plone.dexterity.interfaces.IDexterityContent"
-      name="News Item"
-      /-->
 
 </configure>

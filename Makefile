@@ -128,6 +128,10 @@ i18n: bin/i18ndude ## Update locales
 test: bin/tox constraints-mxdev.txt ## run tests
 	bin/tox -e test
 
+.PHONY: coverage
+coverage: bin/tox constraints-mxdev.txt ## run coverage
+	bin/tox -e coverage
+
 ## Solr docker utils
 test-compose-project-name:
 	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,

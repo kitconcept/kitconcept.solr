@@ -155,6 +155,8 @@ ignore = [
 #  """
 ##
 
+[tool.coverage.run]
+omit = ["*/locales/*"]
 
 ##
 # Add extra configuration options in .meta.toml:
