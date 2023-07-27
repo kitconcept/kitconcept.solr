@@ -29,3 +29,12 @@ requirements-mxdev.txt
 test_runner = "pytest"
 test_path = "/tests"
 use_mxdev = true
+
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    ]
