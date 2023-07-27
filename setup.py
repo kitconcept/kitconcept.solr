@@ -13,11 +13,11 @@ long_description = f"""
 setup(
     name="kitconcept.solr",
     version="1.0.0a1",
-    description="Plone Add-on for Solr",
+    description="An opinionated Solr integration for Plone",
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: Addon",

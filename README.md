@@ -72,17 +72,32 @@ You can create an issue in the issue tracker, or contact a maintainer.
 - [Issue Tracker](https://github.com/kitconcept/kitconcept.solr/issues)
 - [Source Code](https://github.com/kitconcept/kitconcept.solr/)
 
+### Requirements
+
+* Python 3.8 or later
+* Docker
+
 ### Development setup
 
-You need a working Python environment version 3.8 or later.
-
-Then install the dependencies and a development instance using:
+Install the dependencies and a development instance using:
 
 ```bash
 make install
 ```
 
 By default, we use the latest Plone version in the 6.x series.
+
+### Development configurations
+
+Most of the development configuration is managed with [`plone.meta`](https://github.com/plone/plone.meta), so avoid manually editing the following files:
+
+* `.editorconfig`
+* `.flake8`
+* `.gitignore`
+* `.pre-commit-config.yaml`
+* `news/.changelog_template.jinja`
+* `pyproject.toml`
+* `tox.ini`
 
 ### Update translations
 
@@ -95,6 +110,8 @@ make i18n
 make format
 ```
 ### Run tests
+
+Testing of this package is done with [`pytest`](https://docs.pytest.org/) and [`tox`](https://tox.wiki/).
 
 Run all tests with:
 
