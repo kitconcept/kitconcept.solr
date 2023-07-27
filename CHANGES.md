@@ -1,16 +1,3 @@
-## 100.0.0 (2023-07-26)
-
-
-### New features:
-
-- Generate `ghcr.io/kitconcept/solr` @reekitconcept [#3](https://github.com/kitconcept/kitconcept.solr/issues/3)
-
-
-### Internal:
-
-- Prepare package for release @ericof [#5](https://github.com/kitconcept/kitconcept.solr/issues/5)
-
-
 # Changelog
 
 <!--
