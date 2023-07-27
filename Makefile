@@ -1,7 +1,12 @@
-# keep in sync with: https://github.com/kitconcept/buildout/edit/master/Makefile
-# update by running 'make update'
-SHELL := /bin/bash
-CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+### Defensive settings for make:
+#     https://tech.davis-hansson.com/p/make/
+SHELL:=bash
+.ONESHELL:
+.SHELLFLAGS:=-xeu -o pipefail -O inherit_errexit -c
+.SILENT:
+.DELETE_ON_ERROR:
+MAKEFLAGS+=--warn-undefined-variables
+MAKEFLAGS+=--no-builtin-rules
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -10,7 +15,29 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-all: build-plone-5.2
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+GIT_FOLDER=$(BACKEND_FOLDER)/.git
+
+COMPOSE_PROJECT_NAME=kitconcept.solr
+SOLR_DATA_FOLDER?=${CURRENT_DIR}/data
+SOLR_ONLY_COMPOSE?=${CURRENT_DIR}/docker-compose.yml
+
+# Python checks
+PYTHON?=python3
+
+# installed?
+ifeq (, $(shell which $(PYTHON) ))
+  $(error "PYTHON=$(PYTHON) not found in $(PATH)")
+endif
+
+# version ok?
+PYTHON_VERSION_MIN=3.8
+PYTHON_VERSION_OK=$(shell $(PYTHON) -c "import sys; print((int(sys.version_info[0]), int(sys.version_info[1])) >= tuple(map(int, '$(PYTHON_VERSION_MIN)'.split('.'))))")
+ifeq ($(PYTHON_VERSION_OK),0)
+  $(error "Need python $(PYTHON_VERSION) >= $(PYTHON_VERSION_MIN)")
+endif
+
+all: build
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
@@ -18,101 +45,111 @@ all: build-plone-5.2
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: Update Makefile and Buildout
-update: ## Update Make and Buildout
-	wget -O Makefile https://raw.githubusercontent.com/kitconcept/buildout/master/Makefile
-	wget -O requirements.txt https://raw.githubusercontent.com/kitconcept/buildout/master/requirements.txt
-	wget -O plone-5.2.x.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/plone-5.2.x.cfg
-	wget -O versions.cfg https://raw.githubusercontent.com/kitconcept/buildout/master/versions.cfg
+.PHONY: clean
+clean: clean-build clean-pyc clean-test clean-venv clean-instance ## remove all build, test, coverage and Python artifacts
 
-## Build Plone 5.2
-.PHONY: Build Plone 5.2
-build-plone-5.2:  ## Build Plone 5.2
-	python3 -m venv .
-	bin/pip install -r requirements.txt --upgrade
-	bin/buildout -c plone-5.2.x.cfg
+.PHONY: clean-instance
+clean-instance: ## remove existing instance
+	rm -fr instance etc inituser var
 
-## Build Plone 6.0
-.PHONY: Build Plone 6.0
-build-plone-6.0:  ## Build Plone 6.0
-	python3 -m venv .
-	bin/pip install -r requirements.txt --upgrade
-	bin/buildout -c plone-6.0.x.cfg
+.PHONY: clean-venv
+clean-venv: ## remove virtual environment
+	rm -fr bin include lib lib64 env pyvenv.cfg .tox .pytest_cache requirements-mxdev.txt
 
-.PHONY: black
-black:  ## Black
-	bin/black src/ setup.py
+.PHONY: clean-build
+clean-build: ## remove build artifacts
+	rm -fr build/
+	rm -fr dist/
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -rf {} +
 
-.PHONY: flake8
-flake8:  ## flake8
-	bin/flake8 src/ setup.py
+.PHONY: clean-pyc
+clean-pyc: ## remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
 
-.PHONY: pyroma
-pyroma:  ## pyroma
-	bin/pyroma -n 10 -d .
+.PHONY: clean-test
+clean-test: ## remove test and coverage artifacts
+	rm -f .coverage
+	rm -fr htmlcov/
 
-.PHONY: zpretty
-zpretty:  ## zpretty
-	find src/ -name *.zcml | xargs bin/zpretty -i
+bin/pip bin/tox bin/mxdev:
+	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
+	$(PYTHON) -m venv .
+	bin/pip install -U "pip" "wheel" "cookiecutter" "mxdev" "tox" "pre-commit"
+	if [ -d $(GIT_FOLDER) ]; then bin/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi
 
-.PHONY: Test
-test:  ## Test
-	bin/test
+constraints-mxdev.txt:  bin/tox
+	bin/tox -e init
 
-.PHONY: Test Performance
-test-performance:
-	jmeter -n -t performance.jmx -l jmeter.jtl
+.PHONY: config
+config: bin/pip  ## Create instance configuration
+	@echo "$(GREEN)==> Create instance configuration$(RESET)"
+	bin/cookiecutter -f --no-input --config-file instance.yaml gh:plone/cookiecutter-zope-instance
 
-.PHONY: Code Analysis
-code-analysis:  ## Code Analysis
-	bin/code-analysis
+.PHONY: install-plone-6.0
+install-plone-6.0: bin/mxdev config ## pip install Plone packages
+	@echo "$(GREEN)==> Setup Build$(RESET)"
+	bin/mxdev -c mx.ini
+	bin/pip install -r requirements-mxdev.txt
 
-.PHONY: Test Release
-test-release:  ## Run Pyroma and Check Manifest
-	bin/pyroma -n 10 -d .
+.PHONY: install
+install: install-plone-6.0  ## Install Plone 6.0
 
-.PHONY: Release
-release:  ## Release
-	bin/fullrelease
+.PHONY: start
+start: ## Start a Plone instance on localhost:8080
+	PYTHONWARNINGS=ignore ./bin/runwsgi instance/etc/zope.ini
 
-.PHONY: Clean
-clean:  ## Clean
-	git clean -Xdf
+.PHONY: format
+format: bin/tox ## Format the codebase according to our standards
+	@echo "$(GREEN)==> Format codebase$(RESET)"
+	bin/tox -e format
 
-.PHONY: all clean
+.PHONY: lint
+lint: bin/tox ## check code style
+	bin/tox -e lint
+
+# i18n
+bin/i18ndude bin/pocompile: bin/pip
+	@echo "$(GREEN)==> Install translation tools$(RESET)"
+	bin/pip install i18ndude zest.pocompile
+
+.PHONY: i18n
+i18n: bin/i18ndude ## Update locales
+	@echo "$(GREEN)==> Updating locales$(RESET)"
+	bin/update_locale
+	bin/pocompile src/
+
+# Tests
+.PHONY: test
+test: bin/tox constraints-mxdev.txt ## run tests
+	bin/tox -e test
 
 ## Solr docker utils
-
 test-compose-project-name:
 	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,
 	# and the purpose of the container (_DEV, _STACK, _TEST)
 	test -n "$(COMPOSE_PROJECT_NAME)"
 
-SOLR_CONTEXT_FOLDER?=${CURRENT_DIR}/solr
-SOLR_DATA_FOLDER?=${CURRENT_DIR}/data
-SOLR_ONLY_COMPOSE?=${CURRENT_DIR}/devops/stacks/solr-only.yml
-
 .PHONY: solr-start
 solr-start: test-compose-project-name ## Start solr
 	@echo "Start solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
 
 .PHONY: solr-start-fg
 solr-start-fg: test-compose-project-name ## Start solr in foreground
 	@echo "Start solr in foreground"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} up
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up
 
 .PHONY: solr-stop
 solr-stop: test-compose-project-name ## Stop solr
 	@echo "Stop solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} SOLR_CONTEXT_FOLDER=${SOLR_CONTEXT_FOLDER} docker compose -f ${SOLR_ONLY_COMPOSE} down
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} down
 
 .PHONY: solr-logs
 solr-logs: test-compose-project-name ## Show solr logs
 	@echo "Show solr logs"
 	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
-
-# .PHONY: solr-activate-and-reindex
-# solr-activate-and-reindex: backend/instance/etc/zope.ini ## Activate and reindex solr
-# 	cd backend; PYTHONWARNINGS=ignore ./bin/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --clear
-

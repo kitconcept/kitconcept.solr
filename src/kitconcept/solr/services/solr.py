@@ -1,9 +1,7 @@
-from .solr_utils import solr_facet_query
-from .solr_utils import solr_select_condition
-from .solr_utils import solr_field_list
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
+from kitconcept.solr.services.solr_utils import SolrConfig
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
 from plone.app.multilingual.interfaces import ITranslationManager
@@ -71,6 +69,7 @@ re_is_excluding = re.compile("/$")
 
 class SolrSearch(Service):
     def reply(self):
+        solr_config = SolrConfig()
         # Disable CSRF protection
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
             alsoProvides(self.request, plone.protect.interfaces.IDisableCSRFProtection)
@@ -150,7 +149,7 @@ class SolrSearch(Service):
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
             "fq": [security_filter()],
-            "fl": solr_field_list(),
+            "fl": solr_config.field_list,
             "facet": "true",
         }
         if start is not None:
@@ -160,8 +159,8 @@ class SolrSearch(Service):
         if sort is not None:
             d["sort"] = sort
         if group_select is not None:
-            d["fq"] = d["fq"] + [solr_select_condition(int(group_select))]
-        d["facet.query"] = solr_facet_query()
+            d["fq"] = d["fq"] + [solr_config.select_condition(int(group_select))]
+        d["facet.query"] = solr_config.facet_query
         if path_prefix:
             is_excluding = re_is_excluding.search(path_prefix)
             if is_multilingual:

@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="plone.app.iterate" />
+  <include package="plone.api" />
+  <include package="Products.GenericSetup" />
+  <include package="collective.solr" />
+  <include package="plone.restapi" />
+  <include package="plone.app.caching" />
+  <include package="collective.solr" />
+
+</configure>
