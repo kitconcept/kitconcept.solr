@@ -100,19 +100,14 @@ def create_contents(contents):
     return func
 
 
-@pytest.fixture()
-def is_responsive():
+def is_responsive(url):
     """Helper fixture to check if Solr is up and running."""
-
-    def func(url):
-        try:
-            response = requests.get(url)
-            if response.status_code == 200:
-                return b"""<str name="status">OK</str>""" in response.content
-        except (ConnectionError, exc.ProtocolError, exc.TimeoutError):
-            return False
-
-    return func
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return b"""<str name="status">OK</str>""" in response.content
+    except (ConnectionError, exc.ProtocolError, exc.TimeoutError):
+        return False
 
 
 @pytest.fixture(scope="session")
@@ -122,7 +117,7 @@ def docker_compose_file(pytestconfig):
 
 
 @pytest.fixture
-def solr_service(docker_ip, docker_services, is_responsive):
+def solr_service(docker_ip, docker_services):
     """Ensure that Solr service is up and responsive."""
     port = docker_services.port_for("solr", 8983)
     url = f"http://{docker_ip}:{port}/solr/plone/admin/ping?wt=xml"
