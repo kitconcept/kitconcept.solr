@@ -35,6 +35,7 @@ test_path = "/tests"
 use_mxdev = true
 
 [github]
+ref = "1.0.0"
 jobs = [
     "qa",
     "test",
