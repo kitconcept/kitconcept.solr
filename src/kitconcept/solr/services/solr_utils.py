@@ -15,6 +15,22 @@ class SolrConfig:
         search_tabs = self.config.get("searchTabs", [])
         self.filters = [item["filter"] for item in search_tabs]
 
+    @property
+    def labels(self):
+        labels = list(
+            map(lambda item: item.get("label", ""), self.config.get("searchTabs", []))
+        )
+        if len(labels) == 0:
+            raise SolrConfigError(
+                "Error parsing solr config, searchTabs either missing or empty"
+            )
+        invalid_labels = [label for label in labels if not label]
+        if invalid_labels:
+            raise SolrConfigError(
+                "Error parsing solr config, missing label in searchTabs. Labels are mandatory."
+            )
+        return labels
+
     def select_condition(self, group_select: str) -> str:
         filters = self.filters
         base_query = "{!tag=typefilter}"
@@ -31,6 +47,6 @@ class SolrConfig:
         invalid_fields = [item for item in raw_value if "," in item]
         if invalid_fields:
             raise SolrConfigError(
-                "Error parsing json config, fieldList item contains comma (,) which is prohibited"
+                "Error parsing solr config, fieldList item contains comma (,) which is prohibited"
             )
         return ",".join(raw_value)
