@@ -8,3 +8,16 @@
 -->
 
 <!-- towncrier release notes start -->
+
+## 1.0.0a1 (2023-08-11)
+
+
+### New features:
+
+- Generate `ghcr.io/kitconcept/solr` @reekitconcept [#3](https://github.com/kitconcept/kitconcept.solr/issues/3)
+
+
+### Internal:
+
+- Prepare package for release @ericof [#5](https://github.com/kitconcept/kitconcept.solr/issues/5)
+- Revamp solr configuration @reebalazs [#12](https://github.com/kitconcept/kitconcept.solr/issues/12)
