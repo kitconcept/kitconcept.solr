@@ -374,7 +374,7 @@ class SolrSearch extends Component {
           <SearchTabs
             groupSelect={this.state.groupSelect}
             setGroupSelect={(groupSelect) => this.setGroupSelect(groupSelect)}
-            groupCounts={this.props.groupCounts}
+            facetGroups={this.props.facetGroups}
           />
           <article id="content">
             <header>
@@ -503,7 +503,7 @@ export default compose(
     (state, props) => {
       const {
         items,
-        groupCounts,
+        facetGroups,
         total,
         loaded,
         loading,
@@ -511,7 +511,7 @@ export default compose(
       } = getSearchReducerWithDefault(state, props);
       return {
         items,
-        groupCounts,
+        facetGroups,
         total,
         loaded,
         loading,
