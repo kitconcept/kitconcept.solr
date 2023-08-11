@@ -1,6 +1,7 @@
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
+from itertools import zip_longest
 from kitconcept.solr.services.solr_utils import SolrConfig
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
@@ -82,6 +83,9 @@ class SolrSearch(Service):
         path_prefix = self.request.form.get("path_prefix", "")
         portal_type = self.request.form.get("portal_type", None)
         lang = self.request.form.get("lang", None)
+        keep_full_solr_response = (
+            self.request.form.get("keep_full_solr_response", "").lower() == "true"
+        )
 
         # search in multilingual path_prefix by default - unless lang is specified
         is_multilinqual_txt = self.request.form.get(
@@ -224,5 +228,13 @@ class SolrSearch(Service):
         # Add the group counts in order. Needed because the
         # facet_queries dictionary will not preserve key order, when
         # marshalled to the client.
-        result["group_counts"] = list(result["facet_counts"]["facet_queries"].values())
+        # Also add the faces labels next to the corresponding counts.
+        result["facet_groups"] = list(
+            zip_longest(
+                solr_config.labels, result["facet_counts"]["facet_queries"].values()
+            )
+        )
+        # Solr response is pruned of the unnecessary parts, unless explicitly requested.
+        if not keep_full_solr_response:
+            del result["facet_counts"]
         return result

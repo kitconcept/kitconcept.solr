@@ -57,10 +57,15 @@ class TestEndpointCustom:
 class TestEndpointCustomBaseSearch(TestEndpointCustom):
     url = "/@solr?q=chomsky"
 
-    def test_group_counts(self):
+    def test_facet_groups(self):
         # Using default configuration
         assert "response" in self.data
-        assert self.data.get("group_counts") == [3, 1, 1, 2]
+        assert self.data.get("facet_groups") == [
+            ["All", 3],
+            ["Pages", 1],
+            ["News Items", 1],
+            ["Pages and News Items", 2],
+        ]
 
     @pytest.mark.parametrize(
         "path,expected",

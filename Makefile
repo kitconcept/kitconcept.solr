@@ -18,9 +18,9 @@ YELLOW=`tput setaf 3`
 BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 GIT_FOLDER=$(BACKEND_FOLDER)/.git
 
-COMPOSE_PROJECT_NAME=kitconcept.solr
-SOLR_DATA_FOLDER?=${CURRENT_DIR}/data
-SOLR_ONLY_COMPOSE?=${CURRENT_DIR}/docker-compose.yml
+COMPOSE_PROJECT_NAME=kitconcept_solr
+SOLR_DATA_FOLDER?=${BACKEND_FOLDER}/data
+SOLR_ONLY_COMPOSE?=${BACKEND_FOLDER}/docker-compose.yml
 
 # Python checks
 PYTHON?=python3

@@ -12,10 +12,16 @@ class TestEndpointDefault:
 class TestEndpointDefaultBaseSearch(TestEndpointDefault):
     url = "/@solr?q=chomsky"
 
-    def test_group_counts(self):
+    def test_facet_groups(self):
         # Using default configuration
         assert "response" in self.data
-        assert self.data.get("group_counts") == [3, 1, 0, 1, 0]
+        assert self.data.get("facet_groups") == [
+            ["All", 3],
+            ["Pages", 1],
+            ["Events", 0],
+            ["Images", 1],
+            ["Files", 0],
+        ]
 
     @pytest.mark.parametrize(
         "path,expected",
@@ -55,10 +61,16 @@ class TestEndpointDefaultGroupSelectAll(TestEndpointDefault):
 class TestEndpointDefaultGroupSelect1(TestEndpointDefault):
     url = "/@solr?q=chomsky&group_select=1"
 
-    def test_group_counts(self):
+    def test_facet_groups(self):
         # Using default configuration
         assert "response" in self.data
-        assert self.data.get("group_counts") == [3, 1, 0, 1, 0]
+        assert self.data.get("facet_groups") == [
+            ["All", 3],
+            ["Pages", 1],
+            ["Events", 0],
+            ["Images", 1],
+            ["Files", 0],
+        ]
 
     @pytest.mark.parametrize(
         "path,expected",
