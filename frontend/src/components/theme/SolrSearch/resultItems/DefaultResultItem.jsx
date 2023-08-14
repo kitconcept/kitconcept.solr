@@ -4,6 +4,7 @@ import ResultItemDate, { thresholdDate } from './helpers/ResultItemDate';
 import { Icon } from '@plone/volto/components';
 import documentSVG from '@plone/volto/icons/doument-details.svg';
 import ConcatChildren from './helpers/ConcatChildren';
+import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
 
 // import { FormattedMessage } from 'react-intl';
 
@@ -19,6 +20,7 @@ const DefaultResultItem = ({ item }) => (
     {/* <span className="contentTypeLabel">
       <FormattedMessage id={mapContentTypes(item['@type'])} />
     </span> */}
+    <ResultItemPreviewImage item={item} />
     <p className="url">{item['@id']}</p>
     <h2 className="tileHeadline">
       <Link to={item['@id']} className="summary url" title={item['@type']}>

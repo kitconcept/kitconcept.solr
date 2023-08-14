@@ -1,0 +1,1 @@
+Update result type templates @reebalazs

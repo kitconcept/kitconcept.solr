@@ -4,12 +4,14 @@ import { Icon } from '@plone/volto/components';
 import ResultItemDate from './helpers/ResultItemDate';
 import locationSVG from '../icons/location.svg';
 import calendarSVG from '@plone/volto/icons/calendar.svg';
+import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
 
 const EventResultItem = ({ item }) => (
   <article className="tileItem">
     {/* <span className="contentTypeLabel">
       <FormattedMessage id={mapContentTypes(item['@type'])} />
     </span> */}
+    <ResultItemPreviewImage item={item} />
     <p className="url">{item['@id']}</p>
     <h2 className="tileHeadline">
       <Link to={item['@id']} className="summary url" title={item['@type']}>

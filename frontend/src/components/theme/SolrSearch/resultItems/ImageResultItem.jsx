@@ -5,19 +5,14 @@ import { Icon } from '@plone/volto/components';
 import imageSVG from '@plone/volto/icons/image.svg';
 import ConcatChildren from './helpers/ConcatChildren';
 import ImageType, { getImageType } from './helpers/ImageType';
+import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
 
 const ImageResultItem = ({ item }) => (
   <article className="tileItem">
     {/* <span className="contentTypeLabel">
       <FormattedMessage id={mapContentTypes(item['@type'])} />
     </span> */}
-    <Link to={item['@id']}>
-      <img
-        className="previewImage"
-        src={`${item['@id']}/@@images/image/preview`}
-        alt={item.title}
-      />
-    </Link>
+    <ResultItemPreviewImage item={item} />
     <p className="url">{item['@id']}</p>
     <h2 className="tileHeadline">
       <Link to={item['@id']} className="summary url" title={item['@type']}>
