@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a3 (2023-08-15)
+
+
+### Documentation:
+
+- Add credits to README @tisto [#16](https://github.com/kitconcept/kitconcept.solr/issues/16)
+
+
 ## 1.0.0a2 (2023-08-15)
 
 
