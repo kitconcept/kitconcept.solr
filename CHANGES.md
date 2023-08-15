@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a2 (2023-08-15)
+
+
+### Bug fixes:
+
+- Increase version of collective.solr @reebalazs [#14](https://github.com/kitconcept/kitconcept.solr/issues/14)
+
+
 ## 1.0.0a1 (2023-08-11)
 
 
