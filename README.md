@@ -235,38 +235,16 @@ Run only tests that match `TestEndpointEncoding`, but stop on the first error an
 ./bin/tox -e test -- -k TestEndpointEncoding -x --pdb
 ```
 
-Credits
--------
+## Credits
 
-.. image:: https://github.com/kitconcept/kitconcept.solr/raw/main/dlr-logo.jpeg
-   :width: 200px
-   :alt: German Aerospace Center (DLR)
-   :target: https://www.dlr.de
+The development of this add-on has been kindly sponsored by [German Aerospace Center (DLR)](https://www.dlr.de) and [Forschungszentrum Jülich](https://www.fz-juelich.de).
 
-|
+<img alt="German Aerospace Center (DLR)" width="200px" src="./docs/dlr.svg" style="background-color:white">
+<img alt="Forschungszentrum Jülich" width="200px" src="./docs/fz-juelich.svg" style="background-color:white">
 
-.. image:: https://github.com/kitconcept/kitconcept.solr/raw/main/fzj-logo.jpeg
-   :width: 200px
-   :alt: Forschungszentrum Jülich
-   :target: https://www.fz-juelich.de
 
-|
-
-The development of this plugin has been kindly sponsored by `German Aerospace Center (DLR)`_ and `Forschungszentrum Jülich`_.
-
-|
-
-.. image:: https://kitconcept.com/logo.svg
-   :width: 200px
-   :alt: kitconcept
-   :target: https://kitconcept.com/
-
-Developed by `kitconcept`_.
+Developed by [kitconcept](https://www.kitconcept.com/)
 
 ## License
 
 The project is licensed under GPLv2.
-
-.. _Forschungszentrum Jülich: https://www.fz-juelich.de
-.. _German Aerospace Center (DLR): https://www.dlr.de
-.. _kitconcept: http://www.kitconcept.com/
