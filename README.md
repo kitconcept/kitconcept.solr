@@ -239,8 +239,8 @@ Run only tests that match `TestEndpointEncoding`, but stop on the first error an
 
 The development of this add-on has been kindly sponsored by [German Aerospace Center (DLR)](https://www.dlr.de) and [Forschungszentrum Jülich](https://www.fz-juelich.de).
 
-<img alt="German Aerospace Center (DLR)" width="200px" src="./docs/dlr.svg" style="background-color:white">
-<img alt="Forschungszentrum Jülich" width="200px" src="./docs/fz-juelich.svg" style="background-color:white">
+<img alt="German Aerospace Center (DLR)" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/dlr.svg" style="background-color:white">
+<img alt="Forschungszentrum Jülich" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/fz-juelich.svg" style="background-color:white">
 
 
 Developed by [kitconcept](https://www.kitconcept.com/)
