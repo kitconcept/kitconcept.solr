@@ -51,7 +51,7 @@ setup(
         "plone.restapi>=8.40.0",
         "plone.api",
         "setuptools",
-        "collective.solr",
+        "collective.solr>=9.0.1",
     ],
     extras_require={
         "test": [
