@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@plone/volto/components';
 import ResultItemDate from './helpers/ResultItemDate';
 import locationSVG from '../icons/location.svg';
-import calendarSVG from '@plone/volto/icons/calendar.svg';
 import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
+import IconForContentType from './helpers/IconForContentType';
 
 const EventResultItem = ({ item }) => (
   <article className="tileItem">
@@ -41,7 +41,7 @@ const EventResultItem = ({ item }) => (
     )}
     <div className="tileFooter">
       <div>
-        <Icon className="itemIcon" size="20px" name={calendarSVG} />
+        <IconForContentType type={item['@type']} />
         <ResultItemDate
           date={item?.extras?.start ? item.extras.start : item?.effective}
           showTime={true}

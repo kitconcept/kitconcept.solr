@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ResultItemDate from './helpers/ResultItemDate';
-import { Icon } from '@plone/volto/components';
-import newsSVG from '@plone/volto/icons/news.svg';
 import ConcatChildren from './helpers/ConcatChildren';
 import ImageType, { getImageType } from './helpers/ImageType';
 import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
+import IconForContentType from './helpers/IconForContentType';
 
 const NewsItemResultItem = ({ item }) => (
   <article className="tileItem">
@@ -43,7 +42,7 @@ const NewsItemResultItem = ({ item }) => (
     <div className="tileFooter">
       {(item?.effective || item?.extras?.start) && (
         <ConcatChildren if1={getImageType(item?.extras?.mime_type)}>
-          <Icon className="itemIcon" size="20px" name={newsSVG} />
+          <IconForContentType type={item['@type']} />
           <ImageType mimeType={item?.extras?.mime_type} />
           <ResultItemDate
             date={item?.extras?.start ? item.extras.start : item?.effective}

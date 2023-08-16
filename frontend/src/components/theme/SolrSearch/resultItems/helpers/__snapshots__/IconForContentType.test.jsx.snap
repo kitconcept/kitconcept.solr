@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconForContentType Event icon 1`] = `
+<svg
+  className="icon itemIcon"
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "calendarSVG",
+    }
+  }
+  onClick={null}
+  style={
+    Object {
+      "fill": "currentColor",
+      "height": "20px",
+      "width": "auto",
+    }
+  }
+/>
+`;
+
+exports[`IconForContentType Image icon 1`] = `
+<svg
+  className="icon itemIcon"
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "imageSVG",
+    }
+  }
+  onClick={null}
+  style={
+    Object {
+      "fill": "currentColor",
+      "height": "20px",
+      "width": "auto",
+    }
+  }
+/>
+`;
+
+exports[`IconForContentType default icon 1`] = `
+<svg
+  className="icon itemIcon"
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "fileSVG",
+    }
+  }
+  onClick={null}
+  style={
+    Object {
+      "fill": "currentColor",
+      "height": "20px",
+      "width": "auto",
+    }
+  }
+/>
+`;
