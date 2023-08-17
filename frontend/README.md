@@ -28,6 +28,27 @@ Additionally. the `config.views.contentTypeSearchResultDefaultView` defines the 
     searchResultItems.DefaultResultItem;
 ```
 
+### Result type icons
+
+In addition to the result type templates, it's also possible to use which icon to use to represent any specific result icon.
+
+`config.settings.contentTypeSearchResultIcons` is a mapping from content type name to the icon to use for the content type. In addition, `config.settings.contentTypeSearchResultDefaultIcon` specifies a fallback to be used for any content type not found in the mapping (and functions as a default).
+
+config.settings.contentTypeSearchResultIcons is by default populated from `config.settings.contentIcons` which is usually the right thing to do. The following example uses these settings, but also defines specific icons for some specific content types.
+
+All supported content type templates respect these settings, so an icon for a content type can be redefined without the need to redefine the entire template, if otherwise no other changes are needed.
+
+```js
+  // Icon types. This will be in effect with all supported
+  // content type templates.
+  config.settings.contentTypeSearchResultIcons = {
+    ...config.settings.contentIcons,
+    Event: calendarSVG,
+    Image: imageSVG,
+    'News Item': newsSVG,
+  };
+  config.settings.contentTypeSearchResultDefaultIcon = fileSVG;
+```
 
 ### Other options
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ResultItemDate, { thresholdDate } from './helpers/ResultItemDate';
-import { Icon } from '@plone/volto/components';
-import fileSVG from '@plone/volto/icons/file.svg';
 import ConcatChildren from './helpers/ConcatChildren';
 import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
+import IconForContentType from './helpers/IconForContentType';
 
 // import { FormattedMessage } from 'react-intl';
 
@@ -57,7 +56,7 @@ const DefaultResultItem = ({ item }) => (
           }
           if2={false}
         >
-          <Icon className="itemIcon" size="20px" name={fileSVG} />
+          <IconForContentType type={item['@type']} />
           <ResultItemDate
             date={item?.extras?.start ? item.extras.start : item?.effective}
           />

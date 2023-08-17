@@ -7,6 +7,7 @@ import {
   SolrFormattedDate,
 } from '@kitconcept/volto-solr/components';
 import * as searchResultItems from '@kitconcept/volto-solr/components/theme/SolrSearch/resultItems';
+import fileSVG from '@plone/volto/icons/file.svg';
 import reducers from './reducers';
 import routes from './routes';
 import './theme/solrsearch.less';
@@ -36,6 +37,14 @@ const applyConfig = (config) => {
   // available, for example in Volto < 17. This flag, if set to true,
   // forces the use of the legacy component in all cases.
   config.settings.contentTypeSearchResultAlwaysUseLegacyImage = false;
+
+  // Icon types. This will be in effect with all supported
+  // content type templates. By default the content icons settings are
+  // used, but this can be overridden.
+  config.settings.contentTypeSearchResultIcons = {
+    ...config.settings.contentIcons,
+  };
+  config.settings.contentTypeSearchResultDefaultIcon = fileSVG;
 
   // Options for solr search which can be customized
   config.settings.solrSearchOptions = config.settings.solrSearchDefaultOptions = {
