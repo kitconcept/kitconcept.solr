@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LegacyImage minWidth 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    src="/testnews1/@@images/preview_image-600-71895aac86b72d21dd0f2bad189871c3.jpeg"
+  />
+</a>
+`;
+
+exports[`LegacyImage minWidth and devicePixelRatio 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    src="/testnews1/@@images/preview_image-1200-0723c41835b6498e598780419cc25a4f.jpeg"
+  />
+</a>
+`;
+
+exports[`LegacyImage normal 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    src="/testnews1/@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg"
+  />
+</a>
+`;
+
+exports[`LegacyImage override via rest 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    className="foo"
+    height="130"
+    loading="eager"
+    src="/testnews1/@@images/preview_image-600-71895aac86b72d21dd0f2bad189871c3.jpeg"
+    width="120"
+  />
+</a>
+`;

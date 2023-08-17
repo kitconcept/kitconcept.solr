@@ -22,7 +22,7 @@ RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
 PLONE_VERSION=6
-VOLTO_VERSION=16.10.0
+VOLTO_VERSION=17.0.0-alpha.24
 
 ADDON_NAME='@kitconcept/volto-solr'
 ADDON_PATH='volto-solr'

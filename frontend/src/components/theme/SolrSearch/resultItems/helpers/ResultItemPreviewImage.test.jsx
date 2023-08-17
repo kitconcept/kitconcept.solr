@@ -1,5 +1,6 @@
 import { create } from 'react-test-renderer';
 import { Router } from 'react-router-dom';
+import config from '@plone/volto/registry';
 import { createMemoryHistory } from 'history';
 import ResultItemPreviewImage, {
   previewImageContent,
@@ -163,5 +164,74 @@ describe('ResultItemPreviewImage', () => {
     );
     const rendered = component.toJSON();
     expect(rendered).toMatchSnapshot();
+  });
+
+  describe('legacy image', () => {
+    let origComponent;
+    let origContentTypeSearchResultAlwaysUseLegacyImage;
+    beforeEach(() => {
+      origComponent = config.getComponent({ name: 'Image' }).component;
+      origContentTypeSearchResultAlwaysUseLegacyImage =
+        config.settings.contentTypeSearchResultAlwaysUseLegacyImage;
+    });
+    afterEach(() => {
+      config.getComponent({ name: 'Image' }).component = origComponent;
+      config.settings.contentTypeSearchResultAlwaysUseLegacyImage = origContentTypeSearchResultAlwaysUseLegacyImage;
+    });
+
+    test('if image component not available on Volto 16', () => {
+      config.getComponent({ name: 'Image' }).component = undefined;
+      const component = create(
+        <Router history={history}>
+          <ResultItemPreviewImage
+            item={data}
+            className="foo"
+            width="120"
+            height="130"
+            loading="eager"
+          />
+        </Router>,
+      );
+      const rendered = component.toJSON();
+      expect(rendered).toMatchSnapshot();
+    });
+
+    test('if contentTypeSearchResultAlwaysUseLegacyImage is true', () => {
+      config.settings.contentTypeSearchResultAlwaysUseLegacyImage = true;
+      const component = create(
+        <Router history={history}>
+          <ResultItemPreviewImage
+            item={data}
+            className="foo"
+            width="120"
+            height="130"
+            loading="eager"
+          />
+        </Router>,
+      );
+      const rendered = component.toJSON();
+      expect(rendered).toMatchSnapshot();
+    });
+
+    test('sizes prop yields error', () => {
+      config.settings.contentTypeSearchResultAlwaysUseLegacyImage = true;
+      let mockError = jest.spyOn(console, 'error');
+      mockError.mockImplementation(() => undefined);
+      expect(() =>
+        create(
+          <Router history={history}>
+            <ResultItemPreviewImage
+              item={data}
+              className="foo"
+              width="120"
+              height="130"
+              loading="eager"
+              sizes="100vw"
+            />
+          </Router>,
+        ),
+      ).toThrow();
+      mockError.mockRestore();
+    });
   });
 });

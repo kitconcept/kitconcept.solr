@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ResultItemPreviewImage legacy image if contentTypeSearchResultAlwaysUseLegacyImage is true 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <a
+    href="/testnews1"
+    onClick={[Function]}
+  >
+    <img
+      className="foo"
+      height="130"
+      loading="eager"
+      src="/testnews1/@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg"
+      width="120"
+    />
+  </a>
+</a>
+`;
+
+exports[`ResultItemPreviewImage legacy image if image component not available on Volto 16 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <a
+    href="/testnews1"
+    onClick={[Function]}
+  >
+    <img
+      className="foo"
+      height="130"
+      loading="eager"
+      src="/testnews1/@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg"
+      width="120"
+    />
+  </a>
+</a>
+`;
+
 exports[`ResultItemPreviewImage normal with default props 1`] = `
 <a
   href="/testnews1"

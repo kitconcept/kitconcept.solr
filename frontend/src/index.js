@@ -32,6 +32,11 @@ const applyConfig = (config) => {
   config.views.contentTypeSearchResultDefaultView =
     searchResultItems.DefaultResultItem;
 
+  // The search results use the Volto Image component, unless it's not
+  // available, for example in Volto < 17. This flag, if set to true,
+  // forces the use of the legacy component in all cases.
+  config.settings.contentTypeSearchResultAlwaysUseLegacyImage = false;
+
   // Options for solr search which can be customized
   config.settings.solrSearchOptions = config.settings.solrSearchDefaultOptions = {
     searchAction: solrSearchContent,
