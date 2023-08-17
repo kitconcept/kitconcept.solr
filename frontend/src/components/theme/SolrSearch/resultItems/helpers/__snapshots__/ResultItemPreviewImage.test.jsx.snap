@@ -1,0 +1,211 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResultItemPreviewImage legacy image if contentTypeSearchResultAlwaysUseLegacyImage is true 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <a
+    href="/testnews1"
+    onClick={[Function]}
+  >
+    <img
+      className="foo"
+      height="130"
+      loading="eager"
+      src="/testnews1/@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg"
+      width="120"
+    />
+  </a>
+</a>
+`;
+
+exports[`ResultItemPreviewImage legacy image if image component not available on Volto 16 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <a
+    href="/testnews1"
+    onClick={[Function]}
+  >
+    <img
+      className="foo"
+      height="130"
+      loading="eager"
+      src="/testnews1/@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg"
+      width="120"
+    />
+  </a>
+</a>
+`;
+
+exports[`ResultItemPreviewImage normal with default props 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    className="previewImage"
+    height="125"
+    item={
+      Object {
+        "@id": "/testnews1",
+        "image_field": "preview_image",
+        "image_scales": Object {
+          "preview_image": Array [
+            Object {
+              "content-type": "image/jpeg",
+              "download": "@@images/preview_image-4000-5496e5d01152aa6661428d9e264d3757.jpeg",
+              "filename": "GOPR9639.JPG",
+              "height": 3000,
+              "scales": Object {
+                "great": Object {
+                  "download": "@@images/preview_image-1200-0723c41835b6498e598780419cc25a4f.jpeg",
+                  "height": 900,
+                  "width": 1200,
+                },
+                "huge": Object {
+                  "download": "@@images/preview_image-1600-7c8256769b8c48d0392c6a51ef34a139.jpeg",
+                  "height": 1200,
+                  "width": 1600,
+                },
+                "icon": Object {
+                  "download": "@@images/preview_image-32-e743dcfb64ce39b0660285a04e7f842b.jpeg",
+                  "height": 24,
+                  "width": 32,
+                },
+                "large": Object {
+                  "download": "@@images/preview_image-800-b30bff7dbaa62fc6aca82639c9f5ee97.jpeg",
+                  "height": 600,
+                  "width": 800,
+                },
+                "larger": Object {
+                  "download": "@@images/preview_image-1000-e97d87c2a35fdc6262f429262854faed.jpeg",
+                  "height": 750,
+                  "width": 1000,
+                },
+                "mini": Object {
+                  "download": "@@images/preview_image-200-2a8af40b17e1f5562607a1cf876244b1.jpeg",
+                  "height": 150,
+                  "width": 200,
+                },
+                "preview": Object {
+                  "download": "@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg",
+                  "height": 300,
+                  "width": 400,
+                },
+                "teaser": Object {
+                  "download": "@@images/preview_image-600-71895aac86b72d21dd0f2bad189871c3.jpeg",
+                  "height": 450,
+                  "width": 600,
+                },
+                "thumb": Object {
+                  "download": "@@images/preview_image-128-88f2831a9f099921f03d3244021b03ab.jpeg",
+                  "height": 96,
+                  "width": 128,
+                },
+                "tile": Object {
+                  "download": "@@images/preview_image-64-9ad26e8053451aec63586d66e111deb8.jpeg",
+                  "height": 48,
+                  "width": 64,
+                },
+              },
+              "size": 6446468,
+              "width": 4000,
+            },
+          ],
+        },
+      }
+    }
+    loading="lazy"
+    sizes="250px"
+    width="250"
+  />
+</a>
+`;
+
+exports[`ResultItemPreviewImage override via rest 1`] = `
+<a
+  href="/testnews1"
+  onClick={[Function]}
+>
+  <img
+    className="foo"
+    height="130"
+    item={
+      Object {
+        "@id": "/testnews1",
+        "image_field": "preview_image",
+        "image_scales": Object {
+          "preview_image": Array [
+            Object {
+              "content-type": "image/jpeg",
+              "download": "@@images/preview_image-4000-5496e5d01152aa6661428d9e264d3757.jpeg",
+              "filename": "GOPR9639.JPG",
+              "height": 3000,
+              "scales": Object {
+                "great": Object {
+                  "download": "@@images/preview_image-1200-0723c41835b6498e598780419cc25a4f.jpeg",
+                  "height": 900,
+                  "width": 1200,
+                },
+                "huge": Object {
+                  "download": "@@images/preview_image-1600-7c8256769b8c48d0392c6a51ef34a139.jpeg",
+                  "height": 1200,
+                  "width": 1600,
+                },
+                "icon": Object {
+                  "download": "@@images/preview_image-32-e743dcfb64ce39b0660285a04e7f842b.jpeg",
+                  "height": 24,
+                  "width": 32,
+                },
+                "large": Object {
+                  "download": "@@images/preview_image-800-b30bff7dbaa62fc6aca82639c9f5ee97.jpeg",
+                  "height": 600,
+                  "width": 800,
+                },
+                "larger": Object {
+                  "download": "@@images/preview_image-1000-e97d87c2a35fdc6262f429262854faed.jpeg",
+                  "height": 750,
+                  "width": 1000,
+                },
+                "mini": Object {
+                  "download": "@@images/preview_image-200-2a8af40b17e1f5562607a1cf876244b1.jpeg",
+                  "height": 150,
+                  "width": 200,
+                },
+                "preview": Object {
+                  "download": "@@images/preview_image-400-1a82684a51b55644eef2807c2761b711.jpeg",
+                  "height": 300,
+                  "width": 400,
+                },
+                "teaser": Object {
+                  "download": "@@images/preview_image-600-71895aac86b72d21dd0f2bad189871c3.jpeg",
+                  "height": 450,
+                  "width": 600,
+                },
+                "thumb": Object {
+                  "download": "@@images/preview_image-128-88f2831a9f099921f03d3244021b03ab.jpeg",
+                  "height": 96,
+                  "width": 128,
+                },
+                "tile": Object {
+                  "download": "@@images/preview_image-64-9ad26e8053451aec63586d66e111deb8.jpeg",
+                  "height": 48,
+                  "width": 64,
+                },
+              },
+              "size": 6446468,
+              "width": 4000,
+            },
+          ],
+        },
+      }
+    }
+    loading="eager"
+    sizes="100vw"
+    width="120"
+  />
+</a>
+`;
