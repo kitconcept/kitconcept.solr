@@ -75,7 +75,8 @@
     }
   },
   "devDependencies": {
-    "@plone/scripts": "^2.3.0"
+    "@plone/scripts": "^2.3.0",
+    "release-it": "^16.1.0"
   },
   "peerDependencies": {
     "@plone/volto": "^16.20.0 || ^17.0.0-alpha.4"
