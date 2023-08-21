@@ -26,53 +26,8 @@
     "url": "https://github.com/kitconcept/volto-blocks-grid/issues"
   },
   "homepage": "https://github.com/kitconcept/volto-blocks-grid#readme",
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.overrides",
-        "options": {
-          "parser": "less"
-        }
-      }
-    ]
-  },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-idiomatic-order"
-    ],
-    "plugins": [
-      "stylelint-prettier"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.less"
-        ],
-        "customSyntax": "postcss-less"
-      },
-      {
-        "files": [
-          "**/*.overrides"
-        ],
-        "customSyntax": "postcss-less"
-      }
-    ],
-    "rules": {
-      "prettier/prettier": true,
-      "rule-empty-line-before": [
-        "always-multi-line",
-        {
-          "except": [
-            "first-nested"
-          ],
-          "ignore": [
-            "after-comment"
-          ]
-        }
-      ]
-    }
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@plone/scripts": "^2.3.0",
