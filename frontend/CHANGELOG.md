@@ -8,6 +8,13 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0-alpha.2 (2023-08-21)
+
+### Feature
+
+- New result type icons @reekitconcept [#11](https://github.com/kitconcept/volto-solr/pull/11)
+
+
 ## 1.0.0-alpha.1 (2023-08-17)
 
 ### Feature
