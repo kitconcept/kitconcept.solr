@@ -1,0 +1,51 @@
+name: Plone 5.2 install - tests are currently not run
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8"]
+    steps:
+      # git checkout
+      - uses: actions/checkout@v2
+
+      # pin plone version (happens from make, but to be on the safe side)
+      - name: Pin plone 5.2
+        run: |
+          cp constraints-5.2.txt constraints.txt
+          cp requirements-5.2.txt requirements.txt
+
+      # python setup
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # python cache
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # plone install
+      - name: Install plone
+        run: make install-plone-5.2
+
+      # test
+      # XXX cannot run pytests, version conflict.
+      # - name: Run tests
+      #   run: bin/test

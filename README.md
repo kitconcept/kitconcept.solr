@@ -62,6 +62,12 @@ Also, add `kitconcept.solr` to your package's `configure.zcml` (or `dependencies
 <include package="kitconcept.solr" />
 ```
 
+#### Remark with Plone 6.0
+
+With Plone 6.0 you must add an additional dependency `"plone.restapi>=8.40.0"`.
+
+The package also keeps support with Plone 5.2 where `"plone.restapi>=8.21.2"` is a working version. It will not support image scales, but the package will work gracefully without displaying image previews in the search result list.
+
 ### Generic Setup
 
 To automatically enable this package when your add-on is installed, add the following line inside the package's `profiles/default/metadata.xml` `dependencies` element:
@@ -241,7 +247,6 @@ The development of this add-on has been kindly sponsored by [German Aerospace Ce
 
 <img alt="German Aerospace Center (DLR)" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/dlr.svg" style="background-color:white">
 <img alt="Forschungszentrum Jülich" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/fz-juelich.svg" style="background-color:white">
-
 
 Developed by [kitconcept](https://www.kitconcept.com/)
 
