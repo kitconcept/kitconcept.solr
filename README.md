@@ -201,6 +201,63 @@ Example value:
 
 If needed, the default [`kitconcept.solr.interfaces.IKitconceptSolrSettings`](./src/kitconcept/solr/profiles/default/registry/kitconcept.solr.interfaces.IKitconceptSolrSettings.xml) can be customized in the registry via GenericSetup.
 
+### Using reindex helpers
+
+Helpers for activate and reindex solr are importable from the package.
+
+Example for a reindex script that can be called from Makefile:
+
+```py
+from kitconcept.solr.reindex_helpers import activate_and_reindex
+from Testing.makerequest import makerequest
+from zope.site.hooks import setSite
+
+import sys
+import transaction
+
+
+if __name__ == "__main__":
+    app = makerequest(app)  # noQA
+
+    # Set site to Plone
+    site_id = "Plone"
+    portal = app.unrestrictedTraverse(site_id)
+    setSite(portal)
+
+    activate_and_reindex(portal, clear="--clear" in sys.argv)
+
+    transaction.commit()
+    app._p_jar.sync()
+```
+
+Example for an upgrade step that adds the `kitconcept.solr` package, and one that does the solr activation for the first time:
+
+```py
+from kitconcept.solr.reindex_helpers import activate_and_reindex
+from plone import api
+
+import logging
+
+
+logger = logging.getLogger("your_package_name_here")
+
+
+# We suggest to add two distinct upgrade step for the package installation
+# and the solr activation, in case of a failure this allows to
+# identify the problem easier.
+
+
+def install_kitconcept_solr(context):
+    st = api.portal.get_tool("portal_setup")
+    st.runAllImportStepsFromProfile("kitconcept.solr:default")
+    logger.info("Installed kitconcept.solr")
+
+
+def activate_and_reindex_solr(context):
+    activate_and_reindex(context)
+    logger.info("Activated and reindexed solr")
+```
+
 ### Update translations
 
 ```bash
