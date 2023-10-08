@@ -5,7 +5,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="kitconcept.solr site (kitconcept.solr)"
+      title="kitconcept.solr"
       description="Installs the kitconcept.solr add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/default"
@@ -14,7 +14,7 @@
 
   <genericsetup:registerProfile
       name="testing"
-      title="kitconcept.solr site (kitconcept.solr)"
+      title="kitconcept.solr (Testing)"
       description="Testing profile for kitconcept.solr tests"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/testing"
