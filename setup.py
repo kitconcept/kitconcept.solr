@@ -47,8 +47,9 @@ setup(
         "Tracker": "https://github.com/kitconcept/kitconcept.portal/issues",
     },
     install_requires=[
-        "Plone>=6.0.0",
-        "plone.restapi>=8.40.0",
+        "Plone>=5.2.0",
+        "plone.restapi",
+        #        "plone.restapi>=8.40.0",   # for Plone 6.0
         "plone.api",
         "setuptools",
         "collective.solr>=9.0.1",

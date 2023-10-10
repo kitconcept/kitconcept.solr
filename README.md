@@ -62,6 +62,12 @@ Also, add `kitconcept.solr` to your package's `configure.zcml` (or `dependencies
 <include package="kitconcept.solr" />
 ```
 
+#### Remark with Plone 6.0
+
+With Plone 6.0 you must add an additional dependency `"plone.restapi>=8.40.0"`.
+
+The package also keeps support with Plone 5.2 where `"plone.restapi>=8.21.2"` is a working version. It will not support image scales, but the package will work gracefully without displaying image previews in the search result list.
+
 ### Generic Setup
 
 To automatically enable this package when your add-on is installed, add the following line inside the package's `profiles/default/metadata.xml` `dependencies` element:
@@ -195,6 +201,63 @@ Example value:
 
 If needed, the default [`kitconcept.solr.interfaces.IKitconceptSolrSettings`](./src/kitconcept/solr/profiles/default/registry/kitconcept.solr.interfaces.IKitconceptSolrSettings.xml) can be customized in the registry via GenericSetup.
 
+### Using reindex helpers
+
+Helpers for activate and reindex solr are importable from the package.
+
+Example for a reindex script that can be called from Makefile:
+
+```py
+from kitconcept.solr.reindex_helpers import activate_and_reindex
+from Testing.makerequest import makerequest
+from zope.site.hooks import setSite
+
+import sys
+import transaction
+
+
+if __name__ == "__main__":
+    app = makerequest(app)  # noQA
+
+    # Set site to Plone
+    site_id = "Plone"
+    portal = app.unrestrictedTraverse(site_id)
+    setSite(portal)
+
+    activate_and_reindex(portal, clear="--clear" in sys.argv)
+
+    transaction.commit()
+    app._p_jar.sync()
+```
+
+Example for an upgrade step that adds the `kitconcept.solr` package, and one that does the solr activation for the first time:
+
+```py
+from kitconcept.solr.reindex_helpers import activate_and_reindex
+from plone import api
+
+import logging
+
+
+logger = logging.getLogger("your_package_name_here")
+
+
+# We suggest to add two distinct upgrade step for the package installation
+# and the solr activation, in case of a failure this allows to
+# identify the problem easier.
+
+
+def install_kitconcept_solr(context):
+    st = api.portal.get_tool("portal_setup")
+    st.runAllImportStepsFromProfile("kitconcept.solr:default")
+    logger.info("Installed kitconcept.solr")
+
+
+def activate_and_reindex_solr(context):
+    activate_and_reindex(context)
+    logger.info("Activated and reindexed solr")
+```
+
 ### Update translations
 
 ```bash
@@ -241,7 +304,6 @@ The development of this add-on has been kindly sponsored by [German Aerospace Ce
 
 <img alt="German Aerospace Center (DLR)" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/dlr.svg" style="background-color:white">
 <img alt="Forschungszentrum Jülich" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/fz-juelich.svg" style="background-color:white">
-
 
 Developed by [kitconcept](https://www.kitconcept.com/)
 
