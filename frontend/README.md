@@ -1,6 +1,16 @@
-# Volto add-on for Solr support
+# Volto Solr Plone Add-on
 
-This package has to be used together with the `volto-solr` back-end package.
+This add-on enhances Plone (Volto) with a Solr-based full-text search.
+
+This package has to be used together with the [`kitconcept.solr`](https://github.com/kitconcept/kitconcept.solr) back-end package.
+
+# Installation
+
+Go to your Volto frontend package and run:
+
+```
+yarn add @kitconcept/volto-solr
+```
 
 ## Configuration
 
