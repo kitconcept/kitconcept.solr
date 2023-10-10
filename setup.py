@@ -12,7 +12,7 @@ long_description = f"""
 
 setup(
     name="kitconcept.solr",
-    version="1.0.0a4.dev0",
+    version="1.0.0a4",
     description="An opinionated Solr integration for Plone",
     long_description=long_description,
     long_description_content_type="text/markdown",

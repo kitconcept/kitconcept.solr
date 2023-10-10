@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a4 (2023-10-10)
+
+
+### New features:
+
+- Support Plone 5.2 [@reekitconcept] [#17](https://github.com/kitconcept/kitconcept.solr/issues/17)
+
+
 ## 1.0.0a3 (2023-08-15)
 
 
