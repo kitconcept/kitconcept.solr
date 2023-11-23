@@ -54,3 +54,5 @@ requirements-mxdev.txt
 #  _your own configuration lines_
 #  """
 ##
+
+.DS_Store

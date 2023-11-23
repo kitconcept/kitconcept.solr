@@ -30,10 +30,14 @@ solr_config = {
         {
             "label": "News Items",
             "filter": 'Type:("News Item")',
+            "layouts": ["list", "grid"],
+            "facetFields": ["contact_phone", "contact_email"],
         },
         {
             "label": "Pages and News Items",
             "filter": 'Type:(Page OR "News Item")',
+            "layouts": ["grid"],
+            "facetFields": ["contact_email"],
         },
     ],
 }
@@ -94,3 +98,22 @@ class TestUtilsFieldList(TestUtils):
             self.solr_config.field_list
             == "UID,Title,Description,Type,effective,start,created,end,path_string,phone,email,location"
         )
+
+
+class TestUtilsSelectLayouts(TestUtils):
+    def test_select_layouts(self):
+        assert self.solr_config.select_layouts(0) == None
+        assert self.solr_config.select_layouts(1) == None
+        assert self.solr_config.select_layouts(2) == ["list", "grid"]
+        assert self.solr_config.select_layouts(3) == ["grid"]
+
+
+class TestUtilsSelectFacetFields(TestUtils):
+    def test_select_facet_fields(self):
+        assert self.solr_config.select_facet_fields(0) == []
+        assert self.solr_config.select_facet_fields(1) == []
+        assert self.solr_config.select_facet_fields(2) == [
+            "contact_phone",
+            "contact_email",
+        ]
+        assert self.solr_config.select_facet_fields(3) == ["contact_email"]

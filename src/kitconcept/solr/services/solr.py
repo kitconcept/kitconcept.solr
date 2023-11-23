@@ -2,6 +2,10 @@ from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
 from itertools import zip_longest
+from kitconcept.solr.services.solr_utils import escape
+from kitconcept.solr.services.solr_utils import FacetConditions
+from kitconcept.solr.services.solr_utils import get_facet_fields_result
+from kitconcept.solr.services.solr_utils import replace_reserved
 from kitconcept.solr.services.solr_utils import SolrConfig
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
@@ -15,36 +19,6 @@ from zope.interface import alsoProvides
 import json
 import plone.protect.interfaces
 import re
-
-
-SPECIAL_CHARS = [
-    "+",
-    "-",
-    #    "&&",
-    #    "||",
-    "&",
-    "|",
-    "!",
-    "(",
-    ")",
-    "{",
-    "}",
-    "[",
-    "]",
-    "^",
-    '"',
-    "~",
-    "*",
-    "?",
-    ":",
-    "/",
-]
-
-
-def escape(term):
-    for char in SPECIAL_CHARS:
-        term = term.replace(char, "\\" + char)
-    return term
 
 
 def security_filter():
@@ -96,6 +70,10 @@ class SolrSearch(Service):
         portal_path_segments = portal.getPhysicalPath()
         portal_path = "/".join(portal_path_segments)
 
+        facet_conditions = FacetConditions.from_encoded(
+            self.request.form.get("facet_conditions", None)
+        )
+
         if not query:
             raise BadRequest("Property 'q' is required")
 
@@ -112,13 +90,30 @@ class SolrSearch(Service):
                 "Property 'lang` and `is_multilingual` are mutually exclusive"
             )
 
+        if group_select is not None:
+            try:
+                group_select = int(group_select)
+            except ValueError:
+                raise BadRequest(
+                    "Property 'group_select` must be an integer, if specified"
+                )
+
+        facet_fields = (
+            solr_config.select_facet_fields(group_select)
+            if group_select is not None
+            else []
+        )
+
         # Get the solr connection
         manager = queryUtility(ISolrConnectionManager)
         manager.setSearchTimeout()
         connection = manager.getConnection()
 
-        # XXX: we need to filter the query to avoid injection attacks
-        term = escape(query)
+        # Note that both escaping and lowercasing reserved words is essential
+        # against injection attacks.
+        # We only lowercase AND, OR, NOT, but keep e.g. and or And
+        # Also only lowercase a full word, and keep OReo intact.
+        term = "(" + escape(replace_reserved(query)) + ")"
 
         # Search
         #  q: query parameter
@@ -155,7 +150,17 @@ class SolrSearch(Service):
             "fq": [security_filter()],
             "fl": solr_config.field_list,
             "facet": "true",
+            "facet.field": list(
+                map(
+                    lambda info: (
+                        "{!ex=conditionfilter}" if facet_conditions.solr else ""
+                    )
+                    + info["name"],
+                    facet_fields,
+                )
+            ),
         }
+
         if start is not None:
             d["start"] = start
         if rows is not None:
@@ -163,7 +168,7 @@ class SolrSearch(Service):
         if sort is not None:
             d["sort"] = sort
         if group_select is not None:
-            d["fq"] = d["fq"] + [solr_config.select_condition(int(group_select))]
+            d["fq"] = d["fq"] + [solr_config.select_condition(group_select)]
         d["facet.query"] = solr_config.facet_query
         if path_prefix:
             is_excluding = re_is_excluding.search(path_prefix)
@@ -217,6 +222,10 @@ class SolrSearch(Service):
             ]
         if lang:
             d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
+        if facet_conditions.solr:
+            d["fq"] = d["fq"] + ["{!tag=conditionfilter}" + facet_conditions.solr]
+        d.update(facet_conditions.prefix_query)
+        d.update(facet_conditions.more_query(facet_fields, multiplier=2))
 
         raw_result = connection.search(**d).read()
 
@@ -234,7 +243,16 @@ class SolrSearch(Service):
                 solr_config.labels, result["facet_counts"]["facet_queries"].values()
             )
         )
+        result["facet_fields"] = get_facet_fields_result(
+            result["facet_counts"]["facet_fields"],
+            facet_fields,
+            facet_conditions.more_dict(facet_fields, multiplier=1),
+        )
         # Solr response is pruned of the unnecessary parts, unless explicitly requested.
         if not keep_full_solr_response:
             del result["facet_counts"]
+        # Embellish result with supplemental information for the front-end
+        if group_select is not None:
+            layouts = solr_config.select_layouts(group_select)
+            result["layouts"] = layouts
         return result
