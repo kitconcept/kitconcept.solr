@@ -1,4 +1,5 @@
 """Module where all interfaces, events and exceptions live."""
+
 from kitconcept.solr import _
 from plone.schema import JSONField
 from zope.interface import Interface
@@ -64,7 +65,9 @@ DEFAULT_CONFIG = {
 class IKitconceptSolrSettings(Interface):
     config = JSONField(
         title=_("label_solr_config", default="Solr Config"),
-        description=_("help_solr_config", default="Solr endpoint configuration"),
+        description=_(
+            "help_solr_config", default="Solr endpoint configuration"
+        ),
         required=True,
         schema=CONFIG_SCHEMA,
         default=DEFAULT_CONFIG,

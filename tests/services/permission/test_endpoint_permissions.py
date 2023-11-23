@@ -44,7 +44,12 @@ class TestEndpointPermsAll(TestEndpointPerms):
         ],
     )
     def test_paths(
-        self, api_request, all_path_string, role: str, path: str, expected: bool
+        self,
+        api_request,
+        all_path_string,
+        role: str,
+        path: str,
+        expected: bool,
     ):
         data = api_request(role).get(self.url).json()
         path_strings = all_path_string(data)
@@ -71,7 +76,12 @@ class TestEndpointPermsGroup0(TestEndpointPerms):
         ],
     )
     def test_paths(
-        self, api_request, all_path_string, role: str, path: str, expected: bool
+        self,
+        api_request,
+        all_path_string,
+        role: str,
+        path: str,
+        expected: bool,
     ):
         data = api_request(role).get(self.url).json()
         path_strings = all_path_string(data)
@@ -98,7 +108,12 @@ class TestEndpointPermsGroup3(TestEndpointPerms):
         ],
     )
     def test_paths(
-        self, api_request, all_path_string, role: str, path: str, expected: bool
+        self,
+        api_request,
+        all_path_string,
+        role: str,
+        path: str,
+        expected: bool,
     ):
         data = api_request(role).get(self.url).json()
         path_strings = all_path_string(data)
@@ -125,7 +140,12 @@ class TestEndpointPermsGroup4(TestEndpointPerms):
         ],
     )
     def test_paths(
-        self, api_request, all_path_string, role: str, path: str, expected: bool
+        self,
+        api_request,
+        all_path_string,
+        role: str,
+        path: str,
+        expected: bool,
     ):
         data = api_request(role).get(self.url).json()
         path_strings = all_path_string(data)
@@ -152,7 +172,12 @@ class TestEndpointPermsGroup5(TestEndpointPerms):
         ],
     )
     def test_paths(
-        self, api_request, all_path_string, role: str, path: str, expected: bool
+        self,
+        api_request,
+        all_path_string,
+        role: str,
+        path: str,
+        expected: bool,
     ):
         data = api_request(role).get(self.url).json()
         path_strings = all_path_string(data)

@@ -61,6 +61,7 @@ profile = "plone"
 
 [tool.black]
 target-version = ["py38"]
+line_length = 79
 
 ##
 # Add extra configuration options in .meta.toml:

@@ -49,8 +49,6 @@ class TestSetupInstall:
             "end",
             "path_string",
             "mime_type",
-            "phone",
-            "email",
             "location",
             "image_scales",
             "image_field",
@@ -65,6 +63,6 @@ class TestSetupInstall:
         key = "kitconcept.solr.config"
         config = api.portal.get_registry_record(key, default=None)
         values = config["searchTabs"]
-        assert len(values) == 5
+        assert len(values) == 6
         assert values[0]["label"] == "All"
         assert values[0]["filter"] == "Type(*)"
