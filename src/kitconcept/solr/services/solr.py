@@ -47,6 +47,10 @@ def escape(term):
     return term
 
 
+def replace_colon(term):
+    return term.replace(":", "$")
+
+
 def security_filter():
     user = getSecurityManager().getUser()
     roles = user.getRoles()
@@ -60,7 +64,10 @@ def security_filter():
             roles = roles + groups
     roles.append("user:%s" % user.getId())
     # Roles with spaces need to be quoted
-    roles = ['"%s"' % escape(r) if " " in r else escape(r) for r in roles]
+    roles = [
+        '"%s"' % escape(replace_colon(r)) if " " in r else escape(replace_colon(r))
+        for r in roles
+    ]
     return "allowedRolesAndUsers:(%s)" % " OR ".join(roles)
 
 
