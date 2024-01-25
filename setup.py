@@ -53,7 +53,6 @@ setup(
         "plone.api",
         "setuptools",
         "collective.solr>=9.0.1",
-        "collective.contact_behaviors",
     ],
     extras_require={
         "test": [
