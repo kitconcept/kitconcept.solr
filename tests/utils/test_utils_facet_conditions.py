@@ -3,7 +3,6 @@ from kitconcept.solr.services.solr_utils import get_facet_fields_result
 
 import base64
 import json
-import pytest
 
 
 def encoded(o):
@@ -81,12 +80,12 @@ class TestUtilsFacetConditionsSolr:
         c = FacetConditions.from_encoded(encoded(o))
         assert c.solr == '(field1:"foo") OR (field1:"bar")'
 
-    def test_collapses_parent_and(self):
+    def test_collapses_parent_and_case2(self):
         o = {"field1": {"c": {"foo": True, "bar": True}}, "field2": {"c": {}}}
         c = FacetConditions.from_encoded(encoded(o))
         assert c.solr == '(field1:"foo") OR (field1:"bar")'
 
-    def test_collapses_parent_and_case2(self):
+    def test_collapses_parent_and_case3(self):
         o = {"field1": {"c": {"foo": True, "bar": True}}, "field2": {}}
         c = FacetConditions.from_encoded(encoded(o))
         assert c.solr == '(field1:"foo") OR (field1:"bar")'

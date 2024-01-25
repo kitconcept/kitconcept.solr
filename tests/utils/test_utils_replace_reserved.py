@@ -1,7 +1,5 @@
 from kitconcept.solr.services.solr_utils import replace_reserved
 
-import pytest
-
 
 class TestUtilsReplaceReserved:
     def test_replace_reserved_and(self):

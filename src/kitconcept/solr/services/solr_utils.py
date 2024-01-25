@@ -62,7 +62,10 @@ class SolrConfig:
     @property
     def labels(self):
         labels = list(
-            map(lambda item: item.get("label", ""), self.config.get("searchTabs", []))
+            map(
+                lambda item: item.get("label", ""),
+                self.config.get("searchTabs", []),
+            )
         )
         if len(labels) == 0:
             raise SolrConfigError(
@@ -169,7 +172,10 @@ class FacetConditions:
             filter(
                 lambda item: item[1],
                 map(
-                    lambda item: (f"f.{item[0]}.facet.prefix", item[1].get("p", "")),
+                    lambda item: (
+                        f"f.{item[0]}.facet.prefix",
+                        item[1].get("p", ""),
+                    ),
                     self.config.items(),
                 ),
             )
@@ -180,9 +186,11 @@ class FacetConditions:
             map(
                 lambda field: (
                     f"f.{field['name']}.facet.limit",
-                    multiplier * self.limit_more
-                    if self.config.get(field["name"], {}).get("m", False)
-                    else multiplier * self.limit_less,
+                    (
+                        multiplier * self.limit_more
+                        if self.config.get(field["name"], {}).get("m", False)
+                        else multiplier * self.limit_less
+                    ),
                 ),
                 facet_fields,
             )
@@ -193,9 +201,11 @@ class FacetConditions:
             map(
                 lambda field: (
                     field["name"],
-                    multiplier * self.limit_more
-                    if self.config.get(field["name"], {}).get("m", False)
-                    else multiplier * self.limit_less,
+                    (
+                        multiplier * self.limit_more
+                        if self.config.get(field["name"], {}).get("m", False)
+                        else multiplier * self.limit_less
+                    ),
                 ),
                 facet_fields,
             )

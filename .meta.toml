@@ -22,6 +22,9 @@ extra_lines = """
 [tool.coverage.run]
 omit = ["*/locales/*"]
 """
+black_extra_lines = """
+line_length = 79
+"""
 
 [gitignore]
 extra_lines = """

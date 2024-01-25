@@ -1,4 +1,5 @@
 """Module where all interfaces, events and exceptions live."""
+
 from kitconcept.solr import _
 from plone.schema import JSONField
 from zope.interface import Interface

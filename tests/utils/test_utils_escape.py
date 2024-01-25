@@ -1,7 +1,5 @@
 from kitconcept.solr.services.solr_utils import escape
 
-import pytest
-
 
 class TestUtilsEscape:
     def test_escape_plus(self):

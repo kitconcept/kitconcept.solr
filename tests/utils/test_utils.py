@@ -102,8 +102,8 @@ class TestUtilsFieldList(TestUtils):
 
 class TestUtilsSelectLayouts(TestUtils):
     def test_select_layouts(self):
-        assert self.solr_config.select_layouts(0) == None
-        assert self.solr_config.select_layouts(1) == None
+        assert self.solr_config.select_layouts(0) is None
+        assert self.solr_config.select_layouts(1) is None
         assert self.solr_config.select_layouts(2) == ["list", "grid"]
         assert self.solr_config.select_layouts(3) == ["grid"]
 

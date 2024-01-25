@@ -240,7 +240,8 @@ class SolrSearch(Service):
         # Also add the faces labels next to the corresponding counts.
         result["facet_groups"] = list(
             zip_longest(
-                solr_config.labels, result["facet_counts"]["facet_queries"].values()
+                solr_config.labels,
+                result["facet_counts"]["facet_queries"].values(),
             )
         )
         result["facet_fields"] = get_facet_fields_result(
