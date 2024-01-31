@@ -47,7 +47,9 @@ class SolrSearch(Service):
         solr_config = SolrConfig()
         # Disable CSRF protection
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
-            alsoProvides(self.request, plone.protect.interfaces.IDisableCSRFProtection)
+            alsoProvides(
+                self.request, plone.protect.interfaces.IDisableCSRFProtection
+            )
 
         query = self.request.form.get("q", None)
         start = self.request.form.get("start", None)
@@ -58,7 +60,8 @@ class SolrSearch(Service):
         portal_type = self.request.form.get("portal_type", None)
         lang = self.request.form.get("lang", None)
         keep_full_solr_response = (
-            self.request.form.get("keep_full_solr_response", "").lower() == "true"
+            self.request.form.get("keep_full_solr_response", "").lower()
+            == "true"
         )
 
         # search in multilingual path_prefix by default - unless lang is specified
@@ -82,7 +85,9 @@ class SolrSearch(Service):
             # used as default, in case path_prefix is undefined.
             context_path_segments = self.context.getPhysicalPath()
             # Acuqire relative path
-            path_prefix_segments = context_path_segments[len(portal_path_segments) :]
+            path_prefix_segments = context_path_segments[
+                len(portal_path_segments) :
+            ]
             path_prefix = "/".join(path_prefix_segments)
 
         if lang and is_multilingual:
@@ -153,7 +158,9 @@ class SolrSearch(Service):
             "facet.field": list(
                 map(
                     lambda info: (
-                        "{!ex=conditionfilter}" if facet_conditions.solr else ""
+                        "{!ex=conditionfilter}"
+                        if facet_conditions.solr
+                        else ""
                     )
                     + info["name"],
                     facet_fields,
@@ -184,7 +191,9 @@ class SolrSearch(Service):
                 else:
                     # Untranslated
                     translations = [folder]
-                path_list = map(lambda o: "/".join(o.getPhysicalPath()), translations)
+                path_list = map(
+                    lambda o: "/".join(o.getPhysicalPath()), translations
+                )
             else:
                 # Not multilingual. Search stricly in the given path.
                 if is_excluding:
@@ -194,7 +203,8 @@ class SolrSearch(Service):
                 # Expressions with a trailing / will exclude the
                 # parent folder and include everything else.
                 path_expr = reduce(
-                    lambda sum, path: sum + [f"path_string:{escape(path + '/')}*"],
+                    lambda sum, path: sum
+                    + [f"path_string:{escape(path + '/')}*"],
                     path_list,
                     [],
                 )
@@ -217,13 +227,17 @@ class SolrSearch(Service):
             # Convert to Type condition.
             d["fq"] = d["fq"] + [
                 "Type:("
-                + " OR ".join(map(lambda txt: '"' + escape(txt) + '"', portal_type))
+                + " OR ".join(
+                    map(lambda txt: '"' + escape(txt) + '"', portal_type)
+                )
                 + ")"
             ]
         if lang:
             d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
         if facet_conditions.solr:
-            d["fq"] = d["fq"] + ["{!tag=conditionfilter}" + facet_conditions.solr]
+            d["fq"] = d["fq"] + [
+                "{!tag=conditionfilter}" + facet_conditions.solr
+            ]
         d.update(facet_conditions.prefix_query)
         d.update(facet_conditions.more_query(facet_fields, multiplier=2))
 

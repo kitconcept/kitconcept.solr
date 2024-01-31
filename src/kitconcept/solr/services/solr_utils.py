@@ -56,8 +56,12 @@ class SolrConfig:
         self.config = api.portal.get_registry_record("kitconcept.solr.config")
         search_tabs = self.config.get("searchTabs", [])
         self.filters = [item["filter"] for item in search_tabs]
-        self.listOflayouts = [item.get("layouts", None) for item in search_tabs]
-        self.listOfFacetFields = [item.get("facetFields", []) for item in search_tabs]
+        self.listOflayouts = [
+            item.get("layouts", None) for item in search_tabs
+        ]
+        self.listOfFacetFields = [
+            item.get("facetFields", []) for item in search_tabs
+        ]
 
     @property
     def labels(self):
@@ -124,7 +128,11 @@ class FacetConditions:
     @staticmethod
     def value_condition(field_name: str, value: str, selected: bool):
         return (
-            (f'{field_name}:"{escape(value)}"' if value else f'{field_name}:["" TO *]')
+            (
+                f'{field_name}:"{escape(value)}"'
+                if value
+                else f'{field_name}:["" TO *]'
+            )
             if selected
             else None
         )
@@ -134,7 +142,9 @@ class FacetConditions:
         return filter(
             lambda condition: condition is not None,
             map(
-                lambda item: self.value_condition(field_name, item[0], item[1]),
+                lambda item: self.value_condition(
+                    field_name, item[0], item[1]
+                ),
                 field.get("c", {}).items(),
             ),
         )
