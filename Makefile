@@ -171,3 +171,7 @@ solr-stop: test-compose-project-name ## Stop solr
 solr-logs: test-compose-project-name ## Show solr logs
 	@echo "Show solr logs"
 	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
+
+.PHONY: release
+release: ## make a new release
+	bin/fullrelease
