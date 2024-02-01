@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a5 (2024-02-01)
+
+
+### Bug fixes:
+
+- Fix generic setup profile titles @tisto [#18](https://github.com/kitconcept/kitconcept.solr/issues/18)
+
+
 ## 1.0.0a4 (2023-10-10)
 
 
