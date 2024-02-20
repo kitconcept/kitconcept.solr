@@ -1,8 +1,8 @@
-import { FormattedMessage } from 'react-intl';
-import messages from './solr-facets-i18n';
+import { useIntl } from 'react-intl';
 
 export const SearchTabs = ({ groupSelect, setGroupSelect, facetGroups }) => {
   facetGroups = facetGroups || [];
+  const intl = useIntl();
   return (
     <div className="searchTabs ui top attached tabular menu">
       {facetGroups.map(([label, counter], index) => {
@@ -22,11 +22,7 @@ export const SearchTabs = ({ groupSelect, setGroupSelect, facetGroups }) => {
             }
           >
             <span>
-              {messages[label] ? (
-                <FormattedMessage {...messages[label]} />
-              ) : (
-                label
-              )}
+              {intl.formatMessage({ id: label, defaultMessage: label })}
               <span
                 className={
                   'searchCounter ui circular label ' +
