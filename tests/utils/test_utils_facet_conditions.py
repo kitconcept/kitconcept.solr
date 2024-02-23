@@ -22,6 +22,22 @@ class TestUtilsFacetConditionsSolr:
         c = FacetConditions.from_encoded(None)
         assert c.config == {}
 
+    def test_create_ignores_error_unicode(self):
+        c = FacetConditions.from_encoded(
+            base64.b64encode('{"foo": "Atommüll"}'.encode("latin1")).decode(
+                "ascii"
+            )
+        )
+        assert c.config == {}
+
+    def test_create_ignores_error_json(self):
+        c = FacetConditions.from_encoded(
+            base64.b64encode(b'{"foo": what is this, surely not json?').decode(
+                "ascii"
+            )
+        )
+        assert c.config == {}
+
     def test_solr(self):
         o = {
             "field1": {"c": {"foo": True, "bar": True}},
@@ -55,7 +71,9 @@ class TestUtilsFacetConditionsSolr:
             "field2": {"c": {"baz": True}},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
+        assert (
+            c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
+        )
 
     def test_collapses_parent_or_with_false(self):
         o = {
@@ -63,7 +81,9 @@ class TestUtilsFacetConditionsSolr:
             "field2": {"c": {"baz": True, "bae": False}},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
+        assert (
+            c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
+        )
 
     def test_collapses_parent_and(self):
         o = {
@@ -170,7 +190,8 @@ class TestUtilsFacetConditionsMoreQuery:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_query(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
             "f.field2.facet.limit": 10,
@@ -184,7 +205,8 @@ class TestUtilsFacetConditionsMoreQuery:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_query(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
             "f.field2.facet.limit": 10,
@@ -198,7 +220,8 @@ class TestUtilsFacetConditionsMoreQuery:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_query(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
             "f.field2.facet.limit": 10,
@@ -211,7 +234,8 @@ class TestUtilsFacetConditionsMoreQuery:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_query(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "f.field1.facet.limit": 10,
             "f.field2.facet.limit": 10,
@@ -239,7 +263,8 @@ class TestUtilsFacetConditionsMoreDict:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_dict(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "field1": 200,
             "field2": 10,
@@ -253,7 +278,8 @@ class TestUtilsFacetConditionsMoreDict:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_dict(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "field1": 200,
             "field2": 10,
@@ -267,7 +293,8 @@ class TestUtilsFacetConditionsMoreDict:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_dict(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "field1": 200,
             "field2": 10,
@@ -280,7 +307,8 @@ class TestUtilsFacetConditionsMoreDict:
         }
         c = FacetConditions.from_encoded(encoded(o))
         assert c.more_dict(
-            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}], multiplier=2
+            [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
+            multiplier=2,
         ) == {
             "field1": 10,
             "field2": 10,
@@ -381,7 +409,18 @@ class TestUtilsGetFacetFieldsResult:
 
     def test_field_results_moredict_limits(self):
         raw_facet_fields_result = {
-            "field1": ["foo", 3, "\x01oof", 3, "bar", 2, "\x01rab", 10, "bax", 1],
+            "field1": [
+                "foo",
+                3,
+                "\x01oof",
+                3,
+                "bar",
+                2,
+                "\x01rab",
+                10,
+                "bax",
+                1,
+            ],
             "field2": ["baz", 1, "baba", 1],
             "field3": ["ignored", 1],
         }
@@ -393,6 +432,9 @@ class TestUtilsGetFacetFieldsResult:
         assert get_facet_fields_result(
             raw_facet_fields_result, facet_fields, more_dict
         ) == [
-            ({"name": "field1", "label": "x"}, [("foo", 3), ("bar", 2), ("bax", 1)]),
+            (
+                {"name": "field1", "label": "x"},
+                [("foo", 3), ("bar", 2), ("bax", 1)],
+            ),
             ({"name": "field2", "label": "y"}, [("baz", 1)]),
         ]

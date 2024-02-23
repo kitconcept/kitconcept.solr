@@ -3,7 +3,12 @@ from typing import List
 
 import base64
 import json
+import logging
 import re
+
+
+logger = logging.getLogger("kitconcept.solr")
+logger.setLevel(logging.DEBUG)
 
 
 SPECIAL_CHARS = [
@@ -120,7 +125,13 @@ class FacetConditions:
     @classmethod
     def from_encoded(cls, raw: str):
         if raw is not None:
-            config = json.loads(base64.b64decode(raw))
+            try:
+                config = json.loads(base64.b64decode(raw))
+            except (UnicodeDecodeError, json.decoder.JSONDecodeError):
+                logger.warning(
+                    "Ignoring invalid base64 encoded string", exc_info=True
+                )
+                config = {}
         else:
             config = {}
         return cls(config)
