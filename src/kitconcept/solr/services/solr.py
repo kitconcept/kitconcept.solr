@@ -155,6 +155,7 @@ class SolrSearch(Service):
             "fq": [security_filter()],
             "fl": solr_config.field_list,
             "facet": "true",
+            "facet.contains.ignoreCase": "true",
             "facet.field": list(
                 map(
                     lambda info: (
