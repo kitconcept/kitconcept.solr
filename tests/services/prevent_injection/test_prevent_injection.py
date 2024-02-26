@@ -61,7 +61,9 @@ class TestMixedCaseOperatorsAreNotLowercasedStandalone(TestPreventInjection):
         assert (path in path_strings) is expected
 
 
-class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly(TestPreventInjection):
+class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly(
+    TestPreventInjection
+):
     url = "/@solr?q=ANDoR"
 
     @pytest.mark.parametrize(
@@ -77,7 +79,9 @@ class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly(TestPreventInjection
         assert (path in path_strings) is expected
 
 
-class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly2(TestPreventInjection):
+class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly2(
+    TestPreventInjection
+):
     url = "/@solr?q=ANdOR"
 
     @pytest.mark.parametrize(
@@ -93,7 +97,9 @@ class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly2(TestPreventInjectio
         assert (path in path_strings) is expected
 
 
-class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly3(TestPreventInjection):
+class TestMixedCaseOperatorsAreNotLowercasedIfContainedOnly3(
+    TestPreventInjection
+):
     url = "/@solr?q=OReo"
 
     @pytest.mark.parametrize(

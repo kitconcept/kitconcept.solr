@@ -64,7 +64,9 @@ class TestEndpointPortalTypeMultiple(TestEndpointPortalType):
 
 
 class TestEndpointPortalTypeMultipleWithSpace(TestEndpointPortalType):
-    url = "/@solr?q=blue&portal_type:list=News Item&portal_type:list=News%20Item"
+    url = (
+        "/@solr?q=blue&portal_type:list=News Item&portal_type:list=News%20Item"
+    )
 
     @pytest.mark.parametrize(
         "path,expected",
