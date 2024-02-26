@@ -188,13 +188,13 @@ class FacetConditions:
         )
 
     @property
-    def prefix_query(self):
+    def contains_query(self):
         return dict(
             filter(
                 lambda item: item[1],
                 map(
                     lambda item: (
-                        f"f.{item[0]}.facet.prefix",
+                        f"f.{item[0]}.facet.contains",
                         item[1].get("p", ""),
                     ),
                     self.config.items(),

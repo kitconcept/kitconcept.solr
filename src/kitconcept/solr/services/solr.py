@@ -238,7 +238,7 @@ class SolrSearch(Service):
             d["fq"] = d["fq"] + [
                 "{!tag=conditionfilter}" + facet_conditions.solr
             ]
-        d.update(facet_conditions.prefix_query)
+        d.update(facet_conditions.contains_query)
         d.update(facet_conditions.more_query(facet_fields, multiplier=2))
 
         raw_result = connection.search(**d).read()

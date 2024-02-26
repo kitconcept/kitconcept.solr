@@ -141,9 +141,9 @@ class TestUtilsFacetConditionsPrefixQuery:
             "field2": {"p": "pre2"},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.prefix_query == {
-            "f.field1.facet.prefix": "pre1",
-            "f.field2.facet.prefix": "pre2",
+        assert c.contains_query == {
+            "f.field1.facet.contains": "pre1",
+            "f.field2.facet.contains": "pre2",
         }
 
     def test_empty_field(self):
@@ -152,7 +152,7 @@ class TestUtilsFacetConditionsPrefixQuery:
             "field2": {},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.prefix_query == {"f.field1.facet.prefix": "pre1"}
+        assert c.contains_query == {"f.field1.facet.contains": "pre1"}
 
     def test_empty_field_case2(self):
         o = {
@@ -160,14 +160,14 @@ class TestUtilsFacetConditionsPrefixQuery:
             "field2": {"c": {"baz": True, "": True}},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.prefix_query == {"f.field1.facet.prefix": "pre1"}
+        assert c.contains_query == {"f.field1.facet.contains": "pre1"}
 
     def test_all_empty(self):
         o = {
             "field2": {"c": {"baz": True, "": True}},
         }
         c = FacetConditions.from_encoded(encoded(o))
-        assert c.prefix_query == {}
+        assert c.contains_query == {}
 
 
 class TestUtilsFacetConditionsMoreQuery:
