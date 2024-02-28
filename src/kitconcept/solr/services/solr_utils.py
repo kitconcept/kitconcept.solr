@@ -120,6 +120,7 @@ class SolrConfig:
 
 class FacetConditions:
     config: dict
+    # The limits are hardcoded ATM and limit_less MUST match the on the client.
     limit_less: int = 5
     limit_more: int = 100
 
@@ -214,7 +215,7 @@ class FacetConditions:
                     (
                         multiplier * self.limit_more
                         if self.config.get(field["name"], {}).get("m", False)
-                        else multiplier * self.limit_less
+                        else multiplier * (self.limit_less + 1)
                     ),
                 ),
                 facet_fields,
@@ -229,7 +230,7 @@ class FacetConditions:
                     (
                         multiplier * self.limit_more
                         if self.config.get(field["name"], {}).get("m", False)
-                        else multiplier * self.limit_less
+                        else multiplier * (self.limit_less + 1)
                     ),
                 ),
                 facet_fields,
