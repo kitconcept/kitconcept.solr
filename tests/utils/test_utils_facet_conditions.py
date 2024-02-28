@@ -194,8 +194,8 @@ class TestUtilsFacetConditionsMoreQuery:
             multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
-            "f.field2.facet.limit": 10,
-            "f.field3.facet.limit": 10,
+            "f.field2.facet.limit": 12,
+            "f.field3.facet.limit": 12,
         }
 
     def test_empty_field(self):
@@ -209,8 +209,8 @@ class TestUtilsFacetConditionsMoreQuery:
             multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
-            "f.field2.facet.limit": 10,
-            "f.field3.facet.limit": 10,
+            "f.field2.facet.limit": 12,
+            "f.field3.facet.limit": 12,
         }
 
     def test_empty_field_case2(self):
@@ -224,8 +224,8 @@ class TestUtilsFacetConditionsMoreQuery:
             multiplier=2,
         ) == {
             "f.field1.facet.limit": 200,
-            "f.field2.facet.limit": 10,
-            "f.field3.facet.limit": 10,
+            "f.field2.facet.limit": 12,
+            "f.field3.facet.limit": 12,
         }
 
     def test_all_empty(self):
@@ -237,9 +237,9 @@ class TestUtilsFacetConditionsMoreQuery:
             [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
             multiplier=2,
         ) == {
-            "f.field1.facet.limit": 10,
-            "f.field2.facet.limit": 10,
-            "f.field3.facet.limit": 10,
+            "f.field1.facet.limit": 12,
+            "f.field2.facet.limit": 12,
+            "f.field3.facet.limit": 12,
         }
 
 
@@ -267,8 +267,8 @@ class TestUtilsFacetConditionsMoreDict:
             multiplier=2,
         ) == {
             "field1": 200,
-            "field2": 10,
-            "field3": 10,
+            "field2": 12,
+            "field3": 12,
         }
 
     def test_empty_field(self):
@@ -282,8 +282,8 @@ class TestUtilsFacetConditionsMoreDict:
             multiplier=2,
         ) == {
             "field1": 200,
-            "field2": 10,
-            "field3": 10,
+            "field2": 12,
+            "field3": 12,
         }
 
     def test_empty_field_case2(self):
@@ -297,8 +297,8 @@ class TestUtilsFacetConditionsMoreDict:
             multiplier=2,
         ) == {
             "field1": 200,
-            "field2": 10,
-            "field3": 10,
+            "field2": 12,
+            "field3": 12,
         }
 
     def test_all_empty(self):
@@ -310,9 +310,9 @@ class TestUtilsFacetConditionsMoreDict:
             [{"name": "field1"}, {"name": "field2"}, {"name": "field3"}],
             multiplier=2,
         ) == {
-            "field1": 10,
-            "field2": 10,
-            "field3": 10,
+            "field1": 12,
+            "field2": 12,
+            "field3": 12,
         }
 
 
@@ -355,7 +355,7 @@ class TestUtilsGetFacetFieldsResult:
 
     def test_field_results_ignores_empty_value(self):
         raw_facet_fields_result = {
-            "field1": ["foo", 3, "bar", 2, "", 10],
+            "field1": ["foo", 3, "bar", 2, "", 12],
             "field2": ["baz", 1],
             "field3": ["ignored", 1],
         }
@@ -373,7 +373,7 @@ class TestUtilsGetFacetFieldsResult:
 
     def test_field_results_ignores_none_value(self):
         raw_facet_fields_result = {
-            "field1": ["foo", 3, "bar", 2, None, 10],
+            "field1": ["foo", 3, "bar", 2, None, 12],
             "field2": ["baz", 1],
             "field3": ["ignored", 1],
         }
@@ -391,7 +391,7 @@ class TestUtilsGetFacetFieldsResult:
 
     def test_field_results_ignores_reverse_value(self):
         raw_facet_fields_result = {
-            "field1": ["foo", 3, "bar", 2, "\x01rab", 10],
+            "field1": ["foo", 3, "bar", 2, "\x01rab", 12],
             "field2": ["baz", 1],
             "field3": ["ignored", 1],
         }
@@ -417,7 +417,7 @@ class TestUtilsGetFacetFieldsResult:
                 "bar",
                 2,
                 "\x01rab",
-                10,
+                12,
                 "bax",
                 1,
             ],
