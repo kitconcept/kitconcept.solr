@@ -83,9 +83,6 @@ class SolrSearch(Service):
             self.request.form.get("facet_conditions", None)
         )
 
-        if not query:
-            raise BadRequest("Property 'q' is required")
-
         if not path_prefix:
             # The path_prefix can optionally be used, but the root url is
             # used as default, in case path_prefix is undefined.
@@ -124,7 +121,10 @@ class SolrSearch(Service):
         # against injection attacks.
         # We only lowercase AND, OR, NOT, but keep e.g. and or And
         # Also only lowercase a full word, and keep OReo intact.
-        term = "(" + escape(replace_reserved(query)) + ")"
+        #
+        # In addition. support empty search to search all terms, in case this
+        # is configured.
+        term = "(" + escape(replace_reserved(query)) + ")" if query else "*"
 
         # Search
         #  q: query parameter
