@@ -87,16 +87,6 @@ class TestUtilsSelectCondition(TestUtils):
         )
 
 
-class TestUtilsFacetQuery(TestUtils):
-    def test_facet_query(self):
-        assert self.solr_config.facet_query == [
-            "{!ex=typefilter}Type(*)",
-            "{!ex=typefilter}Type:(Page)",
-            '{!ex=typefilter}Type:("News Item")',
-            '{!ex=typefilter}Type:(Page OR "News Item")',
-        ]
-
-
 class TestUtilsFieldList(TestUtils):
     def test_field_list(self):
         assert (

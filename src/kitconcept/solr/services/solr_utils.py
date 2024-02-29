@@ -98,10 +98,6 @@ class SolrConfig:
         return f"{base_query}{condition}"
 
     @property
-    def facet_query(self) -> List[str]:  # XXX
-        return list(map(lambda item: "{!ex=typefilter}" + item, self.filters))
-
-    @property
     def field_list(self) -> List[str]:
         raw_value = self.config.get("fieldList", [])
         invalid_fields = [item for item in raw_value if "," in item]
