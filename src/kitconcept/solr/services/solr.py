@@ -183,7 +183,18 @@ class SolrSearch(Service):
             d["sort"] = sort
         if group_select is not None:
             d["fq"] = d["fq"] + [solr_config.select_condition(group_select)]
-        d["facet.query"] = solr_config.facet_query
+        d["facet.query"] = list(
+            map(
+                lambda query: (
+                    "{!ex=typefilter,conditionfilter}"
+                    if facet_conditions.solr
+                    else "{!ex=typefilter}"
+                )
+                + query,
+                solr_config.filters,
+            )
+        )
+        print(d["facet.query"])
         if path_prefix:
             is_excluding = re_is_excluding.search(path_prefix)
             if is_multilingual:

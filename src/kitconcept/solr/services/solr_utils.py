@@ -98,7 +98,7 @@ class SolrConfig:
         return f"{base_query}{condition}"
 
     @property
-    def facet_query(self) -> List[str]:
+    def facet_query(self) -> List[str]:  # XXX
         return list(map(lambda item: "{!ex=typefilter}" + item, self.filters))
 
     @property
