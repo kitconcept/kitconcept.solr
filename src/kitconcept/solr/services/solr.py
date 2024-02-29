@@ -5,8 +5,8 @@ from itertools import zip_longest
 from kitconcept.solr.services.solr_utils import escape
 from kitconcept.solr.services.solr_utils import FacetConditions
 from kitconcept.solr.services.solr_utils import get_facet_fields_result
-from kitconcept.solr.services.solr_utils import replace_reserved
 from kitconcept.solr.services.solr_utils import replace_colon
+from kitconcept.solr.services.solr_utils import replace_reserved
 from kitconcept.solr.services.solr_utils import SolrConfig
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
@@ -194,7 +194,6 @@ class SolrSearch(Service):
                 solr_config.filters,
             )
         )
-        print(d["facet.query"])
         if path_prefix:
             is_excluding = re_is_excluding.search(path_prefix)
             if is_multilingual:
