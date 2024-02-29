@@ -21,7 +21,6 @@ class TestEndpointDefaultBaseSearch(TestEndpointDefault):
             ["Events", 0],
             ["Images", 1],
             ["Files", 0],
-            ["Persons", 0],
         ]
 
     @pytest.mark.parametrize(
@@ -71,7 +70,6 @@ class TestEndpointDefaultGroupSelect1(TestEndpointDefault):
             ["Events", 0],
             ["Images", 1],
             ["Files", 0],
-            ["Persons", 0],
         ]
 
     @pytest.mark.parametrize(
@@ -124,7 +122,6 @@ class TestEndpointDefaultEmptyQSearch(TestEndpointDefault):
             ["Events", 0],
             ["Images", 1],
             ["Files", 0],
-            ["Persons", 0],
         ]
 
     @pytest.mark.parametrize(
@@ -157,7 +154,6 @@ class TestEndpointDefaultMissingQSearch(TestEndpointDefault):
             ["Events", 0],
             ["Images", 1],
             ["Files", 0],
-            ["Persons", 0],
         ]
 
     @pytest.mark.parametrize(

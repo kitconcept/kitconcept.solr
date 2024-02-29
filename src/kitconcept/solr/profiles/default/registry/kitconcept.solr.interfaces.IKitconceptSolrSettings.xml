@@ -46,21 +46,6 @@
       {
       "label": "Files",
       "filter": "Type:(File)"
-      },
-      {
-      "label": "Persons",
-      "filter": "Type:(Person)",
-      "layouts": ["list", "grid"],
-      "facetFields": [
-      {
-      "name": "contact_email",
-      "label": "Email",
-      },
-      {
-      "name":"contact_phone",
-      "label": "Phone"
-      }
-      ]
       }
       ]
       }</value>
