@@ -9,6 +9,19 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a5 (2024-03-01)
+
+
+### New features:
+
+- Add support for sidebar facet conditions @reebalazs [#24](https://github.com/kitconcept/kitconcept.solr/issues/24)
+
+
+### Bug fixes:
+
+- Fix solr search security problem with individual users @reebalazs [#20](https://github.com/kitconcept/kitconcept.solr/issues/20)
+
+
 ## 1.0.0a5 (2024-02-01)
 
 
