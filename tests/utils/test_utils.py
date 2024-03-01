@@ -30,10 +30,14 @@ solr_config = {
         {
             "label": "News Items",
             "filter": 'Type:("News Item")',
+            "layouts": ["list", "grid"],
+            "facetFields": ["contact_phone", "contact_email"],
         },
         {
             "label": "Pages and News Items",
             "filter": 'Type:(Page OR "News Item")',
+            "layouts": ["grid"],
+            "facetFields": ["contact_email"],
         },
     ],
 }
@@ -66,8 +70,13 @@ class TestUtilsLabels(TestUtils):
 
 class TestUtilsSelectCondition(TestUtils):
     def test_select_condition(self):
-        assert self.solr_config.select_condition(0) == "{!tag=typefilter}Type(*)"
-        assert self.solr_config.select_condition(1) == "{!tag=typefilter}Type:(Page)"
+        assert (
+            self.solr_config.select_condition(0) == "{!tag=typefilter}Type(*)"
+        )
+        assert (
+            self.solr_config.select_condition(1)
+            == "{!tag=typefilter}Type:(Page)"
+        )
         assert (
             self.solr_config.select_condition(2)
             == '{!tag=typefilter}Type:("News Item")'
@@ -78,19 +87,28 @@ class TestUtilsSelectCondition(TestUtils):
         )
 
 
-class TestUtilsFacetQuery(TestUtils):
-    def test_facet_query(self):
-        assert self.solr_config.facet_query == [
-            "{!ex=typefilter}Type(*)",
-            "{!ex=typefilter}Type:(Page)",
-            '{!ex=typefilter}Type:("News Item")',
-            '{!ex=typefilter}Type:(Page OR "News Item")',
-        ]
-
-
 class TestUtilsFieldList(TestUtils):
     def test_field_list(self):
         assert (
             self.solr_config.field_list
             == "UID,Title,Description,Type,effective,start,created,end,path_string,phone,email,location"
         )
+
+
+class TestUtilsSelectLayouts(TestUtils):
+    def test_select_layouts(self):
+        assert self.solr_config.select_layouts(0) is None
+        assert self.solr_config.select_layouts(1) is None
+        assert self.solr_config.select_layouts(2) == ["list", "grid"]
+        assert self.solr_config.select_layouts(3) == ["grid"]
+
+
+class TestUtilsSelectFacetFields(TestUtils):
+    def test_select_facet_fields(self):
+        assert self.solr_config.select_facet_fields(0) == []
+        assert self.solr_config.select_facet_fields(1) == []
+        assert self.solr_config.select_facet_fields(2) == [
+            "contact_phone",
+            "contact_email",
+        ]
+        assert self.solr_config.select_facet_fields(3) == ["contact_email"]

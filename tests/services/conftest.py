@@ -153,7 +153,9 @@ def portal(app, solr_service, http_request, users, registry_config):
         for key, value in registry_config.items():
             current_values[key] = api.portal.get_registry_record(key)
             api.portal.set_registry_record(key, value)
-        maintenance = api.content.get_view("solr-maintenance", portal, http_request)
+        maintenance = api.content.get_view(
+            "solr-maintenance", portal, http_request
+        )
         maintenance.clear()
         # Create additional users
         for user in users:
@@ -174,7 +176,9 @@ def portal_with_content(app, portal, create_contents):
     transaction.commit()
     yield portal
     with api.env.adopt_roles(["Manager"]):
-        containers = sorted([path for path in content_ids.keys()], reverse=True)
+        containers = sorted(
+            [path for path in content_ids.keys()], reverse=True
+        )
         for container_path in containers:
             container = portal.unrestrictedTraverse(container_path)
             container.manage_delObjects(content_ids[container_path])

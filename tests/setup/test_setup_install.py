@@ -49,8 +49,6 @@ class TestSetupInstall:
             "end",
             "path_string",
             "mime_type",
-            "phone",
-            "email",
             "location",
             "image_scales",
             "image_field",

@@ -108,3 +108,67 @@ class TestEndpointDefaultContext(TestEndpointDefault):
     def test_portal_path(self):
         assert "response" in self.data
         assert self.data.get("portal_path") == "/plone"
+
+
+class TestEndpointDefaultEmptyQSearch(TestEndpointDefault):
+    url = "/@solr?q="
+
+    def test_facet_groups(self):
+        # Using default configuration
+        assert "response" in self.data
+        assert self.data.get("facet_groups") == [
+            ["All", 5],
+            ["Pages", 2],
+            ["Events", 0],
+            ["Images", 1],
+            ["Files", 0],
+        ]
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/mydocument", True),
+            ("/plone/noamchomsky", True),
+            ("/plone/mynews", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+    def test_portal_path(self):
+        """portal_path is returned for the client"""
+        assert "response" in self.data
+        assert self.data.get("portal_path") == "/plone"
+
+
+class TestEndpointDefaultMissingQSearch(TestEndpointDefault):
+    url = "/@solr"
+
+    def test_facet_groups(self):
+        # Using default configuration
+        assert "response" in self.data
+        assert self.data.get("facet_groups") == [
+            ["All", 5],
+            ["Pages", 2],
+            ["Events", 0],
+            ["Images", 1],
+            ["Files", 0],
+        ]
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/mydocument", True),
+            ("/plone/noamchomsky", True),
+            ("/plone/mynews", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+    def test_portal_path(self):
+        """portal_path is returned for the client"""
+        assert "response" in self.data
+        assert self.data.get("portal_path") == "/plone"

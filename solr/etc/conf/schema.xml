@@ -347,7 +347,7 @@
 
     <!-- custom content type: Event -->
     <field
-      name="contact_email" type="text" indexed="true" stored="false" />
+      name="contact_email" type="string" indexed="true" stored="false" />
     <field name="contact_name"
       type="text" indexed="true" stored="false" />
     <field name="event_url" type="text" indexed="true"

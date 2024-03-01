@@ -54,7 +54,10 @@ class TestEndpointLanguageError(TestEndpointLanguage):
         "key,message",
         [
             ("type", "BadRequest"),
-            ("message", "Property 'lang` and `is_multilingual` are mutually exclusive"),
+            (
+                "message",
+                "Property 'lang` and `is_multilingual` are mutually exclusive",
+            ),
         ],
     )
     def test_error_message(self, key: str, message: str):

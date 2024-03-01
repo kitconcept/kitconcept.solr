@@ -53,7 +53,9 @@ def users(user_credentials, member_as_user1_credentials) -> List:
 
 
 @pytest.fixture
-def users_credentials_role(user_credentials, member_as_user1_credentials) -> dict:
+def users_credentials_role(
+    user_credentials, member_as_user1_credentials
+) -> dict:
     return {
         "manager": (SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         "member": user_credentials,

@@ -9,45 +9,45 @@
     <value key="config"
            purge="false"
     >{
-  "fieldList": [
-    "UID",
-    "Title",
-    "Description",
-    "Type",
-    "effective",
-    "start",
-    "created",
-    "end",
-    "path_string",
-    "mime_type",
-    "phone",
-    "email",
-    "location",
-    "image_scales",
-    "image_field"
-  ],
-  "searchTabs": [
-    {
+      "fieldList": [
+      "UID",
+      "Title",
+      "Description",
+      "Type",
+      "effective",
+      "start",
+      "created",
+      "end",
+      "path_string",
+      "mime_type",
+      "location",
+      "contact_email",
+      "contact_phone",
+      "image_scales",
+      "image_field"
+      ],
+      "searchTabs": [
+      {
       "label": "All",
       "filter": "Type(*)"
-    },
-    {
+      },
+      {
       "label": "Pages",
       "filter": "Type:(Page)"
-    },
-    {
+      },
+      {
       "label": "Events",
       "filter": "Type:(Event)"
-    },
-    {
+      },
+      {
       "label": "Images",
       "filter": "Type:(Image)"
-    },
-    {
+      },
+      {
       "label": "Files",
       "filter": "Type:(File)"
-    }
-  ]
-}</value>
+      }
+      ]
+      }</value>
   </records>
 </registry>
