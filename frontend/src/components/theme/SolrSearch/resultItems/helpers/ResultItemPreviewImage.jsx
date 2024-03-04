@@ -19,10 +19,17 @@ export const previewImageContent = ({
   };
 };
 
-const ResultItemPreviewImage = ({ item, ...rest }) => {
+const LinkToImage = ({ item, children }) => (
+  <Link to={item['@id']}>{children}</Link>
+);
+
+const EmptyWrapper = ({ item, children }) => <>{children}</>;
+
+const ResultItemPreviewImage = ({ item, Wrapper = LinkToImage, ...rest }) => {
   const content = previewImageContent(item);
+  Wrapper = Wrapper !== null ? Wrapper : EmptyWrapper;
   if (content.image_scales) {
-    // Show the link also conditionally.
+    // Show the wrapper also conditionally.
     let Image;
     if (!config.settings.contentTypeSearchResultAlwaysUseLegacyImage) {
       Image = config.getComponent({ name: 'Image' }).component;
@@ -37,7 +44,7 @@ const ResultItemPreviewImage = ({ item, ...rest }) => {
         );
       }
       return (
-        <Link to={item['@id']}>
+        <Wrapper item={item}>
           <LegacyImage
             item={content}
             /* Default hints provided, can be overridden via rest */
@@ -47,11 +54,11 @@ const ResultItemPreviewImage = ({ item, ...rest }) => {
             height="125"
             {...rest}
           />
-        </Link>
+        </Wrapper>
       );
     }
     return (
-      <Link to={item['@id']}>
+      <Wrapper item={item}>
         <Image
           item={content}
           alt={item.title}
@@ -64,7 +71,7 @@ const ResultItemPreviewImage = ({ item, ...rest }) => {
           height="125"
           {...rest}
         />
-      </Link>
+      </Wrapper>
     );
   } else {
     return null;

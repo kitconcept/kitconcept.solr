@@ -37,13 +37,32 @@
 
   .sorting-bar {
     display: flex;
+    width: 100%;
     align-items: baseline;
-    justify-content: space-between;
+    justify-content: flex-end;
+    //    justify-content: space-between;
     margin-bottom: 1em;
-    color: @solr-grey;
+
+    .layout-field {
+      padding: 0 2px 0 0;
+      border-width: 0 1px 0 0;
+      border-style: solid;
+      .layout-label {
+        padding: 0 8px 0 0;
+      }
+      .layout-selector {
+        padding: 0 6px 0 0;
+        vertical-align: text-top;
+        &:not(.active) {
+          color: @solr-grey;
+          // color: red;
+          cursor: pointer;
+        }
+      }
+    }
 
     .sort-field {
-      margin-left: auto;
+      margin-left: 16px;
 
       .sort-by {
         padding-right: 0.3em;
@@ -77,8 +96,29 @@
     }
   }
 
+  .dimmer {
+    // Fix semantic-ui dimmer. Without this,
+    // it does not cover the entire height, of the viewport,
+    // which becomes noticable when you scroll after the dimmer is active.
+    position: fixed !important;
+  }
+
   #content-core {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     margin-top: 1.5em;
+    &.layout-grid .search-items {
+      display: grid;
+      flex: 0 0 none;
+      column-gap: 16px;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: auto;
+    }
+
+    .search-footer {
+      flex: 0 0 none;
+    }
 
     article.tileItem {
       // margin-bottom: 30px;
@@ -110,8 +150,7 @@
 
       img.previewImage {
         width: 250px;
-        margin-top: 0.5em;
-        margin-right: 0.5em;
+        margin: 0.5em;
         aspect-ratio: 2;
         float: right;
         object-fit: cover;
@@ -199,6 +238,92 @@
   }
 }
 
+// Facet conditions
+
+.section-search,
+.section-\@\@search {
+  .searchContentWrapper {
+    display: flex;
+    section#content-core {
+      flex: 1 1 auto;
+    }
+    .dimmer {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 100px;
+      height: 100px;
+      border: 1px solid lightgray;
+      opacity: 0.9;
+    }
+    .searchConditions {
+      width: 220px;
+      flex: 0 0 none;
+      margin-top: 2em;
+      margin-right: 0.5em;
+      .searchConditionsField {
+        padding-bottom: 1rem;
+        margin-bottom: 2em;
+        .searchConditionsFieldHeader {
+          margin-right: 1em;
+          font-weight: bold;
+          .searchConditionsFieldSearch {
+            width: 100%;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            input {
+              padding-left: 0.5rem;
+              background: @solr-search-facet-tab-inactive-color;
+            }
+          }
+        }
+        .searchConditionsFieldContent {
+          overflow: scroll;
+          max-height: 11em;
+          padding-right: 1em;
+        }
+        .searchConditionsFieldFooter {
+          border-bottom: 1px;
+          border-bottom-style: solid;
+          margin-top: 0.5em;
+          margin-right: 1em;
+          text-align: right;
+          .showMoreIndicator {
+            color: @solr-color-interactive-blue;
+            font-size: 13px;
+            svg {
+              margin-left: 0.5rem;
+              fill: @solr-color-interactive-blue;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+      .searchConditionsValue {
+        display: flex;
+        margin-bottom: 0.5em;
+        font-size: 13px;
+        gap: 0.5em;
+        .searchConditionsLabel {
+          overflow: hidden;
+          flex: 1 1 auto;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .searchConditionsCounter {
+          width: 2em;
+          flex: 0 0 auto;
+          font-weight: bold;
+          text-align: center;
+        }
+        .searchConditionsCheckbox {
+          flex: 0 0 none;
+        }
+      }
+    }
+  }
+}
+
 // Content types
 
 .section-search,
@@ -212,32 +337,56 @@
     font-size: 0.9rem;
   }
 
-  .memberResultItem {
-    @baseColor: #006b96;
-
+  .personResultItem {
     .itemWrapper {
       display: flex;
 
       .itemImageWrapper {
+        position: relative;
         flex: none;
         margin-right: 20px;
+
+        img.profileImage {
+          position: absolute;
+          left: 0;
+          width: 64px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          object-fit: cover;
+        }
       }
 
       .itemContent {
         flex: 1 1 auto;
 
-        .itemPhoneEmailBar {
-          color: @solr-grey;
+        color: @solr-grey;
 
-          .itemPhone {
-            margin-right: 16px;
+        .itemField {
+          padding-right: 12px;
+          border-width: 0 1px 0 0;
+          border-style: solid;
+          margin-right: 12px;
+          line-height: 2;
+          white-space: nowrap;
+          &:last-child {
+            padding-right: 0;
+            border-width: 0;
           }
-
-          .itemIcon {
-            margin-right: 4px;
-            vertical-align: text-bottom;
-          }
+          --overflow-x: hide;
         }
+
+        .itemIcon {
+          margin-right: 4px;
+          vertical-align: text-bottom;
+        }
+      }
+    }
+  }
+
+  .imageResultItem {
+    .tileFooter {
+      .imageType {
+        margin-right: 8px;
       }
     }
   }

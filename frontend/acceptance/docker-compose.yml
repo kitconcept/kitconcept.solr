@@ -14,6 +14,7 @@ services:
     environment:
       RAZZLE_INTERNAL_API_PATH: http://backend-acceptance:55001/plone
       RAZZLE_API_PATH: http://localhost:55001/plone
+      HOST: 0.0.0.0
     ports:
       - 3000:3000
       - 3001:3001
@@ -51,7 +52,7 @@ services:
       # Use plone.volto rather than kitconcept.volto for the acceptance
       # testing, which makes login in tests "more conventional". - otherwise
       # it's no difference, both could make sense.
-      ADDONS: 'plone.app.robotframework==2.0.0 plone.app.contenttypes plone.restapi plone.volto kitconcept.solr==1.0.0a1'
+      ADDONS: 'plone.app.robotframework==2.0.0 plone.app.contenttypes plone.restapi plone.volto kitconcept.solr==1.0.0a5'
       APPLY_PROFILES: plone.app.contenttypes:plone-content,plone.restapi:default,plone.volto:default-homepage,kitconcept.solr:default,collective.solr:default
       CONFIGURE_PACKAGES: plone.app.contenttypes,plone.restapi,plone.volto,plone.volto.cors,kitconcept.solr,collective.solr
       SOLR_HOST: solr-acceptance

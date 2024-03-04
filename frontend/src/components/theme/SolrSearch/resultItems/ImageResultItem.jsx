@@ -7,7 +7,7 @@ import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
 import IconForContentType from './helpers/IconForContentType';
 
 const ImageResultItem = ({ item }) => (
-  <article className="tileItem">
+  <article className="tileItem imageResultItem">
     {/* <span className="contentTypeLabel">
       <FormattedMessage id={mapContentTypes(item['@type'])} />
     </span> */}

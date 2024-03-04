@@ -11,6 +11,7 @@ context('Search Acceptance Tests (UI)', () => {
       contentId: 'alpha',
       contentTitle: 'Alpha Beta Gaga Colorful',
       path: '/',
+      contentEffective: '2018-01-21T08:00:00',
     });
     cy.request({
       method: 'POST',
@@ -28,6 +29,7 @@ context('Search Acceptance Tests (UI)', () => {
       contentId: 'beta',
       contentTitle: 'Beta Colorful',
       path: '',
+      contentEffective: '2018-02-21T08:00:00',
     });
     cy.request({
       method: 'POST',
@@ -45,6 +47,7 @@ context('Search Acceptance Tests (UI)', () => {
       contentId: 'gamma',
       contentTitle: 'Gamma Colorful',
       path: '',
+      contentEffective: '2018-03-21T08:00:00',
     });
     cy.request({
       method: 'POST',

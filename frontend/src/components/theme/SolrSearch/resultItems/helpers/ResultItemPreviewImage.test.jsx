@@ -166,6 +166,29 @@ describe('ResultItemPreviewImage', () => {
     expect(rendered).toMatchSnapshot();
   });
 
+  test('Wrapper=null removes link', () => {
+    const component = create(
+      <Router history={history}>
+        <ResultItemPreviewImage item={data} Wrapper={null} />
+      </Router>,
+    );
+    const rendered = component.toJSON();
+    expect(rendered).toMatchSnapshot();
+  });
+
+  test('Custom Wrapper', () => {
+    const Wrapper = ({ item, children }) => (
+      <div className="CUSTOM">{children}</div>
+    );
+    const component = create(
+      <Router history={history}>
+        <ResultItemPreviewImage item={data} Wrapper={Wrapper} />
+      </Router>,
+    );
+    const rendered = component.toJSON();
+    expect(rendered).toMatchSnapshot();
+  });
+
   describe('legacy image', () => {
     let origComponent;
     let origContentTypeSearchResultAlwaysUseLegacyImage;
@@ -232,6 +255,29 @@ describe('ResultItemPreviewImage', () => {
         ),
       ).toThrow();
       mockError.mockRestore();
+    });
+
+    test('Wrapper=null removes link', () => {
+      const component = create(
+        <Router history={history}>
+          <ResultItemPreviewImage item={data} Wrapper={null} />
+        </Router>,
+      );
+      const rendered = component.toJSON();
+      expect(rendered).toMatchSnapshot();
+    });
+
+    test('Custom Wrapper', () => {
+      const Wrapper = ({ item, children }) => (
+        <div className="CUSTOM">{children}</div>
+      );
+      const component = create(
+        <Router history={history}>
+          <ResultItemPreviewImage item={data} Wrapper={Wrapper} />
+        </Router>,
+      );
+      const rendered = component.toJSON();
+      expect(rendered).toMatchSnapshot();
     });
   });
 });

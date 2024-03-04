@@ -12,6 +12,8 @@ export const getImageType = (mimeType) => {
   }
 };
 
-const ImageType = ({ mimeType }) => getImageType(mimeType);
+const ImageType = ({ mimeType }) => (
+  <span className="imageType">{getImageType(mimeType)}</span>
+);
 
 export default ImageType;
