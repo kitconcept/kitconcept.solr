@@ -8,6 +8,16 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0-alpha.3 (2024-03-04)
+
+### Feature
+
+- Add support for sidebar facet conditions @reebalazs [#15](https://github.com/kitconcept/volto-solr/pull/15)
+
+### Bugfix
+
+- Fix translations for the result tabs @reebalazs [#16](https://github.com/kitconcept/volto-solr/pull/16)
+
 ## 1.0.0-alpha.2 (2023-08-21)
 
 ### Feature
