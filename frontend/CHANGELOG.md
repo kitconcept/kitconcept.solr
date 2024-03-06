@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0-alpha.4 (2024-03-06)
+
+### Bugfix
+
+- Send solr request only once [#25] @reebalazs [#19](https://github.com/kitconcept/volto-solr/pull/19)
+
 ## 1.0.0-alpha.3 (2024-03-04)
 
 ### Feature
