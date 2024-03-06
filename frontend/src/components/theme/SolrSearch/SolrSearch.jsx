@@ -239,7 +239,6 @@ class SolrSearch extends Component {
   };
 
   updateSearch = () => {
-    this.doSearch(this.searchParams());
     this.props.history.replace({
       search: qs.stringify(queryStateToParams(this.state)),
     });
@@ -247,7 +246,9 @@ class SolrSearch extends Component {
 
   handleQueryPaginationChange = (e, { activePage }) => {
     window.scrollTo(0, 0);
-    this.setState({ currentPage: activePage }, () => this.updateSearch());
+    this.setState({ currentPage: activePage }, () =>
+      this.doSearch(this.searchParams()),
+    );
   };
 
   onSortChange = (selectedOption, selectedSortOrder) => {
