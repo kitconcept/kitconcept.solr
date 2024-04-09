@@ -9,6 +9,14 @@
 
 <!-- towncrier release notes start -->
 
+## 1.0.0a6 (2024-04-09)
+
+
+### Bug fixes:
+
+- Fix first tab condition @reebalazs [#26](https://github.com/kitconcept/kitconcept.solr/issues/26)
+
+
 ## 1.0.0a5 (2024-03-01)
 
 
