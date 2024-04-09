@@ -105,6 +105,9 @@ class SolrSearch(Service):
                 raise BadRequest(
                     "Property 'group_select` must be an integer, if specified"
                 )
+        elif len(solr_config.filters) > 0:
+            # By default select group 0 (unless there are no filters defined)
+            group_select = 0
 
         facet_fields = (
             solr_config.select_facet_fields(group_select)
