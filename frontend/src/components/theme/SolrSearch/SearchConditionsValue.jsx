@@ -5,6 +5,13 @@ const ValueLabel = ({ value }) => (
   <span className="searchConditionsHasValueLabel">{value}</span>
 );
 
+const formattedCounter = (value) =>
+  value < 1000
+    ? `${value}`
+    : value < 100000
+    ? `${Math.floor(value / 1000)}K`
+    : '99K';
+
 export const SearchConditionsValue = ({
   fieldDef,
   value,
@@ -24,7 +31,7 @@ export const SearchConditionsValue = ({
         <div className="searchConditionsValue">
           {counter != null ? (
             <div className="searchConditionsCounter ui circular label lightgrey">
-              {counter < 100 ? counter : '...'}
+              {formattedCounter(counter)}
             </div>
           ) : (
             <div className="searchConditionsCounter" />
