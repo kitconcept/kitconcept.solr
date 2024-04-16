@@ -1,6 +1,6 @@
 {
   "name": "@kitconcept/volto-solr",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "@kitconcept/volto-solr: Volto add-on front-end component of Solr support",
   "main": "src/index.js",
   "scripts": {
