@@ -12,4 +12,12 @@
       name="@solr"
       />
 
+  <plone:service
+      method="GET"
+      factory=".suggest.SolrSuggest"
+      for="zope.interface.Interface"
+      permission="zope2.View"
+      name="@solr-suggest"
+      />
+
 </configure>
