@@ -5,11 +5,16 @@ import {
 import {
   SolrSearch,
   SolrFormattedDate,
+  SolrSearchWidget,
+  SolrSearchAutosuggest,
+  queryStateFromParams,
+  queryStateToParams,
 } from '@kitconcept/volto-solr/components';
 import * as searchResultItems from '@kitconcept/volto-solr/components/theme/SolrSearch/resultItems';
 import fileSVG from '@plone/volto/icons/file.svg';
 import reducers from './reducers';
 import routes from './routes';
+import qs from 'query-string';
 import './theme/solrsearch.less';
 
 const applyConfig = (config) => {
@@ -66,6 +71,17 @@ const applyConfig = (config) => {
   // directly as a route.
   config.widgets.SolrSearch = SolrSearch;
   config.widgets.SolrFormattedDate = SolrFormattedDate;
+
+  // Autocomplete widget
+  config.widgets.SolrSearchWidget = SolrSearchWidget;
+  config.widgets.SolrSearchAutosuggest = SolrSearchAutosuggest;
+
+  // utilities to make it easier to write code with or without volto-solr
+  config.views.voltoSolrUtils = {
+    queryStateFromParams,
+    queryStateToParams,
+    qs,
+  };
 
   config.addonReducers = { ...config.addonReducers, ...reducers };
   config.addonRoutes = [...config.addonRoutes, ...routes(config)];

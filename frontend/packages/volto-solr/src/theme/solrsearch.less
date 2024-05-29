@@ -10,6 +10,23 @@
 @solr-highlight-weight: var(--solr-highlight-weight, 600);
 @solr-footer-color: var(--solr-footer-color, #808080);
 
+@solr-autosuggest-darkblue-color: var(
+  --solr-autosuggest-darkblue-color,
+  #023d6b
+);
+@solr-autosuggest-black-color: var(--solr-autosuggest-black-color, #000);
+@solr-autosuggest-lightgrey-color: var(
+  --solr-autosuggest-lightgrey-color,
+  #466377
+);
+@solr-autosuggest-grey-color: var(--solr-autosuggest-grey-color, #333);
+
+// TBD consolidate these with vars
+@computerBreakpoint: 1066px;
+@largestMobileScreen: 1065px;
+@fontSize: 16px;
+@fontSizeH3: 20px;
+
 .section-search,
 .section-\@\@search {
   .total-bar {
@@ -330,8 +347,8 @@
 .section-\@\@search {
   .contentTypeLabel {
     padding: 2px 10px;
-    border-radius: 10px;
     background: lightgrey;
+    border-radius: 10px;
     color: white;
     float: right;
     font-size: 0.9rem;
@@ -350,8 +367,8 @@
           position: absolute;
           left: 0;
           width: 64px;
-          border-radius: 50%;
           aspect-ratio: 1;
+          border-radius: 50%;
           object-fit: cover;
         }
       }
@@ -389,5 +406,217 @@
         margin-right: 8px;
       }
     }
+  }
+}
+
+// --
+// Search autosuggest
+// --
+
+.search-widget,
+.search-input,
+.search {
+  position: relative;
+  display: flex;
+  width: 50%;
+  height: 64px;
+  align-items: center;
+  border-bottom: 3px solid @solr-autosuggest-darkblue-color;
+  margin: 0 auto;
+  transition: all 600ms ease 0s;
+
+  &.focused {
+    width: calc(50% + 2rem);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Tablet portrait & landscape */
+  @media only screen and (max-width: @computerBreakpoint) {
+    width: calc(100% - 220px);
+    margin: 24px auto 0;
+
+    &.focused {
+      width: calc(100% - 220px + 2rem);
+    }
+  }
+
+  /* Mobile */
+  @media only screen and (max-width: @largestMobileScreen) {
+    width: calc(100% - 2rem);
+    margin-top: 24px;
+
+    &.focused {
+      width: 100%;
+    }
+  }
+
+  .ui.form {
+    width: 100%; 
+  }
+
+  .ui.form .field.searchbox {
+    align-items: center;
+    padding-left: 0;
+    border-left: 0px;
+
+    .react-autosuggest__container {
+      width: 100%;
+
+      .react-autosuggest__input {
+        padding: 0 0 0 0.7em;
+        border: none;
+        font-size: @fontSizeH3;
+        text-overflow: ellipsis;
+        border-radius: 0;
+        height: 100%;
+
+        &.react-autosuggest__input--focused {
+          -o-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+        }
+
+        /* Mobile */
+        @media only screen and (max-width: @largestMobileScreen) {
+          font-size: @fontSize;
+        }
+      }
+
+      .react-autosuggest__suggestions-container {
+        position: absolute;
+        z-index: 99;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        padding-left: 0;
+        background: #fff;
+        box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.75);
+        font-size: 1rem;
+        /* FONT TBD */
+
+        button.all-results-button {
+          .header-wrapper .header .search-wrapper .search & {
+            padding: 10px 0 10px 75px;
+            width: unset;
+          }
+          padding: 10px 0 10px 75px;
+          width: unset;
+        }
+
+        .react-autosuggest__suggestions-list {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+
+          .react-autosuggest__suggestion {
+            &.react-autosuggest__suggestion--highlighted {
+              background: #dbdbdb;
+            }
+
+            .suggestion {
+              display: flex;
+              width: 100%;
+              align-items: flex-start;
+              padding: 5px;
+              color: @solr-autosuggest-black-color;
+              gap: 10px;
+
+              .icon-wrapper {
+                display: flex;
+                min-width: 60px;
+                max-width: 60px;
+                flex-direction: column;
+                justify-content: space-between;
+                padding-top: 3px;
+                color: @solr-autosuggest-lightgrey-color;
+                text-align: center;
+
+                span {
+                  font-size: 9pt;
+                  line-height: 18px;
+                  word-wrap: break-word;
+                }
+
+                &.placeholder svg {
+                  margin-right: 0;
+                }
+              }
+
+              .suggestion-path {
+                color: @solr-autosuggest-lightgrey-color;
+              }
+            }
+          }
+
+          .member {
+            display: flex;
+            align-items: center;
+            color: @solr-autosuggest-grey-color;
+
+            .image-wrapper {
+              display: flex;
+              justify-content: center;
+
+              img {
+                min-width: 50px;
+                height: 50px;
+                margin-right: 5px;
+                margin-left: 5px;
+                border-radius: 50%;
+                object-fit: cover;
+                object-position: top center;
+              }
+            }
+
+            .member-body {
+              display: flex;
+              // height: 60px;
+              flex-direction: column;
+              justify-content: space-between;
+              object-fit: cover;
+
+              a {
+                color: @solr-autosuggest-grey-color;
+
+                &.member-title {
+                  color: @solr-autosuggest-black-color;
+                  font-weight: bold;
+                }
+              }
+
+              .member-info {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+
+                a {
+                  color: @solr-autosuggest-darkblue-color;
+                }
+
+                svg {
+                  margin-right: 4px;
+                  margin-bottom: 3px;
+                  color: @solr-autosuggest-grey-color;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+
+      .icon {
+        margin-right: 0;
+      }
+    }
+  }
+
+  @media only print {
+    display: none;
   }
 }
