@@ -106,6 +106,7 @@ install-plone-5.2: bin/mxdev config ## pip install Plone packages
 	@echo "$(GREEN)==> Setup Build$(RESET)"
 	cp constraints-5.2.txt constraints.txt
 	cp requirements-5.2.txt requirements.txt
+	pip install pip\<24
 	bin/tox -e init
 	bin/mxdev -c mx.ini
 	bin/pip install -r requirements-mxdev.txt

@@ -29,10 +29,12 @@ jobs:
 
       # python setup
       - name: Set up Python ${{ matrix.python-version }} with Plone 5.2.5
-        uses: plone/setup-plone@v1.0.0
-        with:
-          python-version: ${{ matrix.python-version }}
-          plone-version: "5.2.5"
+        run: |
+          make install-plone-5.2
+
+        ## Note: setup-plone action is retired, because we need to force
+        ## an older pip version, but the action seems to fetch the new version
+        ## regardless what I try.
 
       # python cache
       - uses: actions/cache@v1

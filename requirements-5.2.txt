@@ -1,4 +1,5 @@
 -c constraints.txt
+pip<24
 
 # Cannot install new testing framework with 5.2
 # -e ".[test]"
