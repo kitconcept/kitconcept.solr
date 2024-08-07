@@ -179,6 +179,45 @@ class FacetConditions:
             ),
         )
 
+    def field_conditions_with_name(self):
+        return filter(
+            lambda item: item[1],
+            map(
+                lambda item: (item[0], self.field_condition(item[0], item[1])),
+                self.config.items(),
+            ),
+        )
+
+    @property
+    def field_conditions_solr(self):
+        return list(
+            map(
+                lambda item: f"{{!tag=cf_{item[0]}}}{item[1]}",
+                self.field_conditions_with_name(),
+            )
+        )
+
+    def ex_all_facets(self, extending=[]):
+        tag_names = extending + list(
+            filter(
+                lambda tag_name: tag_name,
+                map(
+                    lambda item: f"cf_{item[0]}" if item[1] else "",
+                    self.field_conditions_with_name(),
+                ),
+            )
+        )
+        joined_tag_names = ",".join(tag_names)
+        return f"{{!ex={joined_tag_names}}}"
+
+    def ex_field_facet(self, field_name):
+        return (
+            f"{{!ex=cf_{field_name}}}"
+            if field_name
+            in map(lambda item: item[0], self.field_conditions_with_name())
+            else ""
+        )
+
     @property
     def solr(self):
         conditions = list(self.field_conditions())
