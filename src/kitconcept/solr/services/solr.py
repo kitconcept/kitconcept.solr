@@ -157,7 +157,7 @@ class SolrSearch(Service):
         # - Text Substring * 0,5
         # - searchwords * 1000
         d = {
-            "q": f"+(Title:{term}^5 OR Description:{term}^2 OR id:{term}^0.75 OR text_prefix:{term}^0.75 OR text_suffix:{term}^0.75 OR default:{term} OR body_text:{term} OR SearchableText:{term} OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False",  # noqa
+            "q": f"+(Title:{term}^5000 OR Description:{term}^2 OR SearchableText:{term} OR SearchableText:({term}) OR searchwords:({term})^1000 OR rezeptcode: ({term})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*) -portal_type:(Image)",  # noqa
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
