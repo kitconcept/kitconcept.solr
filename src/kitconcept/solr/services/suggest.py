@@ -23,7 +23,7 @@ class SolrSuggest(Service):
         data = {"error": "no response"}
         parameters = {
             "q": removeSpecialCharactersAndOperators(query),
-            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link"
+            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(File) -portal_type:(Rezept) -portal_type:Link"
         }
         querystring = urllib.parse.urlencode(parameters)
         url = "{}/{}".format(connection.solrBase, "suggest?%s" % querystring)
@@ -36,15 +36,26 @@ class SolrSuggest(Service):
         return data
 
     def serialize_brain(self, brain):
-        if brain["portal_type"] in ["Member"]:
-            obj = brain.getObject()
-            data = getMultiAdapter((obj, self.request), ISerializeToJson)()
-            data["@id"] = obj.absolute_url()
-            return data
-
         return getMultiAdapter(
             (brain, self.request), ISerializeToJsonSummary
         )()
+
+    def serialize_non_plone_type(self, obj):
+        obj_id = obj.get("UID").split("_")[1]
+        obj['@type'] = obj.get("portal_type")
+        if obj.get("portal_type") == "jungzeelandia.Product":
+            obj['@id'] = f"/alle-produkte/{obj_id}"
+            obj["type_title"] = "Produkt"
+        if obj.get("portal_type") == "jungzeelandia.Recipe":
+            obj['@id'] = f"/alle-rezepte/{obj_id}"
+            obj["type_title"] = "Rezept"
+        obj.pop("portal_type", None)
+
+        return obj
+
+
+
+
 
     def parse_response(self, data):
         if "error" in data or "response" not in data:
@@ -52,17 +63,24 @@ class SolrSuggest(Service):
             if "error" in data:
                 error["error"] = data["error"]
             return error
-        uids = [doc["UID"] for doc in data["response"]["docs"]]
+        # uids = [doc["UID"] for doc in data["response"]["docs"] if doc.get("portal_type") not in ["jungzeelandia.Recipe", "jungzeelandia.Product"]]
+        # brains = {brain["UID"]: brain for brain in api.content.find(UID=uids)}
 
-        brains = {brain["UID"]: brain for brain in api.content.find(UID=uids)}
-        return [
-            self.serialize_brain(brains[uid]) for uid in uids if uid in brains
-        ]
+        resp = []
+        for obj in data["response"]["docs"]:
+            if obj.get("portal_type")in ["jungzeelandia.Product","jungzeelandia.Recipe"]:
+                resp.append(self.serialize_non_plone_type(obj))
+
+            elif obj.get("portal_type"):
+                brain = api.content.find(UID=obj["UID"])[0]
+                resp.append(self.serialize_brain(brain))
+        return resp
 
     def reply(self):
         query = self.request.form.get("query", "")
         data = self.query_suggest(query)
         data = self.parse_response(data)
+
         if isinstance(data, dict):
             return data
         return {"suggestions": data}
