@@ -288,4 +288,9 @@ class SolrSearch(Service):
         if group_select is not None:
             layouts = solr_config.select_layouts(group_select)
             result["layouts"] = layouts
+        #remove "None" String from items without any images
+        for doc in result["response"]["docs"]:
+            if doc.get("image_path")=="None":
+                doc["image_path"] = None
+
         return result
