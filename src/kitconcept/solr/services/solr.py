@@ -126,7 +126,7 @@ class SolrSearch(Service):
         #
         # In addition. support empty search to search all terms, in case this
         # is configured.
-        term = "(" + escape(replace_reserved(query)) + ")" if query else "*"
+        term = "(" + escape(replace_reserved(query)) + " OR " + escape(replace_reserved(query)) + "*" + ")" if query else "*"
 
         # Search
         #  q: query parameter
@@ -156,7 +156,7 @@ class SolrSearch(Service):
         # - Text Substring * 0,5
         # - searchwords * 1000
         d = {
-            "q": f"+(Title:{term}^5000 OR Description:{term}^2 OR SearchableText:{term} OR SearchableText:({term}) OR searchwords:({term})^1000 OR rezeptcode: ({term})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*)",  # noqa
+            "q": f"+(Title:{term}^5000 OR Description:{term}^2 OR SearchableText:{term} OR searchwords:({query})^1000 OR rezeptcode: ({term})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*)",  # noqa
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa

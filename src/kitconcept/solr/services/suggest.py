@@ -43,6 +43,7 @@ class SolrSuggest(Service):
     def serialize_non_plone_type(self, obj):
         obj_id = obj.get("UID").split("_")[1]
         obj['@type'] = obj.get("portal_type")
+        obj['title'] = obj.get("Title")
         if obj.get("portal_type") == "jungzeelandia.Product":
             obj['@id'] = f"/alle-produkte/{obj_id}"
             obj["type_title"] = "Produkt"
@@ -50,6 +51,8 @@ class SolrSuggest(Service):
             obj['@id'] = f"/alle-rezepte/{obj_id}"
             obj["type_title"] = "Rezept"
         obj.pop("portal_type", None)
+        obj.pop("Title", None)
+
 
         return obj
 
