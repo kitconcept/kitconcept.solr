@@ -46,6 +46,15 @@ def security_filter():
 re_relative_path = re.compile("^/+")
 re_is_excluding = re.compile("/$")
 
+def serialize_suggestions(suggestions=[]):
+    result_dict={}
+    for count, obj in enumerate(suggestions):
+        if isinstance(obj, str):
+            result_dict[obj]=suggestions[count+1]
+    return result_dict
+
+
+
 
 class SolrSearch(Service):
     def reply(self):
@@ -175,6 +184,7 @@ class SolrSearch(Service):
                     facet_fields,
                 )
             ),
+            "spellcheck.q": query,
         }
         if start is not None:
             d["start"] = start
@@ -258,9 +268,7 @@ class SolrSearch(Service):
             ]
         d.update(facet_conditions.contains_query)
         d.update(facet_conditions.more_query(facet_fields, multiplier=2))
-
         raw_result = connection.search(**d).read()
-
         result = json.loads(raw_result)
         # Add portal path to the result. This can be used by
         # the front-end to calculate the @id from the path_string
@@ -292,5 +300,8 @@ class SolrSearch(Service):
         for doc in result["response"]["docs"]:
             if doc.get("image_path")=="None":
                 doc["image_path"] = None
+        if len(result["spellcheck"]["suggestions"]) > 0:
+            result["suggestions"] = serialize_suggestions(result["spellcheck"]["suggestions"])
+            result.pop("spellcheck", None)
 
         return result
