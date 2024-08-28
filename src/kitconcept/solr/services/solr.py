@@ -47,11 +47,13 @@ re_relative_path = re.compile("^/+")
 re_is_excluding = re.compile("/$")
 
 def serialize_suggestions(suggestions=[]):
-    result_dict={}
+    result_arr=[]
     for count, obj in enumerate(suggestions):
         if isinstance(obj, str):
-            result_dict[obj]=suggestions[count+1]
-    return result_dict
+            append_dict = suggestions[count+1]
+            append_dict["term"] = obj
+            result_arr.append(append_dict)
+    return result_arr
 
 
 
