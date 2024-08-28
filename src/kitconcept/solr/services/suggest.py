@@ -23,7 +23,7 @@ class SolrSuggest(Service):
         data = {"error": "no response"}
         parameters = {
             "q": removeSpecialCharactersAndOperators(query),
-            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ  -portal_type:(Rezept) -portal_type:Link"
+            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ  -portal_type:(Rezept) -portal_type:Link -portal_type:Kapitel"
         }
         querystring = urllib.parse.urlencode(parameters)
         url = "{}/{}".format(connection.solrBase, "suggest?%s" % querystring)
