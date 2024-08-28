@@ -305,5 +305,6 @@ class SolrSearch(Service):
         if len(result["spellcheck"]["suggestions"]) > 0:
             result["suggestions"] = serialize_suggestions(result["spellcheck"]["suggestions"])
             result.pop("spellcheck", None)
+        result["search_term"] = query
 
         return result
