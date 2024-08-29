@@ -302,7 +302,7 @@ class SolrSearch(Service):
         for doc in result["response"]["docs"]:
             if doc.get("image_path")=="None":
                 doc["image_path"] = None
-        if len(result["spellcheck"]["suggestions"]) > 0:
+        if result["spellcheck"] and len(result["spellcheck"]["suggestions"]) > 0:
             result["suggestions"] = serialize_suggestions(result["spellcheck"]["suggestions"])
             result.pop("spellcheck", None)
         result["search_term"] = query
