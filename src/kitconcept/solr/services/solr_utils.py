@@ -12,8 +12,6 @@ logger.setLevel(logging.DEBUG)
 
 
 SPECIAL_CHARS = [
-    "+",
-    "-",
     "&",
     "|",
     "!",
@@ -32,7 +30,6 @@ SPECIAL_CHARS = [
     "/",
 ]
 
-
 def escape(term):
     # Backslash has to escape itself
     term = term.replace("\\", "\\\\")
@@ -41,6 +38,9 @@ def escape(term):
         term = term.replace(char, "\\" + char)
     return term
 
+def remove_syntactic_operators(term):
+    term = term.replace("+", "").replace("-", "")
+    return term
 
 def replace_colon(term):
     return term.replace(":", "$")
