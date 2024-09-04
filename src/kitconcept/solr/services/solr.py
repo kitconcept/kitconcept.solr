@@ -161,6 +161,12 @@ class SolrSearch(Service):
                 exclude_term = remove_syntactic_operators(exclude_term)
                 exclude_string+=f"NOT(Title:*{exclude_term}* OR Description:*{exclude_term}* OR SearchableText:*{exclude_term}* OR searchwords:*{exclude_term}* OR rezeptcode:*{exclude_term}*) "
 
+        force_string = ""
+        if len (forced_words) > 0:
+            for forced_term in forced_words:
+                forced_term = remove_syntactic_operators(forced_term)
+                force_string+=f"AND(Title:*{forced_term}* OR Description:*{forced_term}* OR SearchableText:*{forced_term}* OR searchwords:*{forced_term}* OR rezeptcode:*{forced_term}*) "
+
         # Search
         #  q: query parameter
         # fq: the "filter query" parameter allows to restrict the search by filtering
@@ -177,7 +183,7 @@ class SolrSearch(Service):
         #
 
         d = {
-            "q": f"+(Title:{multitermstring}^5000 OR Description:{multitermstring}^2 OR SearchableText:{multitermstring} OR searchwords:{multitermstring}^1000 OR rezeptcode: ({multitermstring})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*) {exclude_string}",
+            "q": f"+(Title:{multitermstring}^5000 OR Description:{multitermstring}^2 OR SearchableText:{multitermstring} OR searchwords:{multitermstring}^1000 OR rezeptcode: ({multitermstring})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*) {force_string} {exclude_string}",
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
