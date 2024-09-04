@@ -3,6 +3,7 @@ from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
 from itertools import zip_longest
 from kitconcept.solr.services.solr_utils import escape
+from kitconcept.solr.services.solr_utils import remove_syntactic_operators
 from kitconcept.solr.services.solr_utils import FacetConditions
 from kitconcept.solr.services.solr_utils import get_facet_fields_result
 from kitconcept.solr.services.solr_utils import replace_colon
@@ -137,7 +138,28 @@ class SolrSearch(Service):
         #
         # In addition. support empty search to search all terms, in case this
         # is configured.
-        term = "(" + escape(replace_reserved(query)) + " OR " + escape(replace_reserved(query)) + "*" + ")" if query else "*"
+
+        term = escape(replace_reserved(query))
+
+        single_terms = term.split()
+
+        forced_words = [word for word in single_terms if word.startswith('+')]
+
+        excluded_words = [word for word in single_terms if word.startswith('-')]
+        single_terms = [word for word in single_terms if not word.startswith('-')]
+        multitermstring="("
+        for count, term in enumerate(single_terms):
+            multitermstring+= remove_syntactic_operators(term) + " OR " + remove_syntactic_operators(term) + "*" if query else "*"
+            if count +1 < len(single_terms):
+                multitermstring+=" OR "
+
+        multitermstring+=")"
+
+        exclude_string = ""
+        if len (excluded_words) > 0:
+            for exclude_term in excluded_words:
+                exclude_term = remove_syntactic_operators(exclude_term)
+                exclude_string+=f"NOT(Title:*{exclude_term}* OR Description:*{exclude_term}* OR SearchableText:*{exclude_term}* OR searchwords:*{exclude_term}* OR rezeptcode:*{exclude_term}*) "
 
         # Search
         #  q: query parameter
@@ -153,21 +175,9 @@ class SolrSearch(Service):
         # facet: enable faceting (if set to true)
         # facet.field: the fields to facet on
         #
-        # Importance:
-        #
-        # - Title * 5
-        # - Description * 2
-        # - SearchableText * 1
-        # - default * 1
-        # - body_text * 1
-        # - Subject * 1
-        # - ID * 0,75
-        # - Text Prefix * 0,75
-        # - Text Suffix * 0,75
-        # - Text Substring * 0,5
-        # - searchwords * 1000
+
         d = {
-            "q": f"+(Title:{term}^5000 OR Description:{term}^2 OR SearchableText:{term} OR searchwords:({query})^1000 OR rezeptcode: ({term})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*)",  # noqa
+            "q": f"+(Title:{multitermstring}^5000 OR Description:{multitermstring}^2 OR SearchableText:{multitermstring} OR searchwords:{multitermstring}^1000 OR rezeptcode: ({multitermstring})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*) {exclude_string}",
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
