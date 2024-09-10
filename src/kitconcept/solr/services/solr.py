@@ -181,7 +181,6 @@ class SolrSearch(Service):
         # facet: enable faceting (if set to true)
         # facet.field: the fields to facet on
         #
-
         d = {
             "q": f"+(Title:{multitermstring}^5000 OR Description:{multitermstring}^2 OR SearchableText:{multitermstring} OR searchwords:{multitermstring}^1000 OR rezeptcode: ({multitermstring})^1000) +(portal_type:(jungzeelandia.Recipe)^1000 OR portal_type:(jungzeelandia.Product)^1000 OR portal_type:*) {force_string} {exclude_string}",
             "wt": "json",

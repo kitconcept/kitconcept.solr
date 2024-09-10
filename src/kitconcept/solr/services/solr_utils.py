@@ -39,7 +39,9 @@ def escape(term):
     return term
 
 def remove_syntactic_operators(term):
-    term = term.replace("+", "").replace("-", "")
+    if term.startswith(("+", "-")):
+        term = term[1:]
+    term = term.replace("+", "\\+").replace("-", "\\-")
     return term
 
 def replace_colon(term):
