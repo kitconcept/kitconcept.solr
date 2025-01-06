@@ -65,7 +65,7 @@ class SolrExtraConditions:
                     value = replace_reserved(condition["gr"])
                     result += f"{{{value} TO "
                 else:
-                    result += f"[* TO "
+                    result += "[* TO "
                 if "le" in condition:
                     value = replace_reserved(condition["le"])
                     result += f"{value}]"
@@ -73,7 +73,7 @@ class SolrExtraConditions:
                     value = replace_reserved(condition["ls"])
                     result += f"{value}}}"
                 else:
-                    result += f"*]"
+                    result += "*]"
             else:
                 raise RuntimeError(f"Wrong condition type [{kind}]")
             results.append(result)
