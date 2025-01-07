@@ -2,6 +2,7 @@ from .solr_utils import escape
 from .solr_utils import replace_reserved
 
 import base64
+import binascii
 import json
 import logging
 
@@ -29,13 +30,17 @@ class SolrExtraConditions:
         if raw is not None:
             try:
                 config = json.loads(base64.b64decode(raw))
-            except (UnicodeDecodeError, json.decoder.JSONDecodeError):
+            except (
+                UnicodeDecodeError,
+                json.decoder.JSONDecodeError,
+                binascii.Error,
+            ):
                 logger.warning(
                     "Ignoring invalid base64 encoded string", exc_info=True
                 )
-                config = {}
+                config = []
         else:
-            config = {}
+            config = []
         return cls(config)
 
     def query_list(self):
@@ -57,10 +62,10 @@ class SolrExtraConditions:
                     value = replace_reserved(condition["ge"])
                     result += f"[{value} TO "
                 elif "gr" in condition:
-                    value = replace_reserved(condition["ge"])
+                    value = replace_reserved(condition["gr"])
                     result += f"{{{value} TO "
                 else:
-                    result += f"[* TO "
+                    result += "[* TO "
                 if "le" in condition:
                     value = replace_reserved(condition["le"])
                     result += f"{value}]"
@@ -68,7 +73,7 @@ class SolrExtraConditions:
                     value = replace_reserved(condition["ls"])
                     result += f"{value}}}"
                 else:
-                    result += f"*]"
+                    result += "*]"
             else:
                 raise RuntimeError(f"Wrong condition type [{kind}]")
             results.append(result)

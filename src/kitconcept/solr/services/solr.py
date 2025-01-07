@@ -1,7 +1,3 @@
-from AccessControl.SecurityManagement import getSecurityManager
-from collective.solr.interfaces import ISolrConnectionManager
-from functools import reduce
-from itertools import zip_longest
 from .solr_utils import escape
 from .solr_utils import FacetConditions
 from .solr_utils import get_facet_fields_result
@@ -9,6 +5,10 @@ from .solr_utils import replace_colon
 from .solr_utils import replace_reserved
 from .solr_utils import SolrConfig
 from .solr_utils_extra import SolrExtraConditions
+from AccessControl.SecurityManagement import getSecurityManager
+from collective.solr.interfaces import ISolrConnectionManager
+from functools import reduce
+from itertools import zip_longest
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
 from plone.app.multilingual.interfaces import ITranslationManager
@@ -189,8 +189,14 @@ class SolrSearch(Service):
             d["sort"] = sort
         if group_select is not None:
             d["fq"] = d["fq"] + [solr_config.select_condition(group_select)]
-        d["facet.query"] = (
-            facet_conditions.ex_all_facets(extending=["typefilter"]) + query
+        ex_all_facets = facet_conditions.ex_all_facets(
+            extending=["typefilter"]
+        )
+        d["facet.query"] = list(
+            map(
+                lambda filter_condition: ex_all_facets + filter_condition,
+                solr_config.filters,
+            )
         )
         if path_prefix:
             is_excluding = re_is_excluding.search(path_prefix)

@@ -7,10 +7,12 @@ on:
     branches:
       - master
       - main
+      - fhnw-develop
   pull_request:
     branches:
       - master
       - main
+      - fhnw-develop
   workflow_dispatch:
 
 ##

@@ -67,7 +67,7 @@ class TestEndpointCustom:
         self.data = response.json()
 
 
-class TestFacetConditionsInactive(TestEndpointCustom):
+class TestExtraConditionsInactive(TestEndpointCustom):
     url = "/@solr?q=chomsky"
 
     @pytest.mark.parametrize(
@@ -89,7 +89,7 @@ class TestFacetConditionsInactive(TestEndpointCustom):
         assert (path in path_strings) is expected
 
 
-class TestFacetConditionsActive(TestEndpointCustom):
+class TestExtraConditionsActive(TestEndpointCustom):
     url = "/@solr?q=chomsky&group_select=1"
 
     def test_facet_fields(self):
@@ -123,82 +123,15 @@ class TestFacetConditionsActive(TestEndpointCustom):
         assert (path in path_strings) is expected
 
 
-class TestFacetConditionsFiltering1(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
-
-    def test_facet_fields(self):
-        assert self.data.get("facet_fields") == [
-            [
-                {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
-            ],
-            [
-                {"name": "Description", "label": "The description"},
-                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
-            ],
-        ]
-
-    @pytest.mark.parametrize(
-        "path,expected",
+class TestExtraConditionsDateGe(TestEndpointCustom):
+    extra_conditions = [
         [
-            ("/plone/myimage", False),
-            ("/plone/myfolder", False),
-            ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
-            ("/plone/foo_beta", True),
-            ("/plone/foo_gamma", True),
-            ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
-            ("/plone/bar_gamma", False),
+            "start",
+            "date-range",
+            {"ge": "2021-02-01T00:00:00Z"},
         ],
-    )
-    def test_paths(self, all_path_string, path: str, expected: bool):
-        path_strings = all_path_string(self.data)
-        assert (path in path_strings) is expected
-
-
-class TestFacetConditionsFiltering2(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}}, "Description": {"c": {"alpha": True}}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
-
-    def test_facet_fields(self):
-        assert self.data.get("facet_fields") == [
-            [
-                {"name": "Title", "label": "The title"},
-                [["chomsky", 2], ["bar", 1], ["foo", 1]],
-            ],
-            [
-                {"name": "Description", "label": "The description"},
-                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
-            ],
-        ]
-
-    @pytest.mark.parametrize(
-        "path,expected",
-        [
-            ("/plone/myimage", False),
-            ("/plone/myfolder", False),
-            ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
-            ("/plone/foo_beta", False),
-            ("/plone/foo_gamma", False),
-            ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
-            ("/plone/bar_gamma", False),
-        ],
-    )
-    def test_paths(self, all_path_string, path: str, expected: bool):
-        path_strings = all_path_string(self.data)
-        assert (path in path_strings) is expected
-
-
-class TestFacetConditionsFiltering3(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True}},
-        "Description": {"c": {"alpha": True, "beta": True}},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -208,7 +141,48 @@ class TestFacetConditionsFiltering3(TestEndpointCustom):
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
+                [["chomsky", 4], ["beta", 2], ["gamma", 2]],
+            ],
+        ]
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/myimage", False),
+            ("/plone/myfolder", False),
+            ("/plone/myfolder/mynews", False),
+            ("/plone/foo_alpha", False),
+            ("/plone/foo_beta", True),
+            ("/plone/foo_gamma", True),
+            ("/plone/bar_alpha", False),
+            ("/plone/bar_beta", True),
+            ("/plone/bar_gamma", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+
+class TestExtraConditionsDateLe(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "start",
+            "date-range",
+            {"le": "2021-02-01T00:00:00Z"},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
+
+    def test_facet_fields(self):
+        assert self.data.get("facet_fields") == [
+            [
+                {"name": "Title", "label": "The title"},
+                [["chomsky", 4], ["bar", 2], ["foo", 2]],
+            ],
+            [
+                {"name": "Description", "label": "The description"},
+                [["chomsky", 4], ["alpha", 2], ["beta", 2]],
             ],
         ]
 
@@ -221,8 +195,8 @@ class TestFacetConditionsFiltering3(TestEndpointCustom):
             ("/plone/foo_alpha", True),
             ("/plone/foo_beta", True),
             ("/plone/foo_gamma", False),
-            ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
+            ("/plone/bar_alpha", True),
+            ("/plone/bar_beta", True),
             ("/plone/bar_gamma", False),
         ],
     )
@@ -231,22 +205,25 @@ class TestFacetConditionsFiltering3(TestEndpointCustom):
         assert (path in path_strings) is expected
 
 
-class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True, "bar": False}},
-        "Description": {"c": {"alpha": False}},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+class TestExtraConditionsDateGeLe(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "start",
+            "date-range",
+            {"le": "2021-02-01T00:00:00Z", "ge": "2021-02-01T00:00:00Z"},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 2], ["bar", 1], ["foo", 1]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
+                [["beta", 2], ["chomsky", 2]],
             ],
         ]
 
@@ -256,11 +233,11 @@ class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
             ("/plone/myimage", False),
             ("/plone/myfolder", False),
             ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
+            ("/plone/foo_alpha", False),
             ("/plone/foo_beta", True),
-            ("/plone/foo_gamma", True),
+            ("/plone/foo_gamma", False),
             ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
+            ("/plone/bar_beta", True),
             ("/plone/bar_gamma", False),
         ],
     )
@@ -269,19 +246,25 @@ class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
         assert (path in path_strings) is expected
 
 
-class TestFacetConditionsContainsBeginning(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}, "p": "ba"}, "Description": {"p": "cho"}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+class TestExtraConditionsDateGrLs(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "start",
+            "date-range",
+            {"ls": "2021-03-01T00:00:00Z", "gr": "2021-01-01T00:00:00Z"},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["bar", 3]],
+                [["chomsky", 2], ["bar", 1], ["foo", 1]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 3]],
+                [["beta", 2], ["chomsky", 2]],
             ],
         ]
 
@@ -291,84 +274,11 @@ class TestFacetConditionsContainsBeginning(TestEndpointCustom):
             ("/plone/myimage", False),
             ("/plone/myfolder", False),
             ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
+            ("/plone/foo_alpha", False),
             ("/plone/foo_beta", True),
-            ("/plone/foo_gamma", True),
+            ("/plone/foo_gamma", False),
             ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
-            ("/plone/bar_gamma", False),
-        ],
-    )
-    def test_paths(self, all_path_string, path: str, expected: bool):
-        path_strings = all_path_string(self.data)
-        assert (path in path_strings) is expected
-
-
-class TestFacetConditionsContainsMiddle(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}, "p": "ar"}, "Description": {"p": "cho"}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
-
-    def test_facet_fields(self):
-        assert self.data.get("facet_fields") == [
-            [
-                {"name": "Title", "label": "The title"},
-                [["bar", 3]],
-            ],
-            [
-                {"name": "Description", "label": "The description"},
-                [["chomsky", 3]],
-            ],
-        ]
-
-    @pytest.mark.parametrize(
-        "path,expected",
-        [
-            ("/plone/myimage", False),
-            ("/plone/myfolder", False),
-            ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
-            ("/plone/foo_beta", True),
-            ("/plone/foo_gamma", True),
-            ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
-            ("/plone/bar_gamma", False),
-        ],
-    )
-    def test_paths(self, all_path_string, path: str, expected: bool):
-        path_strings = all_path_string(self.data)
-        assert (path in path_strings) is expected
-
-
-class TestFacetConditionsContainsCaseInsensitive(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True}, "p": "BAR"},
-        "Description": {"p": "cho"},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
-
-    def test_facet_fields(self):
-        assert self.data.get("facet_fields") == [
-            [
-                {"name": "Title", "label": "The title"},
-                [["bar", 3]],
-            ],
-            [
-                {"name": "Description", "label": "The description"},
-                [["chomsky", 3]],
-            ],
-        ]
-
-    @pytest.mark.parametrize(
-        "path,expected",
-        [
-            ("/plone/myimage", False),
-            ("/plone/myfolder", False),
-            ("/plone/myfolder/mynews", False),
-            ("/plone/foo_alpha", True),
-            ("/plone/foo_beta", True),
-            ("/plone/foo_gamma", True),
-            ("/plone/bar_alpha", False),
-            ("/plone/bar_beta", False),
+            ("/plone/bar_beta", True),
             ("/plone/bar_gamma", False),
         ],
     )

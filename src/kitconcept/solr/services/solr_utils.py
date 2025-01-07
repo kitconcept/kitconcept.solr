@@ -2,6 +2,7 @@ from plone import api
 from typing import List
 
 import base64
+import binascii
 import json
 import logging
 import re
@@ -128,7 +129,11 @@ class FacetConditions:
         if raw is not None:
             try:
                 config = json.loads(base64.b64decode(raw))
-            except (UnicodeDecodeError, json.decoder.JSONDecodeError):
+            except (
+                UnicodeDecodeError,
+                json.decoder.JSONDecodeError,
+                binascii.Error,
+            ):
                 logger.warning(
                     "Ignoring invalid base64 encoded string", exc_info=True
                 )
