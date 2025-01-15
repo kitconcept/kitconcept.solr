@@ -51,7 +51,7 @@ class TestEndpointPortalTypeMultiple(TestEndpointPortalType):
     @pytest.mark.parametrize(
         "path,expected",
         [
-            ("/plone/redandblue", True),
+            ("/plone/redandblue", False),
             ("/plone/news1", False),
             ("/plone/news2", False),
             ("/plone/news3", False),

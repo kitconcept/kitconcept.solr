@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_catalog">
+
+  <!-- The body_text index supports highlighting in the block content -->
+
+  <index meta_type="KeywordIndex"
+         name="body_text"
+  >
+    <indexed_attr value="body_text" />
+  </index>
+
+  <column value="body_text" />
+
+</object>

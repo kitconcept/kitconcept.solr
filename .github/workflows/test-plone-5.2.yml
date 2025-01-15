@@ -39,7 +39,7 @@ jobs:
         ## regardless what I try.
 
       # python cache
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}

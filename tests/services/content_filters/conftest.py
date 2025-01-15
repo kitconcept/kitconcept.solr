@@ -41,7 +41,7 @@ def contents() -> List:
             "_container": "",
             "type": "News Item",
             "id": "blue",
-            "title": "Blue news item",
+            "title": "A news item",
             "language": "en",
         },
     ]

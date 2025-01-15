@@ -163,6 +163,11 @@ solr-start-fg: test-compose-project-name ## Start solr in foreground
 	@echo "Start solr in foreground"
 	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up
 
+.PHONY: solr-start-and-rebuild
+solr-start-and-rebuild: ## Start solr, force rebuild
+	@echo "Start solr, force rebuild, erases data"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up -d --build
+
 .PHONY: solr-stop
 solr-stop: test-compose-project-name ## Stop solr
 	@echo "Stop solr"

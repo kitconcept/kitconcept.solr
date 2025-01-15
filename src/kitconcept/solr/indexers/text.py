@@ -137,5 +137,4 @@ def body_text_blocks(obj):
     for block_id in blocks_layout.get("items", []):
         block = blocks.get(block_id, {})
         blocks_text.append(extract_text(block, obj, request))
-
     return " ".join([text.strip() for text in blocks_text if text.strip()])

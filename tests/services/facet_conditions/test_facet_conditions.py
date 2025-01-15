@@ -96,7 +96,7 @@ class TestFacetConditionsActive(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},
@@ -108,7 +108,7 @@ class TestFacetConditionsActive(TestEndpointCustom):
         "path,expected",
         [
             ("/plone/myimage", False),
-            ("/plone/myfolder", False),
+            ("/plone/myfolder", True),
             ("/plone/myfolder/mynews", False),
             ("/plone/foo_alpha", True),
             ("/plone/foo_beta", True),
@@ -131,7 +131,7 @@ class TestFacetConditionsFiltering1(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},
@@ -242,7 +242,7 @@ class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},

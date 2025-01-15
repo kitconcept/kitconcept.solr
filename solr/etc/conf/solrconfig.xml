@@ -211,7 +211,26 @@
       <int name="rows">10</int>
       <str name="df">SearchableText</str>
       <str name="wt">xml</str>
+      <!-- XXX BEGIN -->
+
+      <str name="wt">json</str>
+      <str name="facet">true</str>
+      <str name="facet.contains.ignoreCase">true</str>
+
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.dictionary">suggestDictionary</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">4</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">0</str>
+      <str name="spellcheck.onlyMorePopular">false</str>
+      <str name="spellcheck.collate">false</str>
+
+      <!-- XXX END -->
     </lst>
+    <arr name="last-components">
+      <str>suggest</str>
+    </arr>
   </requestHandler>
 
   <requestHandler class="solr.UpdateRequestHandler"
@@ -260,6 +279,15 @@
       <float name="threshold">0.</float>
       <str name="buildOnCommit">true</str>
     </lst>
+
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">suggest</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+    </lst>
+
   </searchComponent>
 
 </config>
