@@ -23,9 +23,13 @@ class SolrSuggest(Service):
         data = {"error": "no response"}
         parameters = {
             "q": removeSpecialCharactersAndOperators(query),
-            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link +Language:%s"
-            % language,
+            "fq": "-showinsearch:False +Language:%s" % language,
         }
+        # parameters = {
+        #     "q": removeSpecialCharactersAndOperators(query),
+        #     "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link +Language:%s"
+        #     % language,
+        # }
         querystring = urllib.parse.urlencode(parameters)
         url = "{}/{}".format(connection.solrBase, "suggest?%s" % querystring)
         try:
