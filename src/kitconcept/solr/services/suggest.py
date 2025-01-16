@@ -6,13 +6,15 @@ from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.restapi.services import Service
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
+from .solr_utils import SolrConfig
+from .solr_params import SolrParams
 
 import json
 import urllib
 
 
 class SolrSuggest(Service):
-    def query_suggest(self, query):
+    def query_suggest(self, params):
         language = api.portal.get_current_language(self.context)
         manager = queryUtility(ISolrConnectionManager)
         if manager is None:
@@ -22,7 +24,7 @@ class SolrSuggest(Service):
             return {"error": "Solr is not installed or activated"}
         data = {"error": "no response"}
         parameters = {
-            "q": removeSpecialCharactersAndOperators(query),
+            "q": removeSpecialCharactersAndOperators(params.query),
             "fq": "-showinsearch:False +Language:%s" % language,
         }
         # parameters = {
@@ -65,8 +67,9 @@ class SolrSuggest(Service):
         ]
 
     def reply(self):
-        query = self.request.form.get("query", "")
-        data = self.query_suggest(query)
+        solr_config = SolrConfig()
+        params = SolrParams(self.context, self.request, solr_config)
+        data = self.query_suggest(params)
         data = self.parse_response(data)
         if isinstance(data, dict):
             return data
