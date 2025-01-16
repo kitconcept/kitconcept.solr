@@ -4,6 +4,7 @@ from .solr_utils import get_facet_fields_result
 from .solr_utils import replace_colon
 from .solr_utils import replace_reserved
 from .solr_utils import SolrConfig
+from .solr_params import SolrParams
 from .solr_utils_extra import SolrExtraConditions
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
@@ -60,67 +61,7 @@ class SolrSearch(Service):
                 self.request, plone.protect.interfaces.IDisableCSRFProtection
             )
 
-        query = self.request.form.get("q", None)
-        start = self.request.form.get("start", None)
-        rows = self.request.form.get("rows", None)
-        sort = self.request.form.get("sort", None)
-        group_select = self.request.form.get("group_select", None)
-        path_prefix = self.request.form.get("path_prefix", "")
-        portal_type = self.request.form.get("portal_type", None)
-        lang = self.request.form.get("lang", None)
-        keep_full_solr_response = (
-            self.request.form.get("keep_full_solr_response", "").lower()
-            == "true"
-        )
-
-        # search in multilingual path_prefix by default - unless lang is specified
-        is_multilinqual_txt = self.request.form.get(
-            "is_multilingual", "true" if lang is None else "false"
-        )
-        is_multilingual = is_multilinqual_txt.lower() == "true"
-        portal = api.portal.get()
-        portal_path_segments = portal.getPhysicalPath()
-        portal_path = "/".join(portal_path_segments)
-
-        facet_conditions = FacetConditions.from_encoded(
-            self.request.form.get("facet_conditions", None)
-        )
-
-        extra_conditions = SolrExtraConditions.from_encoded(
-            self.request.form.get("extra_conditions", None)
-        )
-
-        if not path_prefix:
-            # The path_prefix can optionally be used, but the root url is
-            # used as default, in case path_prefix is undefined.
-            context_path_segments = self.context.getPhysicalPath()
-            # Acuqire relative path
-            path_prefix_segments = context_path_segments[
-                len(portal_path_segments) :
-            ]
-            path_prefix = "/".join(path_prefix_segments)
-
-        if lang and is_multilingual:
-            raise BadRequest(
-                "Property 'lang` and `is_multilingual` are mutually exclusive"
-            )
-
-        if group_select is not None:
-            try:
-                group_select = int(group_select)
-            except ValueError:
-                raise BadRequest(
-                    "Property 'group_select` must be an integer, if specified"
-                )
-        elif len(solr_config.filters) > 0:
-            # By default select group 0 (unless there are no filters defined)
-            group_select = 0
-
-        facet_fields = (
-            solr_config.select_facet_fields(group_select)
-            if group_select is not None
-            else []
-        )
+        params = SolrParams(self.context, self.request, solr_config)
 
         # Get the solr connection
         manager = queryUtility(ISolrConnectionManager)
@@ -134,7 +75,11 @@ class SolrSearch(Service):
         #
         # In addition. support empty search to search all terms, in case this
         # is configured.
-        term = "(" + escape(replace_reserved(query)) + ")" if query else "*"
+        term = (
+            "(" + escape(replace_reserved(params.query)) + ")"
+            if params.query
+            else "*"
+        )
 
         # Search
         #  q: query parameter
@@ -168,28 +113,32 @@ class SolrSearch(Service):
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # content only used for highlighting, the field is not indexed # noqa
-            "fq": [security_filter()],
+            "fq": [security_filter()] + params.extra_fq(self.context),
             "fl": solr_config.field_list,
             "facet": "true",
             "facet.contains.ignoreCase": "true",
             "facet.field": list(
                 map(
-                    lambda info: facet_conditions.ex_field_facet(info["name"])
+                    lambda info: params.facet_conditions.ex_field_facet(
+                        info["name"]
+                    )
                     + info["name"],
-                    facet_fields,
+                    params.facet_fields,
                 )
             ),
         }
 
-        if start is not None:
-            d["start"] = start
-        if rows is not None:
-            d["rows"] = rows
-        if sort is not None:
-            d["sort"] = sort
-        if group_select is not None:
-            d["fq"] = d["fq"] + [solr_config.select_condition(group_select)]
-        ex_all_facets = facet_conditions.ex_all_facets(
+        if params.start is not None:
+            d["start"] = params.start
+        if params.rows is not None:
+            d["rows"] = params.rows
+        if params.sort is not None:
+            d["sort"] = params.sort
+        if params.group_select is not None:
+            d["fq"] = d["fq"] + [
+                solr_config.select_condition(params.group_select)
+            ]
+        ex_all_facets = params.facet_conditions.ex_all_facets(
             extending=["typefilter"]
         )
         d["facet.query"] = list(
@@ -198,78 +147,13 @@ class SolrSearch(Service):
                 solr_config.filters,
             )
         )
-        if path_prefix:
-            is_excluding = re_is_excluding.search(path_prefix)
-            if is_multilingual:
-                # All the translation folders have to be queried, if the
-                # multilingual option is selected. (By default.)
-                relative_path = re_relative_path.sub("", path_prefix)
-                folder = self.context.unrestrictedTraverse(relative_path)
-                if ITranslatable.providedBy(folder):
-                    translations = (
-                        ITranslationManager(folder).get_translations().values()
-                    )
-                else:
-                    # Untranslated
-                    translations = [folder]
-                path_list = map(
-                    lambda o: "/".join(o.getPhysicalPath()), translations
-                )
-            else:
-                # Not multilingual. Search stricly in the given path.
-                if is_excluding:
-                    path_prefix = path_prefix[:-1]
-                path_list = [portal_path + path_prefix]
-            if is_excluding:
-                # Expressions with a trailing / will exclude the
-                # parent folder and include everything else.
-                path_expr = reduce(
-                    lambda sum, path: sum
-                    + [f"path_string:{escape(path + '/')}*"],
-                    path_list,
-                    [],
-                )
-            else:
-                # Expression that include a folder must be split up to
-                # two conditions, to avoid `/something` to match
-                # '/something-else'.
-                path_expr = reduce(
-                    lambda sum, path: sum
-                    + [
-                        f"path_string:{escape(path)}",
-                        f"path_string:{escape(path + '/')}*",
-                    ],
-                    path_list,
-                    [],
-                )
-            if len(path_expr) > 0:
-                d["fq"] = d["fq"] + ["(" + " OR ".join(path_expr) + ")"]
-        if portal_type:
-            # Convert to Type condition.
-            d["fq"] = d["fq"] + [
-                "Type:("
-                + " OR ".join(
-                    map(lambda txt: '"' + escape(txt) + '"', portal_type)
-                )
-                + ")"
-            ]
-        if lang:
-            d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
-        d["fq"] = d["fq"] + facet_conditions.field_conditions_solr
 
-        # extra_conditions = [
-        #     [
-        #         "start",
-        #         "date-range",
-        #         {"ge": "2021-07-19T13:00:00Z", "le": "2025-07-19T13:00:00Z"},
-        #     ],
-        # ]
-
-        query_list = extra_conditions.query_list()
-        d["fq"] = d["fq"] + query_list
-
-        d.update(facet_conditions.contains_query)
-        d.update(facet_conditions.more_query(facet_fields, multiplier=2))
+        d.update(params.facet_conditions.contains_query)
+        d.update(
+            params.facet_conditions.more_query(
+                params.facet_fields, multiplier=2
+            )
+        )
 
         raw_result = connection.search(**d).read()
 
@@ -277,7 +161,7 @@ class SolrSearch(Service):
         # Add portal path to the result. This can be used by
         # the front-end to calculate the @id from the path_string
         # for each item.
-        result["portal_path"] = portal_path
+        result["portal_path"] = params.portal_path
         # Add the group counts in order. Needed because the
         # facet_queries dictionary will not preserve key order, when
         # marshalled to the client.
@@ -290,14 +174,16 @@ class SolrSearch(Service):
         )
         result["facet_fields"] = get_facet_fields_result(
             result["facet_counts"]["facet_fields"],
-            facet_fields,
-            facet_conditions.more_dict(facet_fields, multiplier=1),
+            params.facet_fields,
+            params.facet_conditions.more_dict(
+                params.facet_fields, multiplier=1
+            ),
         )
         # Solr response is pruned of the unnecessary parts, unless explicitly requested.
-        if not keep_full_solr_response:
+        if not params.keep_full_solr_response:
             del result["facet_counts"]
         # Embellish result with supplemental information for the front-end
-        if group_select is not None:
-            layouts = solr_config.select_layouts(group_select)
+        if params.group_select is not None:
+            layouts = solr_config.select_layouts(params.group_select)
             result["layouts"] = layouts
         return result
