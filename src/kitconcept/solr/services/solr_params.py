@@ -72,7 +72,7 @@ class SolrParams:
             self.group_select = 0
 
         self.facet_fields = (
-            solr_config.select_facet_fields(group_select)
+            solr_config.select_facet_fields(self.group_select)
             if group_select is not None
             else []
         )
