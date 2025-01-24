@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-  <luceneMatchVersion>4.5</luceneMatchVersion>
+  <luceneMatchVersion>9.4</luceneMatchVersion>
 
   <dataDir>${solr.data.dir:}</dataDir>
 
@@ -64,7 +64,8 @@
          *** WARNING ***
          Before enabling remote streaming, you should make sure your
          system has authentication enabled.
-    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="-1" formdataUploadLimitInKB="-1" addHttpRequestToContext="false"/>
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="-1"
+    formdataUploadLimitInKB="-1" addHttpRequestToContext="false"/>
       -->
 
     <requestParsers addHttpRequestToContext="false"
@@ -211,7 +212,26 @@
       <int name="rows">10</int>
       <str name="df">SearchableText</str>
       <str name="wt">xml</str>
+      <!-- XXX BEGIN -->
+
+      <str name="wt">json</str>
+      <str name="facet">true</str>
+      <str name="facet.contains.ignoreCase">true</str>
+
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.dictionary">suggestDictionary</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">4</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">0</str>
+      <str name="spellcheck.onlyMorePopular">false</str>
+      <str name="spellcheck.collate">false</str>
+
+      <!-- XXX END -->
     </lst>
+    <arr name="last-components">
+      <str>suggest</str>
+    </arr>
   </requestHandler>
 
   <requestHandler class="solr.UpdateRequestHandler"
@@ -246,7 +266,24 @@
       <str name="qf">suggest^10 suggest_ngram searchwords^1000 suggest_searchwords_ngram</str>
       <!-- q.op: default operator for search terms -->
       <str name="q.op">AND</str>
+      <!-- <str name="spellcheck">true</str>
+      <str name="spellcheck.dictionary">suggestDictionary</str>
+      <str name="spellcheck.onlyMorePopular">true</str>
+      <str name="spellcheck.count">4</str>
+      <str name="spellcheck.collate">true</str> -->
+
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.dictionary">suggestDictionary</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">4</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">0</str>
+      <str name="spellcheck.onlyMorePopular">false</str>
+      <str name="spellcheck.collate">false</str>
     </lst>
+    <arr name="components">
+      <str>suggest</str>
+    </arr>
   </requestHandler>
 
   <searchComponent class="solr.SpellCheckComponent"
@@ -260,6 +297,15 @@
       <float name="threshold">0.</float>
       <str name="buildOnCommit">true</str>
     </lst>
+
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">suggest</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+    </lst>
+
   </searchComponent>
 
 </config>
