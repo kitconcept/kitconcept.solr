@@ -150,7 +150,7 @@ class SolrSearch(Service):
         )
 
         highlighting_utils = SolrHighlightingUtils(solr_config)
-        d["hl"] = highlighting_utils.enabled
+        d["hl"] = "true" if highlighting_utils.enabled else "false"
         d["hl.fl"] = highlighting_utils.fields
 
         raw_result = connection.search(**d).read()
