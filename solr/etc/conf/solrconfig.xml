@@ -266,24 +266,7 @@
       <str name="qf">suggest^10 suggest_ngram searchwords^1000 suggest_searchwords_ngram</str>
       <!-- q.op: default operator for search terms -->
       <str name="q.op">AND</str>
-      <!-- <str name="spellcheck">true</str>
-      <str name="spellcheck.dictionary">suggestDictionary</str>
-      <str name="spellcheck.onlyMorePopular">true</str>
-      <str name="spellcheck.count">4</str>
-      <str name="spellcheck.collate">true</str> -->
-
-      <str name="spellcheck">on</str>
-      <str name="spellcheck.dictionary">suggestDictionary</str>
-      <str name="spellcheck.extendedResults">false</str>
-      <str name="spellcheck.count">4</str>
-      <str name="spellcheck.alternativeTermCount">2</str>
-      <str name="spellcheck.maxResultsForSuggest">0</str>
-      <str name="spellcheck.onlyMorePopular">false</str>
-      <str name="spellcheck.collate">false</str>
     </lst>
-    <arr name="components">
-      <str>suggest</str>
-    </arr>
   </requestHandler>
 
   <searchComponent class="solr.SpellCheckComponent"

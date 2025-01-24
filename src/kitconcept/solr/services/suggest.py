@@ -1,5 +1,3 @@
-from .solr_params import SolrParams
-from .solr_utils import SolrConfig
 from collective.solr.interfaces import ISolrConnectionManager
 from collective.solr.utils import removeSpecialCharactersAndOperators
 from plone import api
@@ -14,7 +12,7 @@ import urllib
 
 
 class SolrSuggest(Service):
-    def query_suggest(self, params):
+    def query_suggest(self, query):
         language = api.portal.get_current_language(self.context)
         manager = queryUtility(ISolrConnectionManager)
         if manager is None:
@@ -24,14 +22,10 @@ class SolrSuggest(Service):
             return {"error": "Solr is not installed or activated"}
         data = {"error": "no response"}
         parameters = {
-            "q": removeSpecialCharactersAndOperators(params.query),
-            "fq": "-showinsearch:False +Language:%s" % language,
+            "q": removeSpecialCharactersAndOperators(query),
+            "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link +Language:%s"
+            % language,
         }
-        # parameters = {
-        #     "q": removeSpecialCharactersAndOperators(query),
-        #     "fq": "-showinsearch:False -portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link +Language:%s"
-        #     % language,
-        # }
         querystring = urllib.parse.urlencode(parameters)
         url = "{}/{}".format(connection.solrBase, "suggest?%s" % querystring)
         try:
@@ -67,9 +61,8 @@ class SolrSuggest(Service):
         ]
 
     def reply(self):
-        solr_config = SolrConfig()
-        params = SolrParams(self.context, self.request, solr_config)
-        data = self.query_suggest(params)
+        query = self.request.form.get("query", "")
+        data = self.query_suggest(query)
         data = self.parse_response(data)
         if isinstance(data, dict):
             return data
