@@ -1,19 +1,20 @@
-import re
-from functools import reduce
 from .solr_utils import escape
 from .solr_utils import FacetConditions
 from .solr_utils_extra import SolrExtraConditions
+from functools import reduce
 from plone import api
-from zExceptions import BadRequest
 from plone.app.multilingual.interfaces import ITranslatable
 from plone.app.multilingual.interfaces import ITranslationManager
+from zExceptions import BadRequest
+
+import re
+
 
 re_relative_path = re.compile("^/+")
 re_is_excluding = re.compile("/$")
 
 
 class SolrParams:
-
     def __init__(self, context, request, solr_config):
         form = request.form
         self.query = form.get("q", None)

@@ -1,3 +1,5 @@
+from .solr_params import SolrParams
+from .solr_utils import SolrConfig
 from collective.solr.interfaces import ISolrConnectionManager
 from collective.solr.utils import removeSpecialCharactersAndOperators
 from plone import api
@@ -6,8 +8,6 @@ from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.restapi.services import Service
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
-from .solr_utils import SolrConfig
-from .solr_params import SolrParams
 
 import json
 import urllib
