@@ -1,11 +1,10 @@
 from .solr_utils import escape
-from .solr_utils import FacetConditions
 from .solr_utils import get_facet_fields_result
 from .solr_utils import replace_colon
 from .solr_utils import replace_reserved
 from .solr_utils import SolrConfig
 from .solr_params import SolrParams
-from .solr_utils_extra import SolrExtraConditions
+from .solr_highlighting_utils import SolrHighlightingUtils
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from functools import reduce
@@ -155,6 +154,10 @@ class SolrSearch(Service):
             )
         )
 
+        highlighting_utils = SolrHighlightingUtils(solr_config)
+        d["hl"] = highlighting_utils.enabled
+        d["hl.fl"] = highlighting_utils.fields
+
         raw_result = connection.search(**d).read()
 
         result = json.loads(raw_result)
@@ -179,9 +182,18 @@ class SolrSearch(Service):
                 params.facet_fields, multiplier=1
             ),
         )
+        # Add highlighting information to the result
+        highlighting_utils.enhance_items(
+            result.get("response", {}).get("docs", []),
+            result.get("highlighting", {}),
+        )
+
         # Solr response is pruned of the unnecessary parts, unless explicitly requested.
         if not params.keep_full_solr_response:
-            del result["facet_counts"]
+            if "facet_counts" in result:
+                del result["facet_counts"]
+            if "highlighting" in result:
+                del result["highlighting"]
         # Embellish result with supplemental information for the front-end
         if params.group_select is not None:
             layouts = solr_config.select_layouts(params.group_select)
