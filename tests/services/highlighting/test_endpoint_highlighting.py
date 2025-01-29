@@ -11,29 +11,41 @@ class TestEndpointDefault:
     def func(data: dict) -> list[str]:
         return [item["path_string"] for item in data["response"]["docs"]]
 
-
-class TestEndpointDefaultHighlighting(TestEndpointDefault):
     url = "/@solr?q=chomsky"
 
-    expected = (
-        ("/plone/mydocument", "highlight", None),
-        ("/plone/noamchomsky", "highlight", None),
-        ("/plone/mynews", "highlight", None),
-    )
 
-    def get_highlight_field(
-        self, data: list, path: str, highlight_field: str
-    ) -> list[str] | None:
+class TestHighlighting(TestEndpointDefault):
+    @pytest.mark.parametrize(
+        "path,highlight_field,highlight",
+        [
+            (
+                "/plone/mydocument",
+                "highlighting",
+                ["This is a description about <em>Chomsky</em>"],
+            ),
+            (
+                "/plone/noamchomsky",
+                "highlighting",
+                None,
+            ),
+            (
+                "/plone/mynews",
+                "highlighting",
+                ["Some more news about <em>Chomsky</em>"],
+            ),
+            (
+                "/plone/myotherfolder",
+                "highlighting",
+                ["Container for material about <em>Chomsky</em>"],
+            ),
+        ],
+    )
+    def test_highlight_field(
+        self, path: str, highlight_field: str, highlight: str
+    ):
         filtered = [
             item.get(highlight_field, None)
-            for item in data["response"]["docs"]
+            for item in self.data["response"]["docs"]
             if item["path_string"] == path
         ]
-        return filtered[0] if len(filtered) > 0 else None
-
-    def test_paths(self):
-        for path, highlight_field, highlight in self.expected:
-            assert (
-                self.get_highlight_field(self.data, path, highlight_field)
-                == highlight
-            )
+        assert (filtered[0] if len(filtered) > 0 else None) == highlight

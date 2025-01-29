@@ -4,4 +4,15 @@
     i18n_domain="kitconcept.solr"
     >
 
+  <genericsetup:upgradeSteps
+      profile="kitconcept.solr:default"
+      source="1000"
+      destination="1001"
+      >
+    <genericsetup:upgradeDepends
+        title="Update dependencies, catalog, and registry"
+        import_steps="toolset componentregistry catalog plone.app.registry"
+        />
+  </genericsetup:upgradeSteps>
+
 </configure>

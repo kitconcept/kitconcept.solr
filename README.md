@@ -298,6 +298,16 @@ Run only tests that match `TestEndpointEncoding`, but stop on the first error an
 ./bin/tox -e test -- -k TestEndpointEncoding -x --pdb
 ```
 
+## Remark about testing and configuration
+
+The package configuration (and the test setup) is quite complex, and especially for testing the highlighting, multiple steps must be present in the configuration. If some of this is missing, the tests will fail, leading to hard debugging.
+
+The highlighting is by default based on the `body_text` index which this package via an indexer. So first, the zcml must be loaded. But also worth noting that the `plone.volto` package must be loaded, if not then the `IBlocks` behavior is not active, and although the index is added, the indexer will not be called. As a consequence, the body_
+
+This is why `volto-solr` is referred from both `metadata.xml` and `dependencies.zcml` in this package. If any of this would be missing, the highlighting would fail.
+
+In an application that uses the `kitconcept.solr` package, loading its zcml and its default profile would be sufficient, because `kitconcept.solr` will pull in the behavior from `plone.volto` and the indexer from `collective.solr`, as needed.
+
 ## Credits
 
 The development of this add-on has been kindly sponsored by [German Aerospace Center (DLR)](https://www.dlr.de) and [Forschungszentrum Jülich](https://www.fz-juelich.de).
