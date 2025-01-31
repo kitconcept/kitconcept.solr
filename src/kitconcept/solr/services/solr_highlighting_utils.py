@@ -20,5 +20,4 @@ class SolrHighlightingUtils:
         if self.enabled:
             for item in items:
                 for field, value in highlighting.get(item["UID"], {}).items():
-                    print("Enhance item", item, field, value)
                     item[self.propByField[field]] = value
