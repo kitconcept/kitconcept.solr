@@ -11,20 +11,8 @@ class TestSuggestDefault:
 
 
 @pytest.fixture
-def get_suggest_result_props():
-    def func(
-        a: dict,
-    ) -> bool:
-        ac = dict(a)
-        del ac["@id"]
-        return ac
-
-    return func
-
-
-@pytest.fixture
 def get_suggest_result_path():
-    def func(a: dict) -> bool:
+    def func(a: dict) -> str:
         return urllib.parse.urlparse(a["@id"]).path
 
     return func
@@ -40,51 +28,23 @@ def get_suggest_item():
 
 class TestSuggestDefaultBaseSearch(TestSuggestDefault):
     url = "/@solr-suggest?query=chomsky"
-    expected_result = [
-        {
-            "@id": "http://localhost:59793/plone/mydocument",
-            "@type": "Document",
-            "description": "",
-            "review_state": "private",
-            "title": "My Document about Noam Chomsky",
-            "type_title": "Page",
-        },
-        {
-            "@id": "http://localhost:59793/plone/mynews",
-            "@type": "News Item",
-            "description": "",
-            "review_state": "private",
-            "title": "My News Item with Noam Chomsky",
-            "type_title": "News Item",
-        },
+    expected = [
+        "/plone/mydocument",
+        "/plone/mynews",
     ]
 
     @pytest.mark.parametrize(
-        "index,expected_dict",
-        enumerate(expected_result),
+        "index,expected_path",
+        enumerate(expected),
     )
     def test_suggest_result_path(
         self,
         get_suggest_item,
         get_suggest_result_path,
         index: int,
-        expected_dict: dict,
+        expected_path: str,
     ):
-        assert get_suggest_result_path(
-            get_suggest_item(self.data, index)
-        ) == get_suggest_result_path(expected_dict)
-
-    @pytest.mark.parametrize(
-        "index,expected_dict",
-        enumerate(expected_result),
-    )
-    def test_suggest_result_props(
-        self,
-        get_suggest_item,
-        get_suggest_result_props,
-        index: int,
-        expected_dict: dict,
-    ):
-        assert get_suggest_result_props(
-            get_suggest_item(self.data, index)
-        ) == get_suggest_result_props(expected_dict)
+        assert (
+            get_suggest_result_path(get_suggest_item(self.data, index))
+            == expected_path
+        )

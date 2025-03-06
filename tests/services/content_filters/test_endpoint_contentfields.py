@@ -10,7 +10,7 @@ class TestEndpointContentFields:
 
 
 class TestEndpointContentFieldsId(TestEndpointContentFields):
-    url = "/@solr?q=red"
+    url = "/@solr?q=redandblue"
 
     @pytest.mark.parametrize(
         "path,expected",
@@ -20,6 +20,76 @@ class TestEndpointContentFieldsId(TestEndpointContentFields):
             ("/plone/news2", False),
             ("/plone/news3", False),
             ("/plone/blue", False),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+    def test_count(self):
+        assert "response" in self.data
+        assert self.data["response"]["numFound"] == 1
+
+
+class TestEndpointContentFieldsIdPrefixNotSupported(TestEndpointContentFields):
+    url = "/@solr?q=red"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/redandblue", False),
+            ("/plone/news1", False),
+            ("/plone/news2", False),
+            ("/plone/news3", False),
+            ("/plone/blue", False),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+    def test_count(self):
+        assert "response" in self.data
+        assert self.data["response"]["numFound"] == 0
+
+
+class TestEndpointContentFieldsIdContainmentNotSupported(
+    TestEndpointContentFields
+):
+    url = "/@solr?q=and"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/redandblue", False),
+            ("/plone/news1", False),
+            ("/plone/news2", False),
+            ("/plone/news3", False),
+            ("/plone/blue", False),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+    def test_count(self):
+        assert "response" in self.data
+        assert self.data["response"]["numFound"] == 0
+
+
+class TestEndpointContentFieldsIdPostfixNotSupported(
+    TestEndpointContentFields
+):
+    url = "/@solr?q=blue"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/redandblue", False),
+            ("/plone/news1", False),
+            ("/plone/news2", False),
+            ("/plone/news3", False),
+            ("/plone/blue", True),
         ],
     )
     def test_paths(self, all_path_string, path: str, expected: bool):
@@ -58,7 +128,7 @@ class TestEndpointContentFieldsTitle(TestEndpointContentFields):
             (0, "News Item 1", ""),
             (1, "News Item 2", ""),
             (2, "News Item 3", "My location"),
-            (3, "Blue news item", ""),
+            (3, "A news item", ""),
         ],
     )
     def test_attributes(self, idx: int, title: str, location: str):

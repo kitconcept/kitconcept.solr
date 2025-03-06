@@ -26,6 +26,11 @@
       "image_scales",
       "image_field"
       ],
+      "highlightingFields": [
+      {"field": "content", "prop": "highlighting"},
+      {"field": "title", "prop": "highlighting_title"},
+      {"field": "description", "prop": "highlighting_description"}
+      ],
       "searchTabs": [
       {
       "label": "All",

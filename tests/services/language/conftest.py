@@ -17,14 +17,14 @@ def contents() -> List:
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myfolder",
             "title": "My Folder to store everything about Noam Chomsky",
             "language": "en",
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myotherfolder",
             "title": "My other Folder",
             "language": "en",
@@ -45,7 +45,7 @@ def contents() -> List:
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myfolder_de",
             "title": "My Folder to store everything about Noam Chomsky in Deutsch",
             "language": "de",

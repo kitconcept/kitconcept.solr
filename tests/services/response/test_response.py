@@ -16,6 +16,7 @@ solr_config = {
         "email",
         "location",
     ],
+    "highlightingFields": [{"field": "content", "prop": "highlighting"}],
     "searchTabs": [
         {
             "label": "All",
@@ -60,6 +61,7 @@ class TestResponseKeepFullSolrResponseDefault(TestResponseCustom):
     def test_facet_counts(self):
         assert "response" in self.data
         assert "facet_counts" not in self.data
+        assert "highlighting" not in self.data
 
 
 class TestResponseKeepFullSolrResponseIsFalse(TestResponseCustom):
@@ -68,6 +70,7 @@ class TestResponseKeepFullSolrResponseIsFalse(TestResponseCustom):
     def test_facet_counts(self):
         assert "response" in self.data
         assert "facet_counts" not in self.data
+        assert "highlighting" not in self.data
 
 
 class TestResponseKeepFullSolrResponseDefaultIsTrue(TestResponseCustom):
@@ -76,3 +79,4 @@ class TestResponseKeepFullSolrResponseDefaultIsTrue(TestResponseCustom):
     def test_facet_counts(self):
         assert "response" in self.data
         assert "facet_counts" in self.data
+        assert "highlighting" in self.data

@@ -3,6 +3,7 @@
   <include package="plone.app.iterate" />
   <include package="plone.api" />
   <include package="Products.GenericSetup" />
+  <include package="plone.volto" />
   <include package="collective.solr" />
   <include package="plone.restapi" />
   <include package="plone.app.caching" />
