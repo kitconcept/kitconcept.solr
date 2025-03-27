@@ -120,14 +120,14 @@ class NavigationWithExcluded(Navigation):
         # if not self.settings["show_excluded_items"]:
         #     query["exclude_from_nav"] = False
 
-        context_path = "/".join(self.context.getPhysicalPath())
+        # context_path = "/".join(self.context.getPhysicalPath())
         portal_catalog = getToolByName(self.context, "portal_catalog")
         brains = portal_catalog.searchResults(**query)
 
-        registry = getUtility(IRegistry)
-        types_using_view = registry.get(
-            "plone.types_use_view_action_in_listings", []
-        )
+        # registry = getUtility(IRegistry)
+        # types_using_view = registry.get(
+        #     "plone.types_use_view_action_in_listings", []
+        # )
 
         for brain in brains:
             brain_path = brain.getPath()
