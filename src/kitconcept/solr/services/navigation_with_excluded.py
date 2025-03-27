@@ -7,13 +7,13 @@ from plone.restapi.bbb import safe_text
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.serializer.converters import json_compatible
 from plone.restapi.services import Service
+from plone.restapi.services.navigation.get import Navigation
 from Products.CMFCore.utils import getToolByName
 from zope.component import adapter
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.interface import Interface
-from plone.restapi.services.navigation.get import Navigation
 
 
 @implementer(IExpandableElement)
