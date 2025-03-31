@@ -74,6 +74,33 @@ class SolrExtraConditions:
                     result += f"{value}}}"
                 else:
                     result += "*]"
+            elif kind == "string":
+                keys = set(condition.keys())
+                if not keys.issubset({"in"}):
+                    raise RuntimeError(
+                        f"invalid keys in options for condition 'string', supported: 'in' [{keys}]"
+                    )
+                if "in" in condition:
+                    if type(condition["in"]) is not list:
+                        raise RuntimeError(
+                            f"invalid type for condition 'string' [{type(condition['in'])}]"
+                        )
+                    if len(condition["in"]) == 0:
+                        # Empty list, ignore
+                        continue
+                    result = f"{fieldname}:"
+                    result += (
+                        "("
+                        + " OR ".join(
+                            list(
+                                map(
+                                    lambda term: replace_reserved(term),
+                                    condition["in"],
+                                )
+                            )
+                        )
+                        + ")"
+                    )
             else:
                 raise RuntimeError(f"Wrong condition type [{kind}]")
             results.append(result)
