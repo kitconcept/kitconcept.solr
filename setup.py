@@ -1,4 +1,5 @@
 """Installer for the kitconcept.solr package."""
+
 from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
@@ -22,6 +23,7 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: Addon",
         "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: 6.1",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -47,12 +49,15 @@ setup(
         "Tracker": "https://github.com/kitconcept/kitconcept.portal/issues",
     },
     install_requires=[
-        "Plone>=5.2.0",
+        "Products.CMFPlone>=5.2.0",
         "plone.restapi",
         #        "plone.restapi>=8.40.0",   # for Plone 6.0
         "plone.api",
+        "plone.app.multilingual",
         "setuptools",
         "collective.solr>=9.0.1",
+        "Products.CMFCore",
+        "Zope",
     ],
     extras_require={
         "test": [
