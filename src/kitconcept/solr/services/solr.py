@@ -36,9 +36,11 @@ def security_filter():
     roles.append("user:%s" % user.getId())
     # Roles with spaces need to be quoted
     roles = [
-        '"%s"' % escape(replace_colon(r))
-        if " " in r
-        else escape(replace_colon(r))
+        (
+            '"%s"' % escape(replace_colon(r))
+            if " " in r
+            else escape(replace_colon(r))
+        )
         for r in roles
     ]
     return "allowedRolesAndUsers:(%s)" % " OR ".join(roles)
