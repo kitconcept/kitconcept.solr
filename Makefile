@@ -55,8 +55,8 @@ clean-instance: ## remove existing instance
 .PHONY: clean-venv
 clean-venv: ## remove virtual environment
 	rm -fr bin include lib lib64 env pyvenv.cfg .tox .pytest_cache requirements-mxdev.txt
-	cp constraints-6.0.txt constraints.txt
-	cp requirements-6.0.txt requirements.txt
+	cp constraints-6.1.txt constraints.txt
+	cp requirements-6.1.txt requirements.txt
 
 .PHONY: clean-build
 clean-build: ## remove build artifacts
@@ -90,13 +90,13 @@ constraints-mxdev.txt:  bin/tox
 .PHONY: config
 config: bin/pip  ## Create instance configuration
 	@echo "$(GREEN)==> Create instance configuration$(RESET)"
-	bin/cookiecutter -f --no-input --config-file instance.yaml gh:plone/cookiecutter-zope-instance
+	bin/cookiecutter -f --no-input -c 2.1.1 --config-file instance.yaml gh:plone/cookiecutter-zope-instance
 
-.PHONY: install-plone-6.0
-install-plone-6.0: bin/mxdev config ## pip install Plone packages
+.PHONY: install-plone-6.1
+install-plone-6.1: bin/mxdev config ## pip install Plone packages
 	@echo "$(GREEN)==> Setup Build$(RESET)"
-	cp constraints-6.0.txt constraints.txt
-	cp requirements-6.0.txt requirements.txt
+	cp constraints-6.1.txt constraints.txt
+	cp requirements-6.1.txt requirements.txt
 	bin/tox -e init
 	bin/mxdev -c mx.ini
 	bin/pip install -r requirements-mxdev.txt
@@ -111,7 +111,7 @@ install-plone-5.2: bin/mxdev config ## pip install Plone packages
 	bin/pip install -r requirements-mxdev.txt
 
 .PHONY: install
-install: install-plone-6.0  ## Install Plone 6.0
+install: install-plone-6.1  ## Install Plone 6.1
 
 .PHONY: start
 start: ## Start a Plone instance on localhost:8080
