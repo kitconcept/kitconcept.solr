@@ -54,6 +54,7 @@ setup(
         #        "plone.restapi>=8.40.0",   # for Plone 6.0
         "plone.api",
         "plone.app.multilingual",
+        "plone.volto",
         "setuptools",
         "collective.solr>=9.0.1",
         "Products.CMFCore",

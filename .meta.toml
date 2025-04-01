@@ -8,7 +8,7 @@ commit-id = "2.0.1.dev0"
 [pyproject]
 codespell_skip = "*"
 codespell_ignores = "vew"
-dependencies_ignores = "['plone.volto', 'zestreleaser.towncrier', 'zest.releaser', 'pytest', 'pytest-cov', 'pytest-plone', 'pytest-docker']"
+dependencies_ignores = "['zestreleaser.towncrier', 'zest.releaser', 'pytest', 'pytest-cov', 'pytest-plone', 'pytest-docker']"
 dependencies_mappings = [
     "Products.CMFPlone = ['Zope', 'Products.CMFCore', 'plone.app.caching', 'plone.app.iterate', 'plone.indexer', 'plone.protect', 'plone.schema']",
     ]
