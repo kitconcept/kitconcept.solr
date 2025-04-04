@@ -28,8 +28,8 @@
       ],
       "highlightingFields": [
       {"field": "content", "prop": "highlighting"},
-      {"field": "title", "prop": "highlighting_title"},
-      {"field": "description", "prop": "highlighting_description"}
+      {"field": "Title", "prop": "highlighting_title"},
+      {"field": "Description", "prop": "highlighting_description"}
       ],
       "searchTabs": [
       {
