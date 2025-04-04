@@ -12,30 +12,20 @@
   <schemaFactory class="ClassicIndexSchemaFactory" />
 
   <!-- TIKA START -->
-  <!-- Load Data Import Handler and Apache Tika (extraction) libraries -->
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-dataimporthandler-.*\.jar"
-  />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib"
+  <lib dir="${solr.install.dir:../../../..}/modules/extraction/lib"
        regex=".*\.jar"
   />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-cell-\d.*\.jar"
-  />
 
-  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/"
+  <lib dir="${solr.install.dir:../../../..}/modules/clustering/lib/"
        regex=".*\.jar"
   />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-langid-\d.*\.jar"
-  />
 
-  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib"
+  <lib dir="${solr.install.dir:../../../..}/modules/langid/lib/"
        regex=".*\.jar"
   />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-velocity-\d.*\.jar"
+
+  <lib dir="${solr.install.dir:../../../..}/modules/ltr/lib/"
+       regex=".*\.jar"
   />
 
   <!-- Request Dispatcher

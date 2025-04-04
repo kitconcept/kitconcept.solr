@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM solr:8
+FROM solr:9
 
 LABEL maintainer="kitconcept, GmbH <info@kitconcept.com>" \
       org.label-schema.name="ghcr.io/kitconcept/solr" \
