@@ -122,3 +122,29 @@ class TestUtilsExtraConditionsSolr:
         obj = SolrExtraConditions(config)
         with pytest.raises(RuntimeError):
             obj.query_list()
+
+
+class TestUtilsExtraConditionsString:
+    def test_query_list_string_in_single_term(self):
+        config = [["keywords", "string", {"in": ["term1"]}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["keywords:(term1)"]
+
+    def test_query_list_string_in_multiple_terms(self):
+        config = [["keywords", "string", {"in": ["term1", "term2"]}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["keywords:(term1 OR term2)"]
+
+    def test_query_list_string_in_empty_term(self):
+        config = [["keywords", "string", {"in": []}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == []
+
+    def test_query_list_string_in_invalid_term_type(self):
+        config = [["keywords", "string", {"in": "NotAList"}]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(RuntimeError):
+            obj.query_list()

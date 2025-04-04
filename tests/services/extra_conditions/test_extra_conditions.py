@@ -285,3 +285,119 @@ class TestExtraConditionsDateGrLs(TestEndpointCustom):
     def test_paths(self, all_path_string, path: str, expected: bool):
         path_strings = all_path_string(self.data)
         assert (path in path_strings) is expected
+
+
+class TestExtraConditionsStringInSingleTerm(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "searchwords",
+            "string",
+            {"in": ["term1"]},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/myimage", False),
+            ("/plone/myfolder", True),
+            ("/plone/myfolder/mynews", False),
+            ("/plone/foo_alpha", True),
+            ("/plone/foo_beta", True),
+            ("/plone/foo_gamma", True),
+            ("/plone/bar_alpha", False),
+            ("/plone/bar_beta", False),
+            ("/plone/bar_gamma", False),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+
+class TestExtraConditionsStringInSingleTerm2(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "searchwords",
+            "string",
+            {"in": ["term2"]},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/myimage", False),
+            ("/plone/myfolder", True),
+            ("/plone/myfolder/mynews", False),
+            ("/plone/foo_alpha", False),
+            ("/plone/foo_beta", False),
+            ("/plone/foo_gamma", False),
+            ("/plone/bar_alpha", True),
+            ("/plone/bar_beta", True),
+            ("/plone/bar_gamma", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+
+class TestExtraConditionsStringInMultipleTerms(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "searchwords",
+            "string",
+            {"in": ["term1", "term2"]},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/myimage", False),
+            ("/plone/myfolder", True),
+            ("/plone/myfolder/mynews", False),
+            ("/plone/foo_alpha", True),
+            ("/plone/foo_beta", True),
+            ("/plone/foo_gamma", True),
+            ("/plone/bar_alpha", True),
+            ("/plone/bar_beta", True),
+            ("/plone/bar_gamma", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected
+
+
+class TestExtraConditionsStringInNoTerms(TestEndpointCustom):
+    extra_conditions = [
+        [
+            "searchwords",
+            "string",
+            {"in": []},
+        ],
+    ]
+    url = f"/@solr?q=chomsky&group_select=1&extra_conditions={encoded(extra_conditions)}"
+
+    @pytest.mark.parametrize(
+        "path,expected",
+        [
+            ("/plone/myimage", False),
+            ("/plone/myfolder", True),
+            ("/plone/myfolder/mynews", False),
+            ("/plone/foo_alpha", True),
+            ("/plone/foo_beta", True),
+            ("/plone/foo_gamma", True),
+            ("/plone/bar_alpha", True),
+            ("/plone/bar_beta", True),
+            ("/plone/bar_gamma", True),
+        ],
+    )
+    def test_paths(self, all_path_string, path: str, expected: bool):
+        path_strings = all_path_string(self.data)
+        assert (path in path_strings) is expected

@@ -14,6 +14,7 @@ def contents() -> List:
             "subjects": ["mymembersubject", "mymembersubjecttwo"],
             "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",  # noQA
             "language": "en",
+            "searchwords": ["term1", "term2"],
         },
         {
             "_container": "",
@@ -21,6 +22,7 @@ def contents() -> List:
             "id": "myfolder",
             "title": "My Folder to store everything about Noam Chomsky",
             "language": "en",
+            "searchwords": ["term1", "term2"],
         },
         {
             "_container": "myfolder",
@@ -37,6 +39,7 @@ def contents() -> List:
             "description": "Chomsky alpha",
             "language": "en",
             "start": "2021-01-01T00:00:00",
+            "searchwords": ["term1"],
         },
         {
             "_container": "",
@@ -46,6 +49,7 @@ def contents() -> List:
             "description": "Chomsky beta",
             "language": "en",
             "start": "2021-02-01T00:00:00",
+            "searchwords": ["term1"],
         },
         {
             "_container": "",
@@ -55,6 +59,7 @@ def contents() -> List:
             "description": "Chomsky gamma",
             "language": "en",
             "start": "2021-03-01T00:00:00",
+            "searchwords": ["term1"],
         },
         {
             "_container": "",
@@ -64,6 +69,7 @@ def contents() -> List:
             "description": "Chomsky alpha",
             "language": "en",
             "start": "2021-01-01T00:00:00",
+            "searchwords": ["term2"],
         },
         {
             "_container": "",
@@ -73,6 +79,7 @@ def contents() -> List:
             "description": "Chomsky beta",
             "language": "en",
             "start": "2021-02-01T00:00:00",
+            "searchwords": ["term2"],
         },
         {
             "_container": "",
@@ -82,5 +89,6 @@ def contents() -> List:
             "description": "Chomsky gamma",
             "language": "en",
             "start": "2021-03-01T00:00:00",
+            "searchwords": ["term2"],
         },
     ]
