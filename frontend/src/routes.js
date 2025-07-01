@@ -3,7 +3,7 @@
  * @module routes
  */
 
-import { Search } from '@plone/volto/components/theme/Search/Search';
+import Search from '@plone/volto/components/theme/Search/Search';
 
 /**
  *
