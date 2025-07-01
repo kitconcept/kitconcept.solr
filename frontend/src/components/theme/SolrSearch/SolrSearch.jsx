@@ -418,14 +418,15 @@ class SolrSearch extends Component {
             </div>
           </article>
         </Container>
-        {this.state.isClient && createPortal(
-          <Toolbar
-            pathname={this.props.pathname}
-            hideDefaultViewButtons
-            inner={<span />}
-          />,
-          document.getElementById('toolbar'),
-        )}
+        {this.state.isClient &&
+          createPortal(
+            <Toolbar
+              pathname={this.props.pathname}
+              hideDefaultViewButtons
+              inner={<span />}
+            />,
+            document.getElementById('toolbar'),
+          )}
       </Segment>
     );
   }

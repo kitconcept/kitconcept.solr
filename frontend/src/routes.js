@@ -16,7 +16,10 @@ import { useSelector } from 'react-redux';
 const makeConditionalSolrSearch = (config) => (props) => {
   const state = useSelector((state) => state);
   if (config.settings.solrSearchOptions.isBackendAvailable(state)) {
-    return config.widgets.SolrSearch({ ...config.settings.solrSearchOptions, ...props });
+    return config.widgets.SolrSearch({
+      ...config.settings.solrSearchOptions,
+      ...props,
+    });
   } else {
     // fall back to normal Volto search if backend not installed
     return Search(props);
