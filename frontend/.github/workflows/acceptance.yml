@@ -44,14 +44,14 @@ jobs:
             # XXX XXX This currently works with dev.
 
       # Upload Cypress screenshots
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots-acceptance
           path: acceptance/cypress/screenshots
 
       # Upload Cypress videos
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-videos-acceptance
