@@ -12,4 +12,6 @@
       name="@solr"
       />
 
+  <adapter factory=".site.CollectiveSolrExpander" />
+
 </configure>
