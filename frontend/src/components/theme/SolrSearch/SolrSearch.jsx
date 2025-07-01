@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { asyncConnect } from '@plone/volto/helpers';
 import { FormattedMessage } from 'react-intl';
-import { Portal } from 'react-portal';
+import { createPortal } from 'react-dom';
 import {
   Container,
   Segment,
@@ -418,14 +418,13 @@ class SolrSearch extends Component {
             </div>
           </article>
         </Container>
-        {this.state.isClient && (
-          <Portal node={document.getElementById('toolbar')}>
-            <Toolbar
-              pathname={this.props.pathname}
-              hideDefaultViewButtons
-              inner={<span />}
-            />
-          </Portal>
+        {this.state.isClient && createPortal(
+          <Toolbar
+            pathname={this.props.pathname}
+            hideDefaultViewButtons
+            inner={<span />}
+          />,
+          document.getElementById('toolbar'),
         )}
       </Segment>
     );

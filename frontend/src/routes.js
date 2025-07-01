@@ -4,6 +4,7 @@
  */
 
 import Search from '@plone/volto/components/theme/Search/Search';
+import { useSelector } from 'react-redux';
 
 /**
  *
@@ -13,7 +14,8 @@ import Search from '@plone/volto/components/theme/Search/Search';
  */
 
 const makeConditionalSolrSearch = (config) => (props) => {
-  if (config.settings.solrSearchOptions.isBackendAvailable()) {
+  const state = useSelector((state) => state);
+  if (config.settings.solrSearchOptions.isBackendAvailable(state)) {
     return config.widgets.SolrSearch({ ...config.settings.solrSearchOptions, ...props });
   } else {
     // fall back to normal Volto search if backend not installed
