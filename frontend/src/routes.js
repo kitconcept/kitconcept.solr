@@ -3,6 +3,8 @@
  * @module routes
  */
 
+import { Search } from '@plone/volto/components/theme/Search/Search';
+
 /**
  *
  * Routes array.
@@ -10,11 +12,17 @@
  * @returns {array} Routes.
  */
 
-const makeSolrSearchWithOptions = (config) => (props) =>
-  config.widgets.SolrSearch({ ...config.settings.solrSearchOptions, ...props });
+const makeConditionalSolrSearch = (config) => (props) => {
+  if (config.settings.solrSearchOptions.isBackendAvailable()) {
+    return config.widgets.SolrSearch({ ...config.settings.solrSearchOptions, ...props });
+  } else {
+    // fall back to normal Volto search if backend not installed
+    return Search(props);
+  }
+};
 
 const routes = (config) => {
-  const SolrSearchWithOptions = makeSolrSearchWithOptions(config);
+  const SolrSearchWithOptions = makeConditionalSolrSearch(config);
   return [
     // Add your routes here
     {

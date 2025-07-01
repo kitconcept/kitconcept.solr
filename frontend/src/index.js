@@ -57,6 +57,7 @@ const applyConfig = (config) => {
       config.views.contentTypeSearchResultDefaultView,
     showSearchInput: true,
     doEmptySearch: false,
+    isBackendAvailable: (state) => true,
   };
 
   // Wrapper for a customized Solr Search component that can be used
