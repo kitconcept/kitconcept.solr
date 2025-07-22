@@ -1,7 +1,7 @@
 """Installer for the kitconcept.solr package."""
 
 from pathlib import Path
-from setuptools import find_packages
+from setuptools import find_namespace_packages
 from setuptools import setup
 
 
@@ -37,8 +37,9 @@ setup(
     author_email="info@kitconcept.com",
     url="https://github.com/kitconcept/kitconcept.solr",
     license="GPL version 2",
-    packages=find_packages("src", exclude=["ez_setup"]),
-    namespace_packages=["kitconcept"],
+    packages=find_namespace_packages(
+        where="src/", include=["kitconcept.solr"]
+    ),
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
