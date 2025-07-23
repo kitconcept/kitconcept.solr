@@ -65,15 +65,15 @@ jobs:
       matrix:
         include:
           - name: "Solr"
-            spec-path: solr.cy.js
+            spec-pattern: solr.cy.js
           - name: "Search Blocks"
-            spec-path: search-blocks.cy.js
+            spec-pattern: search-blocks.cy.js
           - name: "Search Document"
-            spec-path: search-document.cy.js
+            spec-pattern: search-document.cy.js
           - name: "Search File"
-            spec-path: search-file.cy.js
+            spec-pattern: search-file.cy.js
           - name: "Search UI"
-            spec-path: search-ui.cy.js
+            spec-pattern: search-ui.cy.js
 
     needs:
         - config
@@ -82,7 +82,7 @@ jobs:
         base-tag: ${{ needs.config.outputs.base-tag }}
         node-version: ${{ needs.config.outputs.node-version }}
         name: ${{ matrix.name }}
-        spec-path: ${{ matrix.spec-path }}
+        spec-pattern: ${{ matrix.spec-pattern }}
 
   backend:
     uses: ./.github/workflows/backend.yml

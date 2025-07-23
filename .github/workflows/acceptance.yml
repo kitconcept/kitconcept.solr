@@ -9,7 +9,7 @@ on:
       name:
         required: true
         type: string
-      spec-path:
+      spec-pattern:
         required: true
         type: string
       node-version:
@@ -95,8 +95,10 @@ jobs:
 
       - name: Run Acceptance Tests
         shell: bash
+        env:
+          CYPRESS_SPEC_PATTERN: ${{ github.workspace }}/frontend/cypress/tests/${{ inputs.spec-pattern }}
         run: |
-          make ci-acceptance-test SPEC='${{ github.workspace }}/frontend/cypress/tests/${{ inputs.spec-path }}'
+          make ci-acceptance-test
 
       # Upload Cypress screenshots
       - uses: actions/upload-artifact@v4
