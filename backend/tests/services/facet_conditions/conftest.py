@@ -1,10 +1,8 @@
-from typing import List
-
 import pytest
 
 
 @pytest.fixture
-def contents() -> List:
+def contents() -> list:
     return [
         {
             "_container": "",
@@ -12,7 +10,7 @@ def contents() -> List:
             "id": "myimage",
             "title": "Prof. Dr. Noam Chomsky",
             "subjects": ["mymembersubject", "mymembersubjecttwo"],
-            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",  # noQA
+            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",
             "language": "en",
         },
         {

@@ -2,6 +2,8 @@ import pytest
 
 
 class TestEndpointContentFields:
+    url: str = "@solr"
+
     @pytest.fixture(autouse=True)
     def _init(self, portal_with_content, manager_request):
         self.portal = portal_with_content

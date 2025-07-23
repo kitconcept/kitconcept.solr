@@ -3,6 +3,7 @@ from kitconcept.solr.services.solr_utils import get_facet_fields_result
 
 import base64
 import json
+import pytest
 
 
 def encoded(o):
@@ -24,102 +25,90 @@ class TestUtilsFacetConditionsSolr:
 
     def test_create_ignores_error_unicode(self):
         c = FacetConditions.from_encoded(
-            base64.b64encode('{"foo": "Atommüll"}'.encode("latin1")).decode(
-                "ascii"
-            )
+            base64.b64encode('{"foo": "Atommüll"}'.encode("latin1")).decode("ascii")
         )
         assert c.config == {}
 
     def test_create_ignores_error_json(self):
         c = FacetConditions.from_encoded(
-            base64.b64encode(b'{"foo": what is this, surely not json?').decode(
-                "ascii"
-            )
+            base64.b64encode(b'{"foo": what is this, surely not json?').decode("ascii")
         )
         assert c.config == {}
 
-    def test_solr(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-            "field2": {"c": {"baz": True, "bae": True}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert (
-            c.solr
-            == '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz") OR (field2:"bae"))'
-        )
-
-    def test_empty(self):
-        o = {}
-        c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == ""
-
-    def test_ignores_false(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-            "field2": {"c": {"baz": True, "bae": True, "bax": False}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert (
-            c.solr
-            == '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz") OR (field2:"bae"))'
-        )
-
-    def test_collapses_parent_or(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-            "field2": {"c": {"baz": True}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert (
-            c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
-        )
-
-    def test_collapses_parent_or_with_false(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-            "field2": {"c": {"baz": True, "bae": False}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert (
-            c.solr == '((field1:"foo") OR (field1:"bar")) AND (field2:"baz")'
-        )
-
-    def test_collapses_parent_and(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '(field1:"foo") OR (field1:"bar")'
-
-    def test_collapses_parent_and_with_false(self):
-        o = {
-            "field1": {"c": {"foo": True, "bar": True}},
-            "field2": {"c": {"baz": False}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '(field1:"foo") OR (field1:"bar")'
-
-    def test_collapses_parent_and_case2(self):
-        o = {"field1": {"c": {"foo": True, "bar": True}}, "field2": {"c": {}}}
-        c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '(field1:"foo") OR (field1:"bar")'
-
-    def test_collapses_parent_and_case3(self):
-        o = {"field1": {"c": {"foo": True, "bar": True}}, "field2": {}}
-        c = FacetConditions.from_encoded(encoded(o))
-        assert c.solr == '(field1:"foo") OR (field1:"bar")'
-
-    def test_empty_value(self):
-        o = {
-            "field1": {"c": {"foo": True, "": True}},
-            "field2": {"c": {"baz": True, "": True}},
-        }
-        c = FacetConditions.from_encoded(encoded(o))
-        assert (
-            c.solr
-            == '((field1:"foo") OR (field1:["" TO *])) AND ((field2:"baz") OR (field2:["" TO *]))'
-        )
+    @pytest.mark.parametrize(
+        "name,value,expected",
+        [
+            (
+                "solr",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                    "field2": {"c": {"baz": True, "bae": True}},
+                },
+                '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz") OR (field2:"bae"))',
+            ),
+            ("empty", {}, ""),
+            (
+                "ignores_false",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                    "field2": {"c": {"baz": True, "bae": True, "bax": False}},
+                },
+                '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz") OR (field2:"bae"))',
+            ),
+            (
+                "collapses_parent_or",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                    "field2": {"c": {"baz": True}},
+                },
+                '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz"))',
+            ),
+            (
+                "collapses_parent_or_with_false",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                    "field2": {"c": {"baz": True, "bae": False}},
+                },
+                '((field1:"foo") OR (field1:"bar")) AND ((field2:"baz"))',
+            ),
+            (
+                "collapses_parent_and",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                },
+                '(field1:"foo") OR (field1:"bar")',
+            ),
+            (
+                "collapses_parent_and_with_false",
+                {
+                    "field1": {"c": {"foo": True, "bar": True}},
+                    "field2": {"c": {"baz": False}},
+                },
+                '(field1:"foo") OR (field1:"bar")',
+            ),
+            (
+                "collapses_parent_and_case2",
+                {"field1": {"c": {"foo": True, "bar": True}}, "field2": {"c": {}}},
+                '(field1:"foo") OR (field1:"bar")',
+            ),
+            (
+                "collapses_parent_and_case3",
+                {"field1": {"c": {"foo": True, "bar": True}}, "field2": {}},
+                '(field1:"foo") OR (field1:"bar")',
+            ),
+            (
+                "empty_value",
+                {
+                    "field1": {"c": {"foo": True, "": True}},
+                    "field2": {"c": {"baz": True, "": True}},
+                },
+                '((field1:"foo") OR (field1:["" TO *])) AND ((field2:"baz") OR (field2:["" TO *]))',
+            ),
+        ],
+    )
+    def test_solr(self, name: str, value: dict, expected: str):
+        c = FacetConditions.from_encoded(encoded(value))
+        assert c.solr == expected, f"{name}: Expected {expected} but got {c.solr}"
 
 
 class TestUtilsFacetConditionsPrefixQuery:

@@ -1,5 +1,4 @@
 from plone import api
-from typing import List
 
 import base64
 import json
@@ -65,21 +64,12 @@ class SolrConfig:
         self.config = api.portal.get_registry_record("kitconcept.solr.config")
         search_tabs = self.config.get("searchTabs", [])
         self.filters = [item["filter"] for item in search_tabs]
-        self.listOflayouts = [
-            item.get("layouts", None) for item in search_tabs
-        ]
-        self.listOfFacetFields = [
-            item.get("facetFields", []) for item in search_tabs
-        ]
+        self.listOflayouts = [item.get("layouts", None) for item in search_tabs]
+        self.listOfFacetFields = [item.get("facetFields", []) for item in search_tabs]
 
     @property
     def labels(self):
-        labels = list(
-            map(
-                lambda item: item.get("label", ""),
-                self.config.get("searchTabs", []),
-            )
-        )
+        labels = [item.get("label", "") for item in self.config.get("searchTabs", [])]
         if len(labels) == 0:
             raise SolrConfigError(
                 "Error parsing solr config, searchTabs either missing or empty"
@@ -87,7 +77,8 @@ class SolrConfig:
         invalid_labels = [label for label in labels if not label]
         if invalid_labels:
             raise SolrConfigError(
-                "Error parsing solr config, missing label in searchTabs. Labels are mandatory."
+                "Error parsing solr config, missing label in searchTabs. "
+                "Labels are mandatory."
             )
         return labels
 
@@ -98,12 +89,13 @@ class SolrConfig:
         return f"{base_query}{condition}"
 
     @property
-    def field_list(self) -> List[str]:
+    def field_list(self) -> str:
         raw_value = self.config.get("fieldList", [])
         invalid_fields = [item for item in raw_value if "," in item]
         if invalid_fields:
             raise SolrConfigError(
-                "Error parsing solr config, fieldList item contains comma (,) which is prohibited"
+                "Error parsing solr config, fieldList item contains comma (,) "
+                "which is prohibited"
             )
         return ",".join(raw_value)
 
@@ -124,14 +116,12 @@ class FacetConditions:
         self.config = config
 
     @classmethod
-    def from_encoded(cls, raw: str):
+    def from_encoded(cls, raw: str | None):
         if raw is not None:
             try:
                 config = json.loads(base64.b64decode(raw))
             except (UnicodeDecodeError, json.decoder.JSONDecodeError):
-                logger.warning(
-                    "Ignoring invalid base64 encoded string", exc_info=True
-                )
+                logger.warning("Ignoring invalid base64 encoded string", exc_info=True)
                 config = {}
         else:
             config = {}
@@ -140,98 +130,69 @@ class FacetConditions:
     @staticmethod
     def value_condition(field_name: str, value: str, selected: bool):
         return (
-            (
-                f'{field_name}:"{escape(value)}"'
-                if value
-                else f'{field_name}:["" TO *]'
-            )
+            (f'{field_name}:"{escape(value)}"' if value else f'{field_name}:["" TO *]')
             if selected
             else None
         )
 
     @classmethod
-    def value_conditions(self, field_name, field):
-        return filter(
-            lambda condition: condition is not None,
-            map(
-                lambda item: self.value_condition(
-                    field_name, item[0], item[1]
-                ),
-                field.get("c", {}).items(),
-            ),
+    def value_conditions(cls, field_name, field):
+        return (
+            cls.value_condition(field_name, key, value)
+            for key, value in field.get("c", {}).items()
+            if cls.value_condition(field_name, key, value) is not None
         )
 
     @classmethod
-    def field_condition(self, field_name, field):
-        conditions = list(self.value_conditions(field_name, field))
-        return (
-            " OR ".join(map(lambda item: f"({item})", conditions))
-            if len(conditions) != 1
-            else (conditions[0] if len(conditions) == 1 else "")
-        )
+    def field_condition(cls, field_name, field):
+        conditions = list(cls.value_conditions(field_name, field))
+        return " OR ".join(f"({item})" for item in conditions) if conditions else ""
 
     def field_conditions(self):
-        return filter(
-            lambda condition: condition,
-            map(
-                lambda item: self.field_condition(item[0], item[1]),
-                self.config.items(),
-            ),
+        return (
+            self.field_condition(name, value)
+            for name, value in self.config.items()
+            if self.field_condition(name, value)
         )
 
     @property
     def solr(self):
         conditions = list(self.field_conditions())
-        return (
-            " AND ".join(map(lambda condition: f"({condition})", conditions))
-            if len(conditions) > 1
-            else (conditions[0] if len(conditions) == 1 else "")
-        )
+        if not conditions:
+            return ""
+
+        if len(conditions) == 1:
+            return conditions[0]
+
+        return " AND ".join(f"({condition})" for condition in conditions)
 
     @property
     def contains_query(self):
-        return dict(
-            filter(
-                lambda item: item[1],
-                map(
-                    lambda item: (
-                        f"f.{item[0]}.facet.contains",
-                        item[1].get("p", ""),
-                    ),
-                    self.config.items(),
-                ),
-            )
-        )
+        return {
+            f"f.{name}.facet.contains": config.get("p", "")
+            for name, config in self.config.items()
+            if config.get("p", "")
+        }
 
     def more_query(self, facet_fields, multiplier):
-        return dict(
-            map(
-                lambda field: (
-                    f"f.{field['name']}.facet.limit",
-                    (
-                        multiplier * self.limit_more
-                        if self.config.get(field["name"], {}).get("m", False)
-                        else multiplier * (self.limit_less + 1)
-                    ),
-                ),
-                facet_fields,
+        return {
+            f"f.{field['name']}.facet.limit": (
+                multiplier * self.limit_more
+                if self.config.get(field["name"], {}).get("m", False)
+                else multiplier * (self.limit_less + 1)
             )
-        )
+            for field in facet_fields
+        }
 
     def more_dict(self, facet_fields, multiplier):
-        return dict(
-            map(
-                lambda field: (
-                    field["name"],
-                    (
-                        multiplier * self.limit_more
-                        if self.config.get(field["name"], {}).get("m", False)
-                        else multiplier * (self.limit_less + 1)
-                    ),
-                ),
-                facet_fields,
+        return {
+            field["name"]: (
+                multiplier * self.limit_more
+                if self.config.get(field["name"], {}).get("m", False)
+                else multiplier * (self.limit_less + 1)
             )
-        )
+            for field in facet_fields
+        }
 
 
 def fix_value(v):
@@ -240,25 +201,28 @@ def fix_value(v):
 
 
 def get_facet_fields_result(raw_facet_fields_result, facet_fields, more_dict):
-    return list(
-        map(
-            lambda field_def: (
-                field_def,
-                list(
-                    filter(
-                        # Filter null, empty values and reverse tokens (\x01...)
-                        lambda item: item[1] > 0
-                        and item[0]
-                        and not item[0].startswith("\x01"),
-                        (
-                            lambda full_array: zip(
-                                map(lambda v: fix_value(v), full_array[::2]),
-                                full_array[1::2],
-                            )
-                        )(raw_facet_fields_result[field_def["name"]]),
-                    ),
-                )[: more_dict[field_def["name"]]],
-            ),
-            facet_fields,
+    result = []
+
+    for field_def in facet_fields:
+        name = field_def["name"]
+        full_array = raw_facet_fields_result[name]
+        limit = more_dict[name]
+
+        # Pair values with counts, fixing the value
+        paired = zip(
+            map(fix_value, full_array[::2]),
+            full_array[1::2],
+            strict=False,
         )
-    )
+
+        # Filter out nulls, empty strings, and reverse tokens
+        filtered = [
+            (value, count)
+            for value, count in paired
+            if count > 0 and value and not value.startswith("\x01")
+        ]
+
+        # Slice to the desired limit
+        result.append((field_def, filtered[:limit]))
+
+    return result

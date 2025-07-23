@@ -39,5 +39,5 @@ class TestUtilsEmptySearchTabs:
 
     def test_empty_search_tabs(self):
         with pytest.raises(SolrConfigError) as exc_info:
-            self.solr_config.labels
+            _ = self.solr_config.labels
         assert exc_info.type is SolrConfigError

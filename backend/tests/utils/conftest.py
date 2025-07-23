@@ -51,9 +51,7 @@ def portal_with_content(app, portal, create_contents):
     transaction.commit()
     yield portal
     with api.env.adopt_roles(["Manager"]):
-        containers = sorted(
-            [path for path in content_ids.keys()], reverse=True
-        )
+        containers = sorted(content_ids.keys(), reverse=True)
         for container_path in containers:
             container = portal.unrestrictedTraverse(container_path)
             container.manage_delObjects(content_ids[container_path])

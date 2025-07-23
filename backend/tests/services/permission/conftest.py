@@ -1,12 +1,11 @@
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
-from typing import List
 
 import pytest
 
 
 @pytest.fixture
-def contents() -> List:
+def contents() -> list:
     return [
         {
             "_container": "",
@@ -14,7 +13,7 @@ def contents() -> List:
             "id": "noamchomsky",
             "title": "Prof. Dr. Noam Chomsky",
             "subjects": ["mymembersubject", "mymembersubjecttwo"],
-            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",  # noQA
+            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",
         },
         {
             "_container": "",
@@ -52,7 +51,7 @@ def user_credentials() -> tuple:
 
 
 @pytest.fixture
-def users(user_credentials) -> List:
+def users(user_credentials) -> list:
     return [
         {
             "username": user_credentials[0],

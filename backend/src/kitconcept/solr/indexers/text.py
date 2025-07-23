@@ -70,18 +70,14 @@ def extract_text(block, obj, request):
         return block.get("title", "")
     if block_type == "introduction":
         about = safe_dict_traverse(block, "about/value/0/children/0/text", "")
-        topics = safe_dict_traverse(
-            block, "topics/value/0/children/0/text", ""
-        )
+        topics = safe_dict_traverse(block, "topics/value/0/children/0/text", "")
         result = f"{about}\n{topics}"
         return result
     if block_type == "slateTable":
         cell = ""
         for row in range(len(block["table"]["rows"])):
             for column in range(len(block["table"]["rows"][row])):
-                path = (
-                    f"table/rows/{row}/cells/{column}/value/0/children/0/text"
-                )
+                path = f"table/rows/{row}/cells/{column}/value/0/children/0/text"
                 cell = safe_dict_traverse(block, path, "")
                 result = f"{result}\n{cell}"
         return result
@@ -95,9 +91,7 @@ def extract_text(block, obj, request):
         return result
 
     # Use server side adapters to extract the text data
-    adapter = queryMultiAdapter(
-        (obj, request), IBlockSearchableText, name=block_type
-    )
+    adapter = queryMultiAdapter((obj, request), IBlockSearchableText, name=block_type)
     result = adapter(block) if adapter is not None else ""
     if not result:
         subblocks = extract_subblocks(block)

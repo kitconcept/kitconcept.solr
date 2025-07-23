@@ -8,7 +8,6 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.namedfile import NamedBlobImage
 from plone.restapi.testing import RelativeSession
 from requests import exceptions as exc
-from typing import List
 from zope.component.hooks import setSite
 
 import pytest
@@ -17,13 +16,13 @@ import transaction
 
 
 @pytest.fixture
-def users() -> List:
+def users() -> list:
     """Additional users to be created."""
     return []
 
 
 @pytest.fixture
-def contents() -> List:
+def contents() -> list:
     """Content to be created."""
     return [
         {
@@ -32,7 +31,7 @@ def contents() -> List:
             "id": "noamchomsky",
             "title": "Prof. Dr. Noam Chomsky",
             "subjects": ["mymembersubject", "mymembersubjecttwo"],
-            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",  # noQA
+            "_image": b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjCDO+/R8ABKsCZD++CcMAAAAASUVORK5CYII=",
         },
         {
             "_container": "",
@@ -59,7 +58,7 @@ def contents() -> List:
 def all_path_string():
     """Helper fixture to extract path information from Solr result."""
 
-    def func(data: dict) -> List[str]:
+    def func(data: dict) -> list[str]:
         return [item["path_string"] for item in data["response"]["docs"]]
 
     return func
@@ -103,7 +102,7 @@ def create_contents(contents):
 def is_responsive(url):
     """Helper fixture to check if Solr is up and running."""
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         if response.status_code == 200:
             return b"""<str name="status">OK</str>""" in response.content
     except (exc.ConnectionError, exc.Timeout):
@@ -113,7 +112,9 @@ def is_responsive(url):
 @pytest.fixture(scope="session")
 def docker_compose_file(pytestconfig):
     """Fixture pointing to the docker-compose file to be used."""
-    return Path(str(pytestconfig.rootdir)).resolve() / "docker-compose.yml"
+    backend_root = Path(str(pytestconfig.rootdir)).resolve()
+    repo_root = backend_root.parent
+    return repo_root / "docker-compose-solr.yml"
 
 
 @pytest.fixture
@@ -153,9 +154,7 @@ def portal(app, solr_service, http_request, users, registry_config):
         for key, value in registry_config.items():
             current_values[key] = api.portal.get_registry_record(key)
             api.portal.set_registry_record(key, value)
-        maintenance = api.content.get_view(
-            "solr-maintenance", portal, http_request
-        )
+        maintenance = api.content.get_view("solr-maintenance", portal, http_request)
         maintenance.clear()
         # Create additional users
         for user in users:
@@ -176,9 +175,7 @@ def portal_with_content(app, portal, create_contents):
     transaction.commit()
     yield portal
     with api.env.adopt_roles(["Manager"]):
-        containers = sorted(
-            [path for path in content_ids.keys()], reverse=True
-        )
+        containers = sorted(content_ids.keys(), reverse=True)
         for container_path in containers:
             container = portal.unrestrictedTraverse(container_path)
             container.manage_delObjects(content_ids[container_path])

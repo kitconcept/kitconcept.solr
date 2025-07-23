@@ -57,5 +57,5 @@ class TestUtilsFieldListWithComma:
 
     def test_field_list_with_comma(self):
         with pytest.raises(SolrConfigError) as exc_info:
-            self.solr_config.field_list
+            _ = self.solr_config.field_list
         assert exc_info.type is SolrConfigError

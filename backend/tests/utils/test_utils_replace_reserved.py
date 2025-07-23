@@ -12,10 +12,7 @@ class TestUtilsReplaceReserved:
         assert replace_reserved("foo NOT bar") == "foo not bar"
 
     def test_replace_reserved_keep_lowercase(self):
-        assert (
-            replace_reserved("foo AnD NoT bar Or OReo")
-            == "foo AnD NoT bar Or OReo"
-        )
+        assert replace_reserved("foo AnD NoT bar Or OReo") == "foo AnD NoT bar Or OReo"
 
     def test_replace_reserved_keep_partial_match(self):
         assert replace_reserved("OReo ANDroid kNOT") == "OReo ANDroid kNOT"

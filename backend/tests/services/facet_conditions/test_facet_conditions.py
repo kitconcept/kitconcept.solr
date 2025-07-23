@@ -124,8 +124,15 @@ class TestFacetConditionsActive(TestEndpointCustom):
 
 
 class TestFacetConditionsFiltering1(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with beginning search."""
+        return {"Title": {"c": {"foo": True}}}
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -159,8 +166,15 @@ class TestFacetConditionsFiltering1(TestEndpointCustom):
 
 
 class TestFacetConditionsFiltering2(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}}, "Description": {"c": {"alpha": True}}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with beginning search."""
+        return {"Title": {"c": {"foo": True}}, "Description": {"c": {"alpha": True}}}
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -194,11 +208,18 @@ class TestFacetConditionsFiltering2(TestEndpointCustom):
 
 
 class TestFacetConditionsFiltering3(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True}},
-        "Description": {"c": {"alpha": True, "beta": True}},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with beginning search."""
+        return {
+            "Title": {"c": {"foo": True}},
+            "Description": {"c": {"alpha": True, "beta": True}},
+        }
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -232,11 +253,18 @@ class TestFacetConditionsFiltering3(TestEndpointCustom):
 
 
 class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True, "bar": False}},
-        "Description": {"c": {"alpha": False}},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with beginning search."""
+        return {
+            "Title": {"c": {"foo": True, "bar": False}},
+            "Description": {"c": {"alpha": False}},
+        }
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -270,8 +298,15 @@ class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
 
 
 class TestFacetConditionsContainsBeginning(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}, "p": "ba"}, "Description": {"p": "cho"}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with beginning search."""
+        return {"Title": {"c": {"foo": True}, "p": "ba"}, "Description": {"p": "cho"}}
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -305,8 +340,15 @@ class TestFacetConditionsContainsBeginning(TestEndpointCustom):
 
 
 class TestFacetConditionsContainsMiddle(TestEndpointCustom):
-    c = {"Title": {"c": {"foo": True}, "p": "ar"}, "Description": {"p": "cho"}}
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with middle search."""
+        return {"Title": {"c": {"foo": True}, "p": "ar"}, "Description": {"p": "cho"}}
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [
@@ -340,11 +382,18 @@ class TestFacetConditionsContainsMiddle(TestEndpointCustom):
 
 
 class TestFacetConditionsContainsCaseInsensitive(TestEndpointCustom):
-    c = {
-        "Title": {"c": {"foo": True}, "p": "BAR"},
-        "Description": {"p": "cho"},
-    }
-    url = f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(c)}"
+    @property
+    def c(self):
+        """Conditions with case-insensitive search."""
+        return {
+            "Title": {"c": {"foo": True}, "p": "BAR"},
+            "Description": {"p": "cho"},
+        }
+
+    @property
+    def url(self):
+        """URL to test the facets."""
+        return f"/@solr?q=chomsky&group_select=1&facet_conditions={encoded(self.c)}"
 
     def test_facet_fields(self):
         assert self.data.get("facet_fields") == [

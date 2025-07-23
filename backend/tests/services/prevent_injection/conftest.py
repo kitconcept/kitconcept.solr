@@ -1,10 +1,8 @@
-from typing import List
-
 import pytest
 
 
 @pytest.fixture
-def contents() -> List:
+def contents() -> list:
     return [
         {
             "_container": "",

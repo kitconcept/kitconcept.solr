@@ -16,9 +16,7 @@ class TestEndpointRolesAndUsers:
     url = "/@solr?q=chomsky"
 
     @pytest.fixture
-    def api_request(
-        self, request_factory, users_credentials_role, portal, roles
-    ):
+    def api_request(self, request_factory, users_credentials_role, portal, roles):
         def func(role: str) -> dict:
             req = request_factory()
             credentials = users_credentials_role.get(role, None)

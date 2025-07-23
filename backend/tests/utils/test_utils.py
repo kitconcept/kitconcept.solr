@@ -70,13 +70,8 @@ class TestUtilsLabels(TestUtils):
 
 class TestUtilsSelectCondition(TestUtils):
     def test_select_condition(self):
-        assert (
-            self.solr_config.select_condition(0) == "{!tag=typefilter}Type(*)"
-        )
-        assert (
-            self.solr_config.select_condition(1)
-            == "{!tag=typefilter}Type:(Page)"
-        )
+        assert self.solr_config.select_condition(0) == "{!tag=typefilter}Type(*)"
+        assert self.solr_config.select_condition(1) == "{!tag=typefilter}Type:(Page)"
         assert (
             self.solr_config.select_condition(2)
             == '{!tag=typefilter}Type:("News Item")'

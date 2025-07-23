@@ -57,5 +57,5 @@ class TestUtilsEmptyLabels:
 
     def test_empty_labels(self):
         with pytest.raises(SolrConfigError) as exc_info:
-            self.solr_config.labels
+            _ = self.solr_config.labels
         assert exc_info.type is SolrConfigError

@@ -12,27 +12,25 @@ class IKitconceptSolrLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
 
 
-CONFIG_SCHEMA = json.dumps(
-    {
-        "type": "object",
-        "properties": {
-            "fieldList": {
-                "type": "array",
-                "items": {"type": "string"},
-            },
-            "searchTabs": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "label": {"type": "string"},
-                        "filter": {"type": "string"},
-                    },
+CONFIG_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "fieldList": {
+            "type": "array",
+            "items": {"type": "string"},
+        },
+        "searchTabs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "label": {"type": "string"},
+                    "filter": {"type": "string"},
                 },
             },
         },
-    }
-)
+    },
+})
 
 DEFAULT_CONFIG = {
     "fieldList": [
@@ -65,9 +63,7 @@ DEFAULT_CONFIG = {
 class IKitconceptSolrSettings(Interface):
     config = JSONField(
         title=_("label_solr_config", default="Solr Config"),
-        description=_(
-            "help_solr_config", default="Solr endpoint configuration"
-        ),
+        description=_("help_solr_config", default="Solr endpoint configuration"),
         required=True,
         schema=CONFIG_SCHEMA,
         default=DEFAULT_CONFIG,
