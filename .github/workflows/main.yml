@@ -81,6 +81,8 @@ jobs:
     with:
         base-tag: ${{ needs.config.outputs.base-tag }}
         node-version: ${{ needs.config.outputs.node-version }}
+        name: ${{ matrix.name }}
+        spec-path: ${{ matrix.spec-path }}
 
   backend:
     uses: ./.github/workflows/backend.yml
