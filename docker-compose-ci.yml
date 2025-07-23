@@ -18,11 +18,11 @@ services:
       - plone
       - /plone-config
   frontend-acceptance:
-    image: kitconcept/kitconcept-solr-frontend:${BASE_TAG}
+    image: ghcr.io/kitconcept/kitconcept-solr-frontend:${BASE_TAG}
     pull_policy: always
     profiles: ["ci"]
 
   backend-acceptance:
-    image: kitconcept/kitconcept-solr-acceptance:${BASE_TAG}
+    image: ghcr.io/kitconcept/kitconcept-solr-acceptance:${BASE_TAG}
     pull_policy: always
     profiles: ["ci"]
