@@ -15,29 +15,31 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-GIT_FOLDER=$(BACKEND_FOLDER)/.git
-
-COMPOSE_PROJECT_NAME=kitconcept_solr
-SOLR_DATA_FOLDER?=${BACKEND_FOLDER}/data
-SOLR_ONLY_COMPOSE?=${BACKEND_FOLDER}/docker-compose.yml
+IMAGE_NAME_PREFIX=ghcr.io/kitconcept/kitconcept-solr
+IMAGE_TAG=latest
 
 # Python checks
-PYTHON?=python3
+UV?=uv
 
 # installed?
-ifeq (, $(shell which $(PYTHON) ))
-  $(error "PYTHON=$(PYTHON) not found in $(PATH)")
+ifeq (, $(shell which $(UV) ))
+  $(error "UV=$(UV) not found in $(PATH)")
 endif
 
-# version ok?
-PYTHON_VERSION_MIN=3.8
-PYTHON_VERSION_OK=$(shell $(PYTHON) -c "import sys; print((int(sys.version_info[0]), int(sys.version_info[1])) >= tuple(map(int, '$(PYTHON_VERSION_MIN)'.split('.'))))")
-ifeq ($(PYTHON_VERSION_OK),0)
-  $(error "Need python $(PYTHON_VERSION) >= $(PYTHON_VERSION_MIN)")
-endif
+PLONE_SITE_ID=Plone
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PLONE_VERSION=$(shell cat $(BACKEND_FOLDER)/version.txt)
+EXAMPLE_CONTENT_FOLDER=${BACKEND_FOLDER}/src/kitconcept/solr/setuphandlers/examplecontent
 
-all: install
+VENV_FOLDER=$(BACKEND_FOLDER)/.venv
+export VIRTUAL_ENV=$(VENV_FOLDER)
+BIN_FOLDER=$(VENV_FOLDER)/bin
+
+# Environment variables to be exported
+export PYTHONWARNINGS := ignore
+export DOCKER_BUILDKIT := 1
+
+all: build
 
 # Add the following 'help' target to your Makefile
 # And add help text after each target name starting with '\#\#'
@@ -45,133 +47,105 @@ all: install
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: clean
-clean: clean-build clean-pyc clean-test clean-venv clean-instance ## remove all build, test, coverage and Python artifacts
+requirements-mxdev.txt: pyproject.toml mx.ini ## Generate constraints file
+	@echo "$(GREEN)==> Generate constraints file$(RESET)"
+	@echo '-c https://dist.plone.org/release/$(PLONE_VERSION)/constraints.txt' > requirements.txt
+	@uvx mxdev -c mx.ini
 
-.PHONY: clean-instance
-clean-instance: ## remove existing instance
-	rm -fr instance etc inituser var
+$(VENV_FOLDER): requirements-mxdev.txt ## Install dependencies
+	@echo "$(GREEN)==> Install environment$(RESET)"
+	@uv venv --python=3.12 $(VENV_FOLDER)
+	@uv pip install -r requirements-mxdev.txt
 
-.PHONY: clean-venv
-clean-venv: ## remove virtual environment
-	rm -fr bin include lib lib64 env pyvenv.cfg .tox .pytest_cache requirements-mxdev.txt
-	cp constraints-6.1.txt constraints.txt
-	cp requirements-6.1.txt requirements.txt
+.PHONY: sync
+sync: $(VENV_FOLDER) ## Sync project dependencies
+	@echo "$(GREEN)==> Sync project dependencies$(RESET)"
+	@uv pip install -r requirements-mxdev.txt
 
-.PHONY: clean-build
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -rf {} +
-
-.PHONY: clean-pyc
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-.PHONY: clean-test
-clean-test: ## remove test and coverage artifacts
-	rm -f .coverage
-	rm -fr htmlcov/
-
-bin/pip bin/tox bin/mxdev:
-	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
-	$(PYTHON) -m venv .
-	bin/pip install -U "pip" "wheel" "cookiecutter" "mxdev" "tox" "pre-commit"
-	if [ -d $(GIT_FOLDER) ]; then bin/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi
-
-constraints-mxdev.txt:  bin/tox
-	bin/tox -e init
+instance/etc/zope.ini instance/etc/zope.conf: instance.yaml ## Create instance configuration
+	@echo "$(GREEN)==> Create instance configuration$(RESET)"
+	@uvx cookiecutter -f --no-input -c 2.1.1 --config-file instance.yaml gh:plone/cookiecutter-zope-instance
 
 .PHONY: config
-config: bin/pip  ## Create instance configuration
-	@echo "$(GREEN)==> Create instance configuration$(RESET)"
-	bin/cookiecutter -f --no-input -c 2.1.1 --config-file instance.yaml gh:plone/cookiecutter-zope-instance
-
-.PHONY: install-plone-6.1
-install-plone-6.1: bin/mxdev config ## pip install Plone packages
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	cp constraints-6.1.txt constraints.txt
-	cp requirements-6.1.txt requirements.txt
-	bin/tox -e init
-	bin/mxdev -c mx.ini
-	bin/pip install -r requirements-mxdev.txt
-
-.PHONY: install-plone-5.2
-install-plone-5.2: bin/mxdev config ## pip install Plone packages
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	cp constraints-5.2.txt constraints.txt
-	cp requirements-5.2.txt requirements.txt
-	bin/tox -e init
-	bin/mxdev -c mx.ini
-	bin/pip install -r requirements-mxdev.txt
+config: instance/etc/zope.ini
 
 .PHONY: install
-install: install-plone-6.1  ## Install Plone 6.1
+install: $(VENV_FOLDER) config ## Install Plone and dependencies
+
+.PHONY: clean
+clean: ## Clean installation and instance
+	@echo "$(RED)==> Cleaning environment and build$(RESET)"
+	@rm -rf $(VENV_FOLDER) pyvenv.cfg .installed.cfg instance/etc .venv .pytest_cache .ruff_cache constraints* requirements*
+
+.PHONY: remove-data
+remove-data: ## Remove all content
+	@echo "$(RED)==> Removing all content$(RESET)"
+	rm -rf $(VENV_FOLDER) instance/var
 
 .PHONY: start
-start: ## Start a Plone instance on localhost:8080
-	PYTHONWARNINGS=ignore ./bin/runwsgi instance/etc/zope.ini
+start: $(VENV_FOLDER) instance/etc/zope.ini ## Start a Plone instance on localhost:8080
+	@$(BIN_FOLDER)/runwsgi instance/etc/zope.ini
+
+.PHONY: console
+console: $(VENV_FOLDER) instance/etc/zope.ini ## Start a console into a Plone instance
+	@$(BIN_FOLDER)/zconsole debug instance/etc/zope.conf
+
+.PHONY: create-site
+create-site: $(VENV_FOLDER) instance/etc/zope.ini ## Create a new site from scratch
+	@$(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/create_site.py
+
+# Example Content
+.PHONY: update-example-content
+update-example-content: $(VENV_FOLDER) ## Export example content inside package
+	@echo "$(GREEN)==> Export example content into $(EXAMPLE_CONTENT_FOLDER) $(RESET)"
+	if [ -d $(EXAMPLE_CONTENT_FOLDER)/content ]; then rm -r $(EXAMPLE_CONTENT_FOLDER)/* ;fi
+	@$(BIN_FOLDER)/plone-exporter instance/etc/zope.conf $(PLONE_SITE_ID) $(EXAMPLE_CONTENT_FOLDER)
+
+# QA
+.PHONY: lint
+lint: ## Check and fix code base according to Plone standards
+	@echo "$(GREEN)==> Lint codebase$(RESET)"
+	@uvx ruff@latest check --fix --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx pyroma@latest -d .
+	@uvx check-python-versions@latest .
+	@uvx zpretty@latest --check src
 
 .PHONY: format
-format: bin/tox ## Format the codebase according to our standards
+format: ## Check and fix code base according to Plone standards
 	@echo "$(GREEN)==> Format codebase$(RESET)"
-	bin/tox -e format
-
-.PHONY: lint
-lint: bin/tox ## check code style
-	bin/tox -e lint
+	@uvx ruff@latest check --select I --fix --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx ruff@latest format --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx zpretty@latest -i src
 
 # i18n
-bin/i18ndude bin/pocompile: bin/pip
-	@echo "$(GREEN)==> Install translation tools$(RESET)"
-	bin/pip install i18ndude zest.pocompile
-
 .PHONY: i18n
-i18n: bin/i18ndude ## Update locales
+i18n: $(VENV_FOLDER) ## Update locales
 	@echo "$(GREEN)==> Updating locales$(RESET)"
-	bin/update_locale
-	bin/pocompile src/
+	@$(BIN_FOLDER)/python -m kitconcept.solr.locales
 
 # Tests
 .PHONY: test
-test: bin/tox constraints-mxdev.txt ## run tests
-	bin/tox -e test
+test: $(VENV_FOLDER) ## run tests
+	@$(BIN_FOLDER)/pytest
 
-.PHONY: coverage
-coverage: bin/tox constraints-mxdev.txt ## run coverage
-	bin/tox -e coverage
+.PHONY: test-coverage
+test-coverage: $(VENV_FOLDER) ## run tests with coverage
+	@$(BIN_FOLDER)/pytest --cov=kitconcept.solr --cov-report term-missing
 
-## Solr docker utils
-test-compose-project-name:
-	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,
-	# and the purpose of the container (_DEV, _STACK, _TEST)
-	test -n "$(COMPOSE_PROJECT_NAME)"
+# Build Docker images
+.PHONY: build-image
+build-image:  ## Build Docker Images
+	@docker build . -t $(IMAGE_NAME_PREFIX)-backend:$(IMAGE_TAG) -f Dockerfile --build-arg PLONE_VERSION=$(PLONE_VERSION)
 
-.PHONY: solr-start
-solr-start: test-compose-project-name ## Start solr
-	@echo "Start solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
+# Acceptance tests
+.PHONY: acceptance-backend-start
+acceptance-backend-start: ## Start backend acceptance server
+	ZSERVER_HOST=0.0.0.0 ZSERVER_PORT=55001 LISTEN_PORT=55001 APPLY_PROFILES="kitconcept.solr:default" CONFIGURE_PACKAGES="plone.restapi,plone.volto,plone.volto.cors,kitconcept.solr" $(BIN_FOLDER)/robot-server plone.app.robotframework.testing.VOLTO_ROBOT_TESTING
 
-.PHONY: solr-start-fg
-solr-start-fg: test-compose-project-name ## Start solr in foreground
-	@echo "Start solr in foreground"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up
+.PHONY: acceptance-image-build
+acceptance-image-build:  ## Build Docker Images
+	@docker build . -t $(IMAGE_NAME_PREFIX)-backend-acceptance:$(IMAGE_TAG) -f Dockerfile.acceptance --build-arg PLONE_VERSION=$(PLONE_VERSION)
 
-.PHONY: solr-stop
-solr-stop: test-compose-project-name ## Stop solr
-	@echo "Stop solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} down
-
-.PHONY: solr-logs
-solr-logs: test-compose-project-name ## Show solr logs
-	@echo "Show solr logs"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
-
-.PHONY: release
-release: ## make a new release
-	bin/fullrelease
+## Add bobtemplates features (check bobtemplates.plone's documentation to get the list of available features)
+add: $(VENV_FOLDER)
+	@uvx plonecli add -b .mrbob.ini $(filter-out $@,$(MAKECMDGOALS))
