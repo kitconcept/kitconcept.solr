@@ -1,0 +1,78 @@
+---
+name: kitconcept-solr-acceptance
+
+services:
+
+  solr-acceptance:
+    build:
+      context: ./solr
+    profiles: ["dev", "ci", "solr"]
+    ports:
+      - 8983:8983
+    command:
+      - solr-precreate
+      - plone
+      - /plone-config
+
+  frontend: &frontend
+    build:
+      context: ./frontend
+      args:
+        - VOLTO_VERSION=${VOLTO_VERSION}
+    platform: linux/amd64
+    profiles: ["dev"]
+    environment:
+      RAZZLE_API_PATH: http://localhost:55001/plone
+      RAZZLE_INTERNAL_API_PATH: http://backend:55001/plone
+    depends_on:
+      - backend
+      - backend-acceptance
+    ports:
+      - 3000:3000
+
+  backend: &backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - PLONE_VERSION=${PLONE_VERSION}
+    platform: linux/amd64
+    profiles: ["dev"]
+    environment:
+      SOLR_HOST: solr-acceptance
+      SOLR_PORT: 8983
+      SOLR_BASE: /solr/plone
+    depends_on:
+      - solr-acceptance
+    ports:
+      - 8080:8080
+
+  backend-acceptance: &backend-acceptance
+    <<: *backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.acceptance
+      args:
+        - PLONE_VERSION=${PLONE_VERSION}
+    depends_on:
+      - solr-acceptance
+    ports:
+      - 55001:55001
+
+  # CI Services
+  frontend-ci:
+    <<: *frontend
+    image: kitconcept/kitconcept-solr-frontend:${BASE_TAG}
+    profiles: ["ci"]
+    platform: linux/amd64
+    depends_on:
+      - backend-ci
+      - backend-ci-acceptance
+  backend-ci:
+    <<: *backend
+    image: kitconcept/kitconcept-solr-backend:${BASE_TAG}
+    profiles: ["ci"]
+  backend-ci-acceptance:
+    <<: *backend-acceptance
+    image: kitconcept/kitconcept-solr-acceptance:${BASE_TAG}
+    profiles: ["ci"]

@@ -1,0 +1,14 @@
+---
+name: kitconcept-solr-solr
+
+services:
+
+  solr:
+    build:
+      context: solr/
+    ports:
+      - 8983:8983
+    command:
+      - solr-precreate
+      - plone
+      - /plone-config

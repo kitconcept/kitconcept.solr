@@ -1,0 +1,36 @@
+name: Frontend Code Quality Workflow
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+      volto-version:
+        required: true
+        type: string
+      working-directory:
+        required: false
+        type: string
+        default: "./frontend"
+jobs:
+  code-analysis:
+    name: "Frontend: Codeanalysis"
+    uses: plone/meta/.github/workflows/frontend-code.yml@2.x
+    with:
+      node-version: ${{ inputs.node-version }}
+      working-directory: ${{ inputs.working-directory }}
+
+  i18n:
+    name: "Frontend: i18n"
+    uses: plone/meta/.github/workflows/frontend-i18n.yml@2.x
+    with:
+      node-version: ${{ inputs.node-version }}
+      working-directory: ${{ inputs.working-directory }}
+
+  unit:
+    name: "Frontend: Unit tests"
+    uses: plone/meta/.github/workflows/frontend-unit.yml@2.x
+    with:
+      node-version: ${{ inputs.node-version }}
+      working-directory: ${{ inputs.working-directory }}

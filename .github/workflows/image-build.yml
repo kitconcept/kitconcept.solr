@@ -1,0 +1,41 @@
+name: Build Container Images
+
+on:
+  workflow_call:
+    inputs:
+      base-tag:
+        required: true
+        type: string
+      image-name-prefix:
+        required: true
+        type: string
+      image-name-suffix:
+        required: true
+        type: string
+      build-args:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+      working-directory:
+        required: true
+        type: string
+
+jobs:
+  image-build:
+    name: "Build Container Image: ${{ inputs.image-name-prefix }}${{ inputs.image-name-suffix }}:${{ inputs.base-tag }}"
+    uses: plone/meta/.github/workflows/container-image-build.yml@2.x
+    permissions:
+      contents: read
+      packages: write
+    with:
+      base-tag: ${{ inputs.base-tag }}
+      dockerfile: ${{ inputs.dockerfile }}
+      image-name-prefix: ${{ inputs.image-name-prefix }}
+      image-name-suffix: ${{ inputs.image-name-suffix }}
+      working-directory: ${{ inputs.working-directory }}
+      build-args: ${{ inputs.build-args }}
+    secrets:
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}

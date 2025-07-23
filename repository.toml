@@ -1,0 +1,31 @@
+[repository]
+name = "kitconcept.solr"
+managed_by_uv = false
+changelog = "CHANGELOG.md"
+version = "version.txt"
+compose = "docker-compose.yml"
+
+[repository.towncrier]
+section = "Project"
+settings = "towncrier.toml"
+
+[backend.package]
+name = "kitconcept.solr"
+path = "backend"
+changelog = "backend/CHANGELOG.md"
+towncrier_settings = "backend/pyproject.toml"
+base_package = "Products.CMFPlone"
+publish = true
+
+[frontend.package]
+name = "volto-solr"
+path = "frontend/packages/volto-solr"
+changelog = "frontend/packages/volto-solr/CHANGELOG.md"
+towncrier_settings = "frontend/packages/volto-solr/towncrier.toml"
+base_package = "@plone/volto"
+publish = true
+
+[cookieplone]
+template = "project"
+template_version = "4d55553d61416df56b3360914b398d675b3f72a6"
+generated_date = "2025-07-22 22:24:36"
