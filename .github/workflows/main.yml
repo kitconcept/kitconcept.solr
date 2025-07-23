@@ -42,8 +42,8 @@ jobs:
               SEED=${{ github.run_id }}
               PLONE_VERSION=${{ needs.config.outputs.plone-version }}
           - suffix: "frontend"
-            dockerfile: "Dockerfile.acceptance"
-            working-directory: "backend"
+            dockerfile: "Dockerfile"
+            working-directory: "frontend"
             build-args: |
               VOLTO_VERSION=${{ needs.config.outputs.volto-version }}
 
