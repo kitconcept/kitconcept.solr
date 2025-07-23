@@ -17,16 +17,12 @@ services:
       - solr-precreate
       - plone
       - /plone-config
-  frontend:
+  frontend-acceptance:
     image: kitconcept/kitconcept-solr-frontend:${BASE_TAG}
     pull_policy: always
     profiles: ["ci"]
-    depends_on:
-      - backend-acceptance
 
   backend-acceptance:
     image: kitconcept/kitconcept-solr-acceptance:${BASE_TAG}
     pull_policy: always
     profiles: ["ci"]
-    depends_on:
-      - solr-acceptance
