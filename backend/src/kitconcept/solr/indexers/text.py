@@ -36,6 +36,37 @@ def safe_dict_traverse(data: dict, path: str, default: Any) -> Any:
     return value
 
 
+def _extract_block_text(block: dict) -> str:
+    """Extract text from a block.
+
+    :param block: Dictionary with block information.
+    :returns: A string with text found in the block.
+    """
+    block_type = block.get("@type", "")
+    result = ""
+    match block_type:
+        case "headline":
+            result = block.get("title", "")
+        case "introduction":
+            about = safe_dict_traverse(block, "about/value/0/children/0/text", "")
+            topics = safe_dict_traverse(block, "topics/value/0/children/0/text", "")
+            result = f"{about}\n{topics}"
+        case "slateTable":
+            for row in range(len(block["table"]["rows"])):
+                for column in range(len(block["table"]["rows"][row])):
+                    path = f"table/rows/{row}/cells/{column}/value/0/children/0/text"
+                    cell = safe_dict_traverse(block, path, "")
+                    result = f"{result}\n{cell}"
+        case "tabBlock":
+            tab = ""
+            tab_amount = len(block["columns"])
+            for i in range(tab_amount):
+                path = f"text-{i}/blocks/0/text"
+                tab = safe_dict_traverse(block, path, "")
+                result = f"{result}\n{tab}"
+    return result
+
+
 def extract_text(block, obj, request):
     """Extract text information from a block.
     This function tries the following methods, until it finds a result:
@@ -54,40 +85,17 @@ def extract_text(block, obj, request):
     block_type = block.get("@type", "")
     # searchableText is the conventional way of storing
     # searchable info in a block
-    searchableText = block.get("searchableText", "")
-    plaintext = block.get("plaintext", "")
-    text = block.get("text", "")
-    if searchableText:
+    if searchableText := block.get("searchableText", ""):
         # TODO: should we evaluate in some way this value? maybe passing
         # it into html/plain text transformer?
         return searchableText
-    if plaintext:
+    elif plaintext := block.get("plaintext", ""):
         return plaintext
-    if text:
+    elif text := block.get("text", ""):
         # Some blocks have the text attribute directly available (no richtext)
         return text
-    if block_type == "headline":
-        return block.get("title", "")
-    if block_type == "introduction":
-        about = safe_dict_traverse(block, "about/value/0/children/0/text", "")
-        topics = safe_dict_traverse(block, "topics/value/0/children/0/text", "")
-        result = f"{about}\n{topics}"
-        return result
-    if block_type == "slateTable":
-        cell = ""
-        for row in range(len(block["table"]["rows"])):
-            for column in range(len(block["table"]["rows"][row])):
-                path = f"table/rows/{row}/cells/{column}/value/0/children/0/text"
-                cell = safe_dict_traverse(block, path, "")
-                result = f"{result}\n{cell}"
-        return result
-    if block_type == "tabBlock":
-        tab = ""
-        tab_amount = len(block["columns"])
-        for i in range(tab_amount):
-            path = f"text-{i}/blocks/0/text"
-            tab = safe_dict_traverse(block, path, "")
-            result = f"{result}\n{tab}"
+
+    if result := _extract_block_text(block):
         return result
 
     # Use server side adapters to extract the text data
