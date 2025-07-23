@@ -3,7 +3,7 @@ name = "kitconcept.solr"
 managed_by_uv = false
 changelog = "CHANGELOG.md"
 version = "version.txt"
-compose = "docker-compose.yml"
+compose = []
 
 [repository.towncrier]
 section = "Project"

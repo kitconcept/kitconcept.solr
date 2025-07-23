@@ -1,17 +1,14 @@
 from base64 import b64decode
 from collections import defaultdict
-from pathlib import Path
 from plone import api
 from plone.app.multilingual.interfaces import ITranslationManager
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.namedfile import NamedBlobImage
 from plone.restapi.testing import RelativeSession
-from requests import exceptions as exc
 from zope.component.hooks import setSite
 
 import pytest
-import requests
 import transaction
 
 
@@ -97,35 +94,6 @@ def create_contents(contents):
         return ids
 
     return func
-
-
-def is_responsive(url):
-    """Helper fixture to check if Solr is up and running."""
-    try:
-        response = requests.get(url, timeout=5)
-        if response.status_code == 200:
-            return b"""<str name="status">OK</str>""" in response.content
-    except (exc.ConnectionError, exc.Timeout):
-        return False
-
-
-@pytest.fixture(scope="session")
-def docker_compose_file(pytestconfig):
-    """Fixture pointing to the docker-compose file to be used."""
-    backend_root = Path(str(pytestconfig.rootdir)).resolve()
-    repo_root = backend_root.parent
-    return repo_root / "docker-compose-solr.yml"
-
-
-@pytest.fixture
-def solr_service(docker_ip, docker_services):
-    """Ensure that Solr service is up and responsive."""
-    port = docker_services.port_for("solr", 8983)
-    url = f"http://{docker_ip}:{port}/solr/plone/admin/ping?wt=xml"
-    docker_services.wait_until_responsive(
-        timeout=90.0, pause=0.1, check=lambda: is_responsive(url)
-    )
-    return url
 
 
 @pytest.fixture()

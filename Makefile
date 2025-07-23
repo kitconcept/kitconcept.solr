@@ -14,7 +14,8 @@ GIT_FOLDER=$(CURRENT_DIR)/.git
 PROJECT_NAME=kitconcept.solr
 STACK_NAME=kitconcept-solr
 STACK_FILE=docker-compose.yml
-STACK_FILE_ACCEPTANCE=docker-compose-acceptance.yml
+STACK_FILE_DEV=docker-compose-dev.yml
+STACK_FILE_CI=docker-compose-ci.yml
 STACK_HOSTNAME=kitconcept-solr.localhost
 
 VOLTO_VERSION=$(shell cat frontend/mrs.developer.json | python -c "import sys, json; print(json.load(sys.stdin)['core']['tag'])")
@@ -187,7 +188,7 @@ stack-rm:  ## Local Stack: Remove Services and Volumes
 .PHONY: acceptance-backend-dev-start
 acceptance-backend-dev-start:
 	@echo "Start acceptance backend and solr"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) up backend solr-acceptance --build
+	@docker compose -f $(STACK_FILE_DEV) up backend-acceptance solr-acceptance --build
 
 .PHONY: acceptance-frontend-dev-start
 acceptance-frontend-dev-start:
@@ -203,28 +204,28 @@ acceptance-test:
 .PHONY: acceptance-images-build
 acceptance-images-build: ## Build Acceptance frontend/backend images
 	@echo "Build acceptance images build"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) --profile dev build
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance build
 
 .PHONY: acceptance-containers-start
 acceptance-containers-start: ## Start Acceptance containers
 	@echo "Start acceptance containers"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) --profile dev up -d
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance up -d
 
 .PHONY: acceptance-containers-stop
 acceptance-containers-stop: ## Stop Acceptance containers
 	@echo "Stop acceptance containers"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) --profile dev down
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance down
 
 ## Acceptance tests in CI
 .PHONY: ci-acceptance-images-load
 ci-acceptance-images-load: ## Load Acceptance images in CI
 	@echo "Load acceptance images"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) --profile ci pull
+	@docker compose -f $(STACK_FILE_DEV) -f $(STACK_FILE_CI) --profile ci pull
 
 .PHONY: ci-acceptance-containers-start
 ci-acceptance-containers-start: ## Start Acceptance containers
 	@echo "Start acceptance containers"
-	@docker compose -f $(STACK_FILE_ACCEPTANCE) --profile ci up
+	@docker compose -f $(STACK_FILE_DEV) -f $(STACK_FILE_CI) --profile ci up
 
 .PHONY: ci-acceptance-test
 ci-acceptance-test: ## Run Acceptance tests in ci mode
@@ -232,7 +233,8 @@ ci-acceptance-test: ## Run Acceptance tests in ci mode
 	$(MAKE) -C "./frontend/" ci-acceptance-test
 
 .PHONY: ci-acceptance-test-complete
-ci-acceptance-test-complete: ## Start acceptance containers, wait for them to be ready, and run tests
+ci-acceptance-test-complete: ## Simulate CI acceptance test run
+	@echo "Simulate CI acceptance test run"
 	$(MAKE) acceptance-containers-start
 	pnpx wait-on --httpTimeout 20000 http-get://localhost:55001/plone http://localhost:3000
 	$(MAKE) ci-acceptance-test
