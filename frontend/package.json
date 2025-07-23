@@ -1,37 +1,50 @@
 {
-  "name": "@kitconcept/volto-solr",
-  "version": "1.0.0-alpha.5",
-  "description": "@kitconcept/volto-solr: Volto add-on front-end component of Solr support",
-  "main": "src/index.js",
-  "scripts": {
-    "i18n": "rm -rf build/messages && NODE_ENV=production i18n -a",
-    "cypress:open": "NODE_ENV=production ../../../node_modules/cypress/bin/cypress open",
-    "cypress:run": "NODE_ENV=test ../../../node_modules/cypress/bin/cypress run",
-    "cypress:start-frontend": "cd ../../../ && RAZZLE_API_PATH=http://localhost:55001/plone yarn start",
-    "ci:test-acceptance-server": "make test-acceptance-server",
-    "cy:test:fixture:setup": "node cypress/support/reset-fixture.js",
-    "cy:test:fixture:teardown": "node cypress/support/reset-fixture.js teardown",
-    "dry-release": "release-it --dry-run",
-    "release": "release-it",
-    "release-major-alpha": "release-it major --preRelease=alpha",
-    "release-alpha": "release-it --preRelease=alpha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/kitconcept/volto-solr.git"
-  },
+  "name": "volto-solr-dev",
+  "version": "1.0.0-alpha.0",
+  "description": "An opinionated Solr integration for Plone.",
   "author": "kitconcept GmbH",
+  "homepage": "https://github.com/kitconcept/kitconcept-solr",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kitconcept/volto-solr/issues"
+  "keywords": [
+    "volto-addon",
+    "volto",
+    "plone",
+    "react"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "start": "VOLTOCONFIG=$(pwd)/volto.config.js pnpm --filter @plone/volto start",
+    "start:prod": "pnpm --filter @plone/volto start:prod",
+    "build": "VOLTOCONFIG=$(pwd)/volto.config.js pnpm --filter @plone/volto build",
+    "build:deps": "pnpm --filter @plone/registry --filter @plone/components build",
+    "i18n": "pnpm --filter volto-solr i18n && VOLTOCONFIG=$(pwd)/volto.config.js pnpm --filter @plone/volto i18n",
+    "test": "RAZZLE_JEST_CONFIG=$(pwd)/jest-addon.config.js pnpm --filter @plone/volto test -- --passWithNoTests",
+    "lint": "VOLTOCONFIG=$(pwd)/volto.config.js eslint --max-warnings=0 'packages/**/src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "VOLTOCONFIG=$(pwd)/volto.config.js eslint --fix 'packages/**/src/**/*.{js,jsx,ts,tsx}'",
+    "prettier": "prettier --check 'packages/**/src/**/*.{js,jsx,ts,tsx}'",
+    "prettier:fix": "prettier --write 'packages/**/src/**/*.{js,jsx,ts,tsx}' ",
+    "stylelint": "stylelint 'packages/**/src/**/*.{css,scss,less}' --allow-empty-input",
+    "stylelint:fix": "stylelint 'packages/**/src/**/*.{css,scss,less}' --fix --allow-empty-input",
+    "dry-release": "pnpm --filter volto-solr dry-release",
+    "release": "pnpm --filter volto-solr release",
+    "release-major-alpha": "pnpm --filter volto-solr release-major-alpha",
+    "release-alpha": "pnpm --filter volto-solr release-alpha",
+    "storybook": "VOLTOCONFIG=$(pwd)/volto.config.js pnpm --filter @plone/volto storybook dev -p 6006 -c $(pwd)/.storybook",
+    "storybook-build": "VOLTOCONFIG=$(pwd)/volto.config.js pnpm --filter @plone/volto build-storybook -c $(pwd)/.storybook"
   },
-  "homepage": "https://github.com/kitconcept/volto-solr#readme",
-  "publishConfig": {
-    "access": "public"
+  "dependencies": {
+    "@plone/volto": "workspace:*",
+    "@plone/registry": "workspace:*",
+    "@kitconcept/volto-solr": "workspace:*"
   },
   "devDependencies": {
-    "@plone/scripts": "^2.3.0",
-    "release-it": "^16.1.0"
+    "mrs-developer": "^2.2.0"
   },
-  "packageManager": "yarn@3.5.1"
+  "pnpm": {
+    "overrides": {
+      "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+      "react-refresh": "^0.14.2"
+    }
+  },
+  "packageManager": "pnpm@9.1.1"
 }
