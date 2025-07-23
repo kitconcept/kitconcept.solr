@@ -97,7 +97,7 @@ jobs:
             frontend:
               - 'frontend/**'
               - '.github/workflows/frontend*'
-            frontend:
+            solr:
               - 'solr/**'
               - '.github/workflows/solr*'
 
