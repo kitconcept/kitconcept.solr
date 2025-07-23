@@ -56,7 +56,6 @@ jobs:
     outputs:
       acceptance: ${{ steps.filter.outputs.acceptance }}
       backend: ${{ steps.filter.outputs.backend }}
-      devops: ${{ steps.filter.outputs.devops }}
       docs: ${{ steps.filter.outputs.docs }}
       frontend: ${{ steps.filter.outputs.frontend }}
       solr: ${{ steps.filter.outputs.solr }}
@@ -83,13 +82,13 @@ jobs:
               - '.github/workflows/acceptance*'
               - '.github/workflows/backend*'
               - '.github/workflows/frontend*'
+              - '.github/workflows/config*'
+              - 'docker-compose*'
               - 'backend/**'
               - 'frontend/**'
             backend:
               - 'backend/**'
               - '.github/workflows/backend*'
-            devops:
-              - 'devops/**'
             docs:
               - '.readthedocs.yaml'
               - 'docs/**'
