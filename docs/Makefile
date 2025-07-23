@@ -46,6 +46,11 @@ clean-python: clean
 	rm -rf *.egg-info
 # /environment management
 
+.PHONY: build
+build:  ## Default documentation build
+	$(MAKE) html
+
+
 
 # documentation builders
 .PHONY: html
