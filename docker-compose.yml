@@ -60,9 +60,9 @@ services:
     depends_on:
       - solr
     environment:
-      SOLR_HOST: solr
-      SOLR_PORT: 8983
-      SOLR_BASE: /solr/plone
+      COLLECTIVE_SOLR_HOST: solr
+      COLLECTIVE_SOLR_PORT: 8983
+      COLLECTIVE_SOLR_BASE: /solr/plone
     volumes:
       - vol-site-data:/data
     labels:

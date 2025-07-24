@@ -49,9 +49,9 @@ services:
     platform: linux/amd64
     profiles: ["dev"]
     environment:
-      SOLR_HOST: solr-acceptance
-      SOLR_PORT: 8983
-      SOLR_BASE: /solr/plone
+      COLLECTIVE_SOLR_HOST: solr-acceptance
+      COLLECTIVE_SOLR_PORT: 8983
+      COLLECTIVE_SOLR_BASE: /solr/plone
     depends_on:
       - solr-acceptance
     ports:
