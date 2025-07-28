@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import ResultItemDate from './helpers/ResultItemDate';
 import locationSVG from '../icons/location.svg';
 import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';

@@ -3,7 +3,8 @@
  * @module reducers/solrsearch/search
  */
 
-import { map, omit } from 'lodash';
+import map from 'lodash/map';
+import omit from 'lodash/omit';
 import {
   RESET_SOLR_SEARCH_CONTENT,
   SOLR_SEARCH_CONTENT,

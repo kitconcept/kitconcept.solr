@@ -1,5 +1,5 @@
 import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import downSVG from './icons/down-key-nofill.svg';
 import upSVG from './icons/up-key-nofill.svg';
 

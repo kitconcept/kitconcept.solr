@@ -4,7 +4,7 @@ import ResultItemPreviewImage from './helpers/ResultItemPreviewImage';
 import phoneSVG from '../icons/phone.svg';
 import emailSVG from '@plone/volto/icons/email.svg';
 import fallbackAvatarSVG from '../icons/fallback-avatar.svg';
-import { Icon } from '@plone/volto/components'; // ??
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import config from '@plone/volto/registry';
 
 const PersonResultItem = ({ item }) => (

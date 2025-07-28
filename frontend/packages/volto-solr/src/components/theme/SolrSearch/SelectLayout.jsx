@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import listBulletSVG from '@plone/volto/icons/list-bullet.svg';
 import gridSVG from './icons/grid.svg';
 

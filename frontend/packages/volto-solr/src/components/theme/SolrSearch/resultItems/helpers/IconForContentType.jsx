@@ -1,4 +1,4 @@
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import config from '@plone/volto/registry';
 
 const IconForContentType = ({ type }) => (

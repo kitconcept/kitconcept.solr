@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { flattenToAppURL } from '@plone/volto/helpers';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 
 // Compatibility layer for Volto < 17, where the Image content type
 // is not present.

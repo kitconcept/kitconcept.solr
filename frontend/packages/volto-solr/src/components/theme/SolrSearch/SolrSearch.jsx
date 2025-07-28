@@ -7,7 +7,7 @@ import React, { Component, createElement, createRef, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { asyncConnect } from '@plone/volto/helpers';
+import { asyncConnect } from '@plone/volto/helpers/AsyncConnect';
 import { FormattedMessage } from 'react-intl';
 import { createPortal } from 'react-dom';
 import {
@@ -23,13 +23,14 @@ import { injectIntl, useIntl, defineMessages } from 'react-intl';
 import qs from 'query-string';
 
 import config from '@plone/volto/registry';
-import { Helmet } from '@plone/volto/helpers';
-import { Toolbar, Icon } from '@plone/volto/components';
+import Helmet from '@plone/volto/helpers/Helmet/Helmet';
+import Toolbar from '@plone/volto/components/manage/Toolbar/Toolbar';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 
 import paginationLeftSVG from '@plone/volto/icons/left-key.svg';
 import paginationRightSVG from '@plone/volto/icons/right-key.svg';
 // These imports and the legacySearchProps are only for the legacy search
-import { searchContent } from '@plone/volto/actions';
+import { searchContent } from '@plone/volto/actions/search/search';
 import { DefaultResultItem } from './resultItems';
 import { SelectSorting } from './SelectSorting';
 import { SelectLayout } from './SelectLayout';
