@@ -8,6 +8,26 @@ SHELL:=bash
 MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules
 
+CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+GIT_FOLDER=$(CURRENT_DIR)/.git
+
+PROJECT_NAME=kitconcept.solr
+STACK_NAME=kitconcept-solr
+STACK_FILE=docker-compose.yml
+STACK_FILE_DEV=docker-compose-dev.yml
+STACK_FILE_CI=docker-compose-ci.yml
+STACK_HOSTNAME=kitconcept-solr.localhost
+
+VOLTO_VERSION=$(shell cat frontend/mrs.developer.json | python -c "import sys, json; print(json.load(sys.stdin)['core']['tag'])")
+PLONE_VERSION=$(shell cat backend/version.txt)
+
+# Environment variables to be exported
+export VOLTO_VERSION := $(VOLTO_VERSION)
+export PLONE_VERSION := $(PLONE_VERSION)
+export DOCKER_BUILDKIT := 1
+export COMPOSE_BAKE := 1
+export STACK_HOSTNAME := $(STACK_HOSTNAME)
+
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
 RED=`tput setaf 1`
@@ -15,28 +35,7 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-GIT_FOLDER=$(BACKEND_FOLDER)/.git
-
-COMPOSE_PROJECT_NAME=kitconcept_solr
-SOLR_DATA_FOLDER?=${BACKEND_FOLDER}/data
-SOLR_ONLY_COMPOSE?=${BACKEND_FOLDER}/docker-compose.yml
-
-# Python checks
-PYTHON?=python3
-
-# installed?
-ifeq (, $(shell which $(PYTHON) ))
-  $(error "PYTHON=$(PYTHON) not found in $(PATH)")
-endif
-
-# version ok?
-PYTHON_VERSION_MIN=3.8
-PYTHON_VERSION_OK=$(shell $(PYTHON) -c "import sys; print((int(sys.version_info[0]), int(sys.version_info[1])) >= tuple(map(int, '$(PYTHON_VERSION_MIN)'.split('.'))))")
-ifeq ($(PYTHON_VERSION_OK),0)
-  $(error "Need python $(PYTHON_VERSION) >= $(PYTHON_VERSION_MIN)")
-endif
-
+.PHONY: all
 all: install
 
 # Add the following 'help' target to your Makefile
@@ -45,133 +44,198 @@ all: install
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: clean
-clean: clean-build clean-pyc clean-test clean-venv clean-instance ## remove all build, test, coverage and Python artifacts
+###########################################
+# Frontend
+###########################################
+.PHONY: frontend-install
+frontend-install:  ## Install React Frontend
+	$(MAKE) -C "./frontend/" install
 
-.PHONY: clean-instance
-clean-instance: ## remove existing instance
-	rm -fr instance etc inituser var
+.PHONY: frontend-build
+frontend-build:  ## Build React Frontend
+	$(MAKE) -C "./frontend/" build
 
-.PHONY: clean-venv
-clean-venv: ## remove virtual environment
-	rm -fr bin include lib lib64 env pyvenv.cfg .tox .pytest_cache requirements-mxdev.txt
-	cp constraints-6.1.txt constraints.txt
-	cp requirements-6.1.txt requirements.txt
+.PHONY: frontend-start
+frontend-start:  ## Start React Frontend
+	$(MAKE) -C "./frontend/" start
 
-.PHONY: clean-build
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -rf {} +
+.PHONY: frontend-test
+frontend-test:  ## Test frontend codebase
+	@echo "Test frontend"
+	$(MAKE) -C "./frontend/" test
 
-.PHONY: clean-pyc
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+###########################################
+# Backend
+###########################################
+.PHONY: backend-install
+backend-install:  ## Create virtualenv and install Plone
+	$(MAKE) -C "./backend/" install
+	$(MAKE) backend-create-site
 
-.PHONY: clean-test
-clean-test: ## remove test and coverage artifacts
-	rm -f .coverage
-	rm -fr htmlcov/
+.PHONY: backend-build
+backend-build:  ## Build Backend
+	$(MAKE) -C "./backend/" install
 
-bin/pip bin/tox bin/mxdev:
-	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
-	$(PYTHON) -m venv .
-	bin/pip install -U "pip" "wheel" "cookiecutter" "mxdev" "tox" "pre-commit"
-	if [ -d $(GIT_FOLDER) ]; then bin/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi
+.PHONY: backend-create-site
+backend-create-site: ## Create a Plone site with default content
+	$(MAKE) -C "./backend/" create-site
 
-constraints-mxdev.txt:  bin/tox
-	bin/tox -e init
+.PHONY: backend-update-example-content
+backend-update-example-content: ## Export example content inside package
+	$(MAKE) -C "./backend/" update-example-content
 
-.PHONY: config
-config: bin/pip  ## Create instance configuration
-	@echo "$(GREEN)==> Create instance configuration$(RESET)"
-	bin/cookiecutter -f --no-input -c 2.1.1 --config-file instance.yaml gh:plone/cookiecutter-zope-instance
+.PHONY: backend-start
+backend-start: ## Start Plone Backend
+	$(MAKE) -C "./backend/" start
 
-.PHONY: install-plone-6.1
-install-plone-6.1: bin/mxdev config ## pip install Plone packages
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	cp constraints-6.1.txt constraints.txt
-	cp requirements-6.1.txt requirements.txt
-	bin/tox -e init
-	bin/mxdev -c mx.ini
-	bin/pip install -r requirements-mxdev.txt
+.PHONY: backend-test
+backend-test:  ## Test backend codebase
+	@echo "Test backend"
+	$(MAKE) -C "./backend/" test
 
-.PHONY: install-plone-5.2
-install-plone-5.2: bin/mxdev config ## pip install Plone packages
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	cp constraints-5.2.txt constraints.txt
-	cp requirements-5.2.txt requirements.txt
-	bin/tox -e init
-	bin/mxdev -c mx.ini
-	bin/pip install -r requirements-mxdev.txt
-
+###########################################
+# Environment
+###########################################
 .PHONY: install
-install: install-plone-6.1  ## Install Plone 6.1
+install:  ## Install
+	@echo "Install Backend & Frontend"
+	$(MAKE) backend-install
+	$(MAKE) frontend-install
 
-.PHONY: start
-start: ## Start a Plone instance on localhost:8080
-	PYTHONWARNINGS=ignore ./bin/runwsgi instance/etc/zope.ini
+.PHONY: clean
+clean:  ## Clean installation
+	@echo "Clean installation"
+	$(MAKE) -C "./backend/" clean
+	$(MAKE) -C "./frontend/" clean
 
+###########################################
+# QA
+###########################################
 .PHONY: format
-format: bin/tox ## Format the codebase according to our standards
-	@echo "$(GREEN)==> Format codebase$(RESET)"
-	bin/tox -e format
+format:  ## Format codebase
+	@echo "Format the codebase"
+	$(MAKE) -C "./backend/" format
+	$(MAKE) -C "./frontend/" format
 
 .PHONY: lint
-lint: bin/tox ## check code style
-	bin/tox -e lint
+lint:  ## Format codebase
+	@echo "Lint the codebase"
+	$(MAKE) -C "./backend/" lint
+	$(MAKE) -C "./frontend/" lint
 
+.PHONY: check
+check:  format lint ## Lint and Format codebase
+
+###########################################
 # i18n
-bin/i18ndude bin/pocompile: bin/pip
-	@echo "$(GREEN)==> Install translation tools$(RESET)"
-	bin/pip install i18ndude zest.pocompile
-
+###########################################
 .PHONY: i18n
-i18n: bin/i18ndude ## Update locales
-	@echo "$(GREEN)==> Updating locales$(RESET)"
-	bin/update_locale
-	bin/pocompile src/
+i18n:  ## Update locales
+	@echo "Update locales"
+	$(MAKE) -C "./backend/" i18n
+	$(MAKE) -C "./frontend/" i18n
 
-# Tests
+###########################################
+# Testing
+###########################################
 .PHONY: test
-test: bin/tox constraints-mxdev.txt ## run tests
-	bin/tox -e test
+test:  backend-test frontend-test ## Test codebase
 
-.PHONY: coverage
-coverage: bin/tox constraints-mxdev.txt ## run coverage
-	bin/tox -e coverage
+###########################################
+# Container images
+###########################################
+.PHONY: build-images
+build-images:  ## Build container images
+	@echo "Build"
+	$(MAKE) -C "./backend/" build-image
+	$(MAKE) -C "./frontend/" build-image
 
-## Solr docker utils
-test-compose-project-name:
-	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,
-	# and the purpose of the container (_DEV, _STACK, _TEST)
-	test -n "$(COMPOSE_PROJECT_NAME)"
+###########################################
+# Local Stack
+###########################################
+.PHONY: stack-create-site
+stack-create-site:  ## Local Stack: Create a new site
+	@echo "Create a new site in the local Docker stack"
+	@echo "(Stack must not be running already.)"
+	@docker compose -f $(STACK_FILE) run --build backend ./docker-entrypoint.sh create-site
 
-.PHONY: solr-start
-solr-start: test-compose-project-name ## Start solr
-	@echo "Start solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up -d
+.PHONY: stack-start
+stack-start:  ## Local Stack: Start Services
+	@echo "Start local Docker stack"
+	@docker compose -f $(STACK_FILE) up -d --build
+	@echo "Now visit: http://kitconcept.solr.localhost"
 
-.PHONY: solr-start-fg
-solr-start-fg: test-compose-project-name ## Start solr in foreground
-	@echo "Start solr in foreground"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} up
+.PHONY: stack-status
+stack-status:  ## Local Stack: Check Status
+	@echo "Check the status of the local Docker stack"
+	@docker compose -f $(STACK_FILE) ps
 
-.PHONY: solr-stop
-solr-stop: test-compose-project-name ## Stop solr
-	@echo "Stop solr"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} down
+.PHONY: stack-stop
+stack-stop:  ##  Local Stack: Stop Services
+	@echo "Stop local Docker stack"
+	@docker compose -f $(STACK_FILE) stop
 
-.PHONY: solr-logs
-solr-logs: test-compose-project-name ## Show solr logs
-	@echo "Show solr logs"
-	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${SOLR_ONLY_COMPOSE} logs -f
+.PHONY: stack-rm
+stack-rm:  ## Local Stack: Remove Services and Volumes
+	@echo "Remove local Docker stack"
+	@docker compose -f $(STACK_FILE) down
+	@echo "Remove local volume data"
+	@docker volume rm $(PROJECT_NAME)_vol-site-data
 
-.PHONY: release
-release: ## make a new release
-	bin/fullrelease
+###########################################
+# Acceptance
+###########################################
+.PHONY: acceptance-backend-dev-start
+acceptance-backend-dev-start:
+	@echo "Start acceptance backend and solr"
+	@docker compose -f $(STACK_FILE_DEV) up backend-acceptance solr-acceptance --build
+
+.PHONY: acceptance-frontend-dev-start
+acceptance-frontend-dev-start:
+	@echo "Start acceptance frontend"
+	$(MAKE) -C "./frontend/" acceptance-frontend-dev-start
+
+.PHONY: acceptance-test
+acceptance-test:
+	@echo "Start acceptance tests in interactive mode"
+	$(MAKE) -C "./frontend/" acceptance-test
+
+## Acceptance tests with Container
+.PHONY: acceptance-images-build
+acceptance-images-build: ## Build Acceptance frontend/backend images
+	@echo "Build acceptance images build"
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance build
+
+.PHONY: acceptance-containers-start
+acceptance-containers-start: ## Start Acceptance containers
+	@echo "Start acceptance containers"
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance up -d
+
+.PHONY: acceptance-containers-stop
+acceptance-containers-stop: ## Stop Acceptance containers
+	@echo "Stop acceptance containers"
+	@docker compose -f $(STACK_FILE_DEV) --profile acceptance down
+
+## Acceptance tests in CI
+.PHONY: ci-acceptance-images-load
+ci-acceptance-images-load: ## Load Acceptance images in CI
+	@echo "Load acceptance images"
+	@docker compose -f $(STACK_FILE_DEV) -f $(STACK_FILE_CI) --profile ci pull
+
+.PHONY: ci-acceptance-containers-start
+ci-acceptance-containers-start: ## Start Acceptance containers
+	@echo "Start acceptance containers"
+	@docker compose -f $(STACK_FILE_DEV) -f $(STACK_FILE_CI) --profile ci up
+
+.PHONY: ci-acceptance-test
+ci-acceptance-test: ## Run Acceptance tests in ci mode
+	@echo "Run acceptance tests"
+	$(MAKE) -C "./frontend/" ci-acceptance-test
+
+.PHONY: ci-acceptance-test-complete
+ci-acceptance-test-complete: ## Simulate CI acceptance test run
+	@echo "Simulate CI acceptance test run"
+	$(MAKE) acceptance-containers-start
+	pnpx wait-on --httpTimeout 20000 http-get://localhost:55001/plone http://localhost:3000
+	$(MAKE) ci-acceptance-test
+	$(MAKE) acceptance-containers-stop

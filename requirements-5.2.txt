@@ -1,4 +1,0 @@
--c constraints.txt
-
-# Cannot install new testing framework with 5.2
-# -e ".[test]"

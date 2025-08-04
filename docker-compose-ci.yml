@@ -1,0 +1,28 @@
+---
+name: kitconcept-solr-ci
+
+# This file is used to define the CI environment for kitconcept-solr.
+# It is supposed to be used in conjunction with docker-compose-dev.yml.
+# The services defined here are used for CI testing and should not be used in development.
+
+services:
+
+  solr-acceptance:
+    build:
+      context: ./solr
+    profiles: ["ci"]
+    ports:
+      - 8983:8983
+    command:
+      - solr-precreate
+      - plone
+      - /plone-config
+  frontend-acceptance:
+    image: ghcr.io/kitconcept/kitconcept-solr-frontend:${BASE_TAG}
+    pull_policy: always
+    profiles: ["ci"]
+
+  backend-acceptance:
+    image: ghcr.io/kitconcept/kitconcept-solr-acceptance:${BASE_TAG}
+    pull_policy: always
+    profiles: ["ci"]

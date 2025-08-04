@@ -1,312 +1,149 @@
-<p align="center">
-    <img alt="kitconcept GmbH" width="200px" src="https://kitconcept.com/logo.svg">
-</p>
+# kitconcept Solr 🚀
 
-<h1 align="center">kitconcept.solr</h1>
-<h3 align="center">An opinionated Solr integration for Plone</h3>
+[![Built with Cookieplone](https://img.shields.io/badge/built%20with-Cookieplone-0083be.svg?logo=cookiecutter)](https://github.com/plone/cookieplone-templates/)
+[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Backend Tests](https://github.com/kitconcept/kitconcept-solr/actions/workflows/backend.yml/badge.svg)](https://github.com/kitconcept/kitconcept-solr/actions/workflows/backend.yml)
+[![Frontend Tests](https://github.com/kitconcept/kitconcept-solr/actions/workflows/frontend.yml/badge.svg)](https://github.com/kitconcept/kitconcept-solr/actions/workflows/frontend.yml)
 
-<div align="center">
+An opinionated Solr integration for Plone.
 
-[![PyPI](https://img.shields.io/pypi/v/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
-[![PyPI - Wheel](https://img.shields.io/pypi/wheel/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
-[![PyPI - License](https://img.shields.io/pypi/l/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
-[![PyPI - Status](https://img.shields.io/pypi/status/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
+## Quick Start 🏁
 
-[![PyPI - Plone Versions](https://img.shields.io/pypi/frameworkversions/plone/kitconcept.solr)](https://pypi.org/project/kitconcept.solr/)
+### Prerequisites ✅
 
-[![Meta](https://github.com/kitconcept/kitconcept.solr/actions/workflows/meta.yml/badge.svg)](https://github.com/kitconcept/kitconcept.solr/actions/workflows/meta.yml)
-![Code Style](https://img.shields.io/badge/Code%20Style-Black-000000)
+-   An [operating system](https://6.docs.plone.org/install/create-project-cookieplone.html#prerequisites-for-installation) that runs all the requirements mentioned.
+-   [uv](https://6.docs.plone.org/install/create-project-cookieplone.html#uv)
+-   [nvm](https://6.docs.plone.org/install/create-project-cookieplone.html#nvm)
+-   [Node.js and pnpm](https://6.docs.plone.org/install/create-project.html#node-js) 22
+-   [Make](https://6.docs.plone.org/install/create-project-cookieplone.html#make)
+-   [Git](https://6.docs.plone.org/install/create-project-cookieplone.html#git)
+-   [Docker](https://docs.docker.com/get-started/get-docker/) (optional)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/kitconcept/kitconcept.solr)](https://github.com/kitconcept/kitconcept.solr)
-[![GitHub Repo stars](https://img.shields.io/github/stars/kitconcept/kitconcept.solr?style=social)](https://github.com/kitconcept/kitconcept.solr)
 
-</div>
+### Installation 🔧
 
-## Features
+1.  Clone this repository, then change your working directory.
 
-`kitconcept.solr` is an opinionated Solr integration package for Plone sites. It leverages (and depends on) [`collective.solr`](https://github.com/collective/collective.solr), by adding a new endpoint `@solr` that supports search requests with facetted results.
+    ```shell
+    git clone git@github.com:kitconcept/kitconcept-solr.git
+    cd kitconcept.solr
+    ```
 
-### Endpoints
+2.  Install this code base.
 
-| name    | context                         |
-| ------- | ------------------------------- |
-| `@solr` | Plone site or Folderish content |
+    ```shell
+    make install
+    ```
 
-#### Using the `@solr` endpoint
 
-The `@solr` endpoint is used from the `kitconcept.volto-solr` Volto add-on package for the implementation of the site search. It can also be used for custom components. The parameters roughly follow the parameters of the normal site search service, but differ in some respects.
+### Fire Up the Servers 🔥
 
-**TBD** _give more information about this._
+1.  Create a new Plone site on your first run.
 
-For now, please refer to the source code of the `solr.py` module, in case you want to use for your own purposes.
+    ```shell
+    make backend-create-site
+    ```
 
-## Documentation
+2.  Start the backend at http://localhost:8080/.
 
-### Installation
+    ```shell
+    make backend-start
+    ```
 
-Add `kitconcept.solr` as a dependency on your package's `setup.py`
+3.  In a new shell session, start the frontend at http://localhost:3000/.
 
-```python
-    install_requires = [
-        "kitconcept.solr",
-        "Plone",
-        "plone.restapi",
-        "setuptools",
-    ],
+    ```shell
+    make frontend-start
+    ```
+
+Voila! Your Plone site should be live and kicking! 🎉
+
+### Local Stack Deployment 📦
+
+Deploy a local Docker Compose environment that includes the following.
+
+- Docker images for Backend and Frontend 🖼️
+- A stack with a Traefik router and a PostgreSQL database 🗃️
+- Accessible at [http://kitconcept.solr.localhost](http://kitconcept.solr.localhost) 🌐
+
+Run the following commands in a shell session.
+
+```shell
+make stack-create-site
+make stack-start
 ```
 
-Also, add `kitconcept.solr` to your package's `configure.zcml` (or `dependencies.zcml`):
+And... you're all set! Your Plone site is up and running locally! 🚀
 
-```xml
-<include package="kitconcept.solr" />
+## Project structure 🏗️
+
+This monorepo consists of the following distinct sections:
+
+- **backend**: Houses the API and Plone installation, utilizing pip instead of buildout, and includes a policy package named kitconcept.solr.
+- **frontend**: Contains the React (Volto) package.
+- **devops**: Encompasses Docker stack, Ansible playbooks, and cache settings.
+- **docs**: Scaffold for writing documentation for your project.
+
+### Why this structure? 🤔
+
+- All necessary codebases to run the site are contained within the repository (excluding existing add-ons for Plone and React).
+- Specific GitHub Workflows are triggered based on changes in each codebase (refer to .github/workflows).
+- Simplifies the creation of Docker images for each codebase.
+- Demonstrates Plone installation/setup without buildout.
+
+## Code quality assurance 🧐
+
+To check your code against quality standards, run the following shell command.
+
+```shell
+make check
 ```
 
-#### Remark with Plone 6.0
+### Format the codebase
 
-With Plone 6.0 you must add an additional dependency `"plone.restapi>=8.40.0"`.
+To format and rewrite the code base, ensuring it adheres to quality standards, run the following shell command.
 
-The package also keeps support with Plone 5.2 where `"plone.restapi>=8.21.2"` is a working version. It will not support image scales, but the package will work gracefully without displaying image previews in the search result list.
-
-### Generic Setup
-
-To automatically enable this package when your add-on is installed, add the following line inside the package's `profiles/default/metadata.xml` `dependencies` element:
-
-```xml
-    <dependency>profile-kitconcept.solr:default</dependency>
-```
-
-## Source Code and Contributions
-
-We welcome contributions to `kitconcept.solr`.
-
-You can create an issue in the issue tracker, or contact a maintainer.
-
-- [Issue Tracker](https://github.com/kitconcept/kitconcept.solr/issues)
-- [Source Code](https://github.com/kitconcept/kitconcept.solr/)
-
-### Development requirements
-
-- Python 3.8 or later
-- Docker
-
-### Setup
-
-Install all development dependencies -- including Plone -- and create a new instance using:
-
-```bash
-make install
-```
-
-By default, we use the latest Plone version in the 6.x series.
-
-### Configurations
-
-Most of the development configuration is managed with [`plone.meta`](https://github.com/plone/plone.meta), so avoid manually editing the following files:
-
-- `.editorconfig`
-- `.flake8`
-- `.gitignore`
-- `.pre-commit-config.yaml`
-- `news/.changelog_template.jinja`
-- `pyproject.toml`
-- `tox.ini`
-
-In addition there is Solr related configuration that is outlined in the following chapters.
-
-#### Configuring Solr
-
-Solr is configured by a default configuration that can be found in the [`/solr/etc/`](./solr/etc) folder in this repository. This contains, most notably, the `schema.xml` that defines the indexes for Solr. This package also builds docker images with the default Solr version, set up with this default configuration.
-
-If you need to customize the Solr configuration (such as adding new indexes, etc.) then you should copy the `solr` folder into your own project, customize it as you wish, and then build your own docker images (or compile your own Solr server) based on this configuration.
-
-A typical use case for why you would want to do this, is if you add new fields to some content types, and you want to render the values for these additional fields in the search results. In this case you want to add the additional fields as indexes to Solr. You probably would not need this, unless you change anything on the result type templates in the `kitconcept.volto-solr` front-end package.
-
-#### Configuring the front-end and back-end packages
-
-The package supports the usage of the `kitconcept.volto-solr` add-on, and it is designed to be used together with it.
-
-The configuration can be specified in a customized way. Without any additional configuration, the package will use the default, which is specified in json format in the [`kitconcept.solr.interfaces.IKitconceptSolrSettings`](./src/kitconcept/solr/profiles/default/registry/kitconcept.solr.interfaces.IKitconceptSolrSettings.xml) registry.
-
-This configuration settings affect the behavior of both the `kitconcept.solr` (this) back-end package, and the `kitconcept.volto-solr` front-end package (a Volto add-on). In addition, `kitconcept.volto-solr` has its own Volto add-on configuration which is not explained here, for these options please refer to the documentation of the add-on package.
-
-##### Configuration options
-
-Explanation for the configuration options:
-
-###### `fieldList`
-
-Contains the fields that solr should return. If the search result templates in the volto add-on are modified, and require more fields than in the default list, the fields **must explicitly be added** here.
-
-In addition, the same fields must be present in the Solr index - if either the Solr index or the field in `fieldList` is missing, the field value will silently be not returned. No error will be shown.
-
-Example value:
-
-```json
-[
-  "UID",
-  "Title",
-  "Description",
-  "Type",
-  "effective",
-  "start",
-  "created",
-  "end",
-  "path_string",
-  "mime_type",
-  "phone",
-  "email",
-  "location",
-  "image_scales",
-  "image_field"
-]
-```
-
-###### `searchTabs`
-
-A list of dictionary items representing the facet tabs in the search page.
-
-The `label` field specifies the label to be shown on the tab in English. It's the front-end package's responsibility to provide translations for this, as `kitconcept.volto-solr` does this for the defaults, which can be used as an example.
-
-The `filter` field defines the Solr search condition to the given facet tab. This can be a content type, or in fact any condition understood by Solr, please consult the Solr documentation for more details.
-
-Example value:
-
-```json
-[
-  {
-    "label": "All",
-    "filter": "Type(*)"
-  },
-  {
-    "label": "Pages",
-    "filter": "Type:(Page)"
-  },
-  {
-    "label": "Events",
-    "filter": "Type:(Event)"
-  },
-  {
-    "label": "Images",
-    "filter": "Type:(Image)"
-  },
-  {
-    "label": "Files",
-    "filter": "Type:(File)"
-  }
-]
-```
-
-##### Overriding the configuration options
-
-If needed, the default [`kitconcept.solr.interfaces.IKitconceptSolrSettings`](./src/kitconcept/solr/profiles/default/registry/kitconcept.solr.interfaces.IKitconceptSolrSettings.xml) can be customized in the registry via GenericSetup.
-
-### Using reindex helpers
-
-Helpers for activate and reindex solr are importable from the package.
-
-Example for a reindex script that can be called from Makefile:
-
-```py
-from kitconcept.solr.reindex_helpers import activate_and_reindex
-from Testing.makerequest import makerequest
-from zope.site.hooks import setSite
-
-import sys
-import transaction
-
-
-if __name__ == "__main__":
-    app = makerequest(app)  # noQA
-
-    # Set site to Plone
-    site_id = "Plone"
-    portal = app.unrestrictedTraverse(site_id)
-    setSite(portal)
-
-    activate_and_reindex(portal, clear="--clear" in sys.argv)
-
-    transaction.commit()
-    app._p_jar.sync()
-```
-
-Example for an upgrade step that adds the `kitconcept.solr` package, and one that does the solr activation for the first time:
-
-```py
-from kitconcept.solr.reindex_helpers import activate_and_reindex
-from plone import api
-
-import logging
-
-
-logger = logging.getLogger("your_package_name_here")
-
-
-# We suggest to add two distinct upgrade step for the package installation
-# and the solr activation, in case of a failure this allows to
-# identify the problem easier.
-
-
-def install_kitconcept_solr(context):
-    st = api.portal.get_tool("portal_setup")
-    st.runAllImportStepsFromProfile("kitconcept.solr:default")
-    logger.info("Installed kitconcept.solr")
-
-
-def activate_and_reindex_solr(context):
-    activate_and_reindex(context)
-    logger.info("Activated and reindexed solr")
-```
-
-### Update translations
-
-```bash
-make i18n
-```
-
-### Format codebase
-
-```bash
+```shell
 make format
 ```
 
-### Run tests
+| Section | Tool | Description | Configuration |
+| --- | --- | --- | --- |
+| backend | Ruff | Python code formatting, imports sorting  | [`backend/pyproject.toml`](./backend/pyproject.toml) |
+| backend | `zpretty` | XML and ZCML formatting  | -- |
+| frontend | ESLint | Fixes most common frontend issues | [`frontend/.eslintrc.js`](.frontend/.eslintrc.js) |
+| frontend | prettier | Format JS and Typescript code  | [`frontend/.prettierrc`](.frontend/.prettierrc) |
+| frontend | Stylelint | Format Styles (css, less, sass)  | [`frontend/.stylelintrc`](.frontend/.stylelintrc) |
 
-Testing of this package is done with [`pytest`](https://docs.pytest.org/) and [`tox`](https://tox.wiki/).
+Formatters can also be run within the `backend` or `frontend` folders.
 
-Run all tests with:
+### Linting the codebase
+or `lint`:
 
-```bash
-make test
+ ```shell
+make lint
 ```
 
-Run all tests but stop on the first error and open a `pdb` session:
+| Section | Tool | Description | Configuration |
+| --- | --- | --- | --- |
+| backend | Ruff | Checks code formatting, imports sorting  | [`backend/pyproject.toml`](./backend/pyproject.toml) |
+| backend | Pyroma | Checks Python package metadata  | -- |
+| backend | check-python-versions | Checks Python version information  | -- |
+| backend | `zpretty` | Checks XML and ZCML formatting  | -- |
+| frontend | ESLint | Checks JS / Typescript lint | [`frontend/.eslintrc.js`](.frontend/.eslintrc.js) |
+| frontend | prettier | Check JS / Typescript formatting  | [`frontend/.prettierrc`](.frontend/.prettierrc) |
+| frontend | Stylelint | Check Styles (css, less, sass) formatting  | [`frontend/.stylelintrc`](.frontend/.stylelintrc) |
 
-```bash
-./bin/tox -e test -- -x --pdb
+Linters can be run individually within the `backend` or `frontend` folders.
+
+## Internationalization 🌐
+
+Generate translation files for Plone and Volto with ease:
+
+```shell
+make i18n
 ```
 
-Run only tests that match `TestEndpointEncoding`:
+## Credits and acknowledgements 🙏
 
-```bash
-./bin/tox -e test -- -k TestEndpointEncoding
-```
-
-Run only tests that match `TestEndpointEncoding`, but stop on the first error and open a `pdb` session:
-
-```bash
-./bin/tox -e test -- -k TestEndpointEncoding -x --pdb
-```
-
-## Credits
-
-The development of this add-on has been kindly sponsored by [German Aerospace Center (DLR)](https://www.dlr.de) and [Forschungszentrum Jülich](https://www.fz-juelich.de).
-
-<img alt="German Aerospace Center (DLR)" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/dlr.svg" style="background-color:white">
-<img alt="Forschungszentrum Jülich" width="200px" src="https://raw.githubusercontent.com/kitconcept/kitconcept.solr/main/docs/fz-juelich.svg" style="background-color:white">
-
-Developed by [kitconcept](https://www.kitconcept.com/)
-
-## License
-
-The project is licensed under GPLv2.
+Generated using [Cookieplone (0.9.7)](https://github.com/plone/cookieplone) and [cookieplone-templates (4d55553)](https://github.com/plone/cookieplone-templates/commit/4d55553d61416df56b3360914b398d675b3f72a6) on 2025-07-22 19:22:17.276266. A special thanks to all contributors and supporters!

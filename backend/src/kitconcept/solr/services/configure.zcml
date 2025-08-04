@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="fzj.internet"
+    >
+
+  <plone:service
+      method="GET"
+      factory=".solr.SolrSearch"
+      for="zope.interface.Interface"
+      permission="zope2.View"
+      name="@solr"
+      />
+
+  <adapter factory=".site.CollectiveSolrExpander" />
+
+</configure>

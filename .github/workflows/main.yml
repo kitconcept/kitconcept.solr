@@ -1,0 +1,135 @@
+name: kitconcept Solr CI
+
+on:
+  push:
+    paths:
+      - .readthedocs.yaml
+      - ".github/workflows/*.yml"
+      - "backend/**"
+      - "docs/**"
+      - "frontend/**"
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME_PREFIX: ghcr.io/kitconcept/kitconcept-solr
+  node-version: "22.x"
+  python-version: "3.12"
+
+jobs:
+  config:
+    name: "Config: Compute values used in workflow"
+    uses: ./.github/workflows/config.yml
+
+  image-build:
+    uses: ./.github/workflows/image-build.yml
+    if: ${{ needs.config.outputs.acceptance == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suffix: "backend"
+            dockerfile: "Dockerfile"
+            working-directory: "backend"
+            build-args: |
+              IMAGE_TAG=${{ needs.config.outputs.base-tag }}
+              SEED=${{ github.run_id }}
+              PLONE_VERSION=${{ needs.config.outputs.plone-version }}
+          - suffix: "acceptance"
+            dockerfile: "Dockerfile.acceptance"
+            working-directory: "backend"
+            build-args: |
+              IMAGE_TAG=${{ needs.config.outputs.base-tag }}
+              SEED=${{ github.run_id }}
+              PLONE_VERSION=${{ needs.config.outputs.plone-version }}
+          - suffix: "frontend"
+            dockerfile: "Dockerfile"
+            working-directory: "frontend"
+            build-args: |
+              VOLTO_VERSION=${{ needs.config.outputs.volto-version }}
+
+    needs:
+        - config
+    with:
+      base-tag: ${{ needs.config.outputs.base-tag }}
+      image-name-prefix: ${{ needs.config.outputs.image-name-prefix }}
+      image-name-suffix: ${{ matrix.suffix }}
+      build-args: ${{ matrix.build-args }}
+      dockerfile: ${{ matrix.dockerfile }}
+      working-directory: ${{ matrix.working-directory }}
+
+  acceptance:
+    uses: ./.github/workflows/acceptance.yml
+    if: ${{ needs.config.outputs.acceptance == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "Solr"
+            spec-pattern: solr.cy.js
+          - name: "Search Blocks"
+            spec-pattern: search-blocks.cy.js
+          - name: "Search Document"
+            spec-pattern: search-document.cy.js
+          - name: "Search File"
+            spec-pattern: search-file.cy.js
+          - name: "Search UI"
+            spec-pattern: search-ui.cy.js
+
+    needs:
+        - config
+        - image-build
+    with:
+        base-tag: ${{ needs.config.outputs.base-tag }}
+        node-version: ${{ needs.config.outputs.node-version }}
+        name: ${{ matrix.name }}
+        spec-pattern: ${{ matrix.spec-pattern }}
+
+  backend:
+    uses: ./.github/workflows/backend.yml
+    if: ${{ needs.config.outputs.backend == 'true' }}
+    needs:
+        - config
+    with:
+        python-version: ${{ needs.config.outputs.python-version }}
+        plone-version: ${{ needs.config.outputs.plone-version }}
+
+  docs:
+    uses: ./.github/workflows/docs.yml
+    if: ${{ needs.config.outputs.docs == 'true' }}
+    needs:
+        - config
+    with:
+        python-version: ${{ needs.config.outputs.python-version }}
+
+  frontend:
+    uses: ./.github/workflows/frontend.yml
+    if: ${{ needs.config.outputs.frontend == 'true' }}
+    needs:
+        - config
+    with:
+        node-version: ${{ needs.config.outputs.node-version }}
+        volto-version: ${{ needs.config.outputs.volto-version }}
+
+  report:
+    name: "Final report"
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs:
+      - config
+      - image-build
+      - acceptance
+      - backend
+      - frontend
+      - docs
+    steps:
+      - name: Write report
+        run: |
+          echo '# Workflow Report' >> $GITHUB_STEP_SUMMARY
+          echo '| Job ID | Conclusion |' >> $GITHUB_STEP_SUMMARY
+          echo '| --- | --- |' >> $GITHUB_STEP_SUMMARY
+          echo '| config | ${{ needs.config.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| image-build | ${{ needs.image-build.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| acceptance | ${{ needs.acceptance.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| backend | ${{ needs.backend.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| docs | ${{ needs.docs.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| frontend | ${{ needs.frontend.result }} |' >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,20 @@
+name: "Build documentation, check links, spelling, grammar, and style"
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      working-directory:
+        required: false
+        type: string
+        default: docs
+
+jobs:
+  lint:
+    name: "Documentation: Build, check links, spelling, grammar, and style"
+    uses: plone/meta/.github/workflows/docs-build.yml@2.x
+    with:
+      python-version: ${{ inputs.python-version }}
+      working-directory: ${{ inputs.working-directory }}

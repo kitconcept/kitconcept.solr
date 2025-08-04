@@ -1,0 +1,40 @@
+name: Backend Code Quality Workflow
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      plone-version:
+        required: true
+        type: string
+      working-directory:
+        required: false
+        type: string
+        default: backend
+
+jobs:
+  lint:
+    name: "Backend: Lint"
+    uses: plone/meta/.github/workflows/backend-lint.yml@2.x
+    with:
+      python-version: ${{ inputs.python-version }}
+      plone-version: ${{ inputs.plone-version }}
+      working-directory: ${{ inputs.working-directory }}
+
+  test:
+    name: "Backend: Test"
+    uses: plone/meta/.github/workflows/backend-pytest.yml@2.x
+    with:
+      python-version: ${{ inputs.python-version }}
+      plone-version: ${{ inputs.plone-version }}
+      working-directory: ${{ inputs.working-directory }}
+
+  coverage:
+    name: "Backend: Test"
+    uses: plone/meta/.github/workflows/backend-pytest-coverage.yml@2.x
+    with:
+      python-version: ${{ inputs.python-version }}
+      plone-version: ${{ inputs.plone-version }}
+      working-directory: ${{ inputs.working-directory }}

@@ -1,0 +1,72 @@
+---
+name: kitconcept-solr-acceptance
+
+services:
+
+  solr-acceptance:
+    build:
+      context: ./solr
+    pull_policy: build
+    profiles: ["acceptance", "dev", "solr"]
+    ports:
+      - 8983:8983
+    command:
+      - solr-precreate
+      - plone
+      - /plone-config
+
+  frontend: &frontend
+    build:
+      context: ./frontend
+      args:
+        - VOLTO_VERSION=${VOLTO_VERSION}
+    pull_policy: build
+    platform: linux/amd64
+    profiles: ["dev"]
+    environment:
+      RAZZLE_API_PATH: http://localhost:8080/Plone
+      RAZZLE_INTERNAL_API_PATH: http://backend:8080/Plone
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
+  frontend-acceptance:
+    <<: *frontend
+    profiles: ["acceptance"]
+    environment:
+      RAZZLE_API_PATH: http://localhost:55001/plone
+      RAZZLE_INTERNAL_API_PATH: http://backend-acceptance:55001/plone
+    depends_on:
+      - backend-acceptance
+
+  backend: &backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - PLONE_VERSION=${PLONE_VERSION}
+    pull_policy: build
+    platform: linux/amd64
+    profiles: ["dev"]
+    environment:
+      COLLECTIVE_SOLR_HOST: solr-acceptance
+      COLLECTIVE_SOLR_PORT: 8983
+      COLLECTIVE_SOLR_BASE: /solr/plone
+    depends_on:
+      - solr-acceptance
+    ports:
+      - 8080:8080
+
+  backend-acceptance:
+    <<: *backend
+    profiles: ["acceptance"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.acceptance
+      args:
+        - PLONE_VERSION=${PLONE_VERSION}
+    pull_policy: build
+    depends_on:
+      - solr-acceptance
+    ports:
+      - 55001:55001
