@@ -7,6 +7,40 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a1 (2025-08-04)
+
+### Backend
+
+
+#### New features:
+
+- Add the value of the `collective.solr.active` setting to the REST API
+  `@site` endpoint, so that the frontend can check if solr is active.
+  (This doesn't do anything unless you have plone.restapi 9.14.0+)
+  @davisagli [#39](https://github.com/kitconcept/kitconcept-solr/issues/39)
+
+
+
+### Frontend
+
+#### Feature
+
+- Add a `isBackendAvailable` setting to check if the Solr backend is available.
+  If not, fall back to the normal Volto Search component.
+  By default, this setting assumes the backend is always available.
+  @davisagli [#34](https://github.com/kitconcept/kitconcept-solr/issue/34)
+
+
+
+### Project
+
+
+#### Feature
+
+- Merge kitconcept.solr and @kitconcept/volto-solr repositories into a monorepo. @ericof 
+
+
+
 
 ## 1.0.0a6 (2024-04-09)
 

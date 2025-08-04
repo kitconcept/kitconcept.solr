@@ -9,6 +9,16 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a1 (2025-08-04)
+
+
+### New features:
+
+- Add the value of the `collective.solr.active` setting to the REST API
+  `@site` endpoint, so that the frontend can check if solr is active.
+  (This doesn't do anything unless you have plone.restapi 9.14.0+)
+  @davisagli [#39](https://github.com/kitconcept/kitconcept-solr/issues/39)
+
 ## 1.0.0a6 (2024-04-09)
 
 
