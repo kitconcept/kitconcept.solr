@@ -1,11 +1,20 @@
 # kitconcept Solr 🚀
 
 [![Built with Cookieplone](https://img.shields.io/badge/built%20with-Cookieplone-0083be.svg?logo=cookiecutter)](https://github.com/plone/cookieplone-templates/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Backend Tests](https://github.com/kitconcept/kitconcept-solr/actions/workflows/backend.yml/badge.svg)](https://github.com/kitconcept/kitconcept-solr/actions/workflows/backend.yml)
-[![Frontend Tests](https://github.com/kitconcept/kitconcept-solr/actions/workflows/frontend.yml/badge.svg)](https://github.com/kitconcept/kitconcept-solr/actions/workflows/frontend.yml)
+[![CI](https://github.com/kitconcept/kitconcept.solr/actions/workflows/main.yml/badge.svg)](https://github.com/kitconcept/kitconcept.solr/actions/workflows/main.yml)
+
 
 An opinionated Solr integration for Plone.
+
+This repository contains the 2.x version of the following packages:
+
+
+| Package | Description |
+| --- | --- |
+| kitconcept.solr | Backend package |
+| @kitconcept/volto-solr | Volto frontend package |
+
+**If you are looking for the 1.x version of kitconcept.solr check the [1.x branch](https://github.com/kitconcept/kitconcept.solr/tree/1.x)**
 
 ## Quick Start 🏁
 
@@ -25,7 +34,7 @@ An opinionated Solr integration for Plone.
 1.  Clone this repository, then change your working directory.
 
     ```shell
-    git clone git@github.com:kitconcept/kitconcept-solr.git
+    git clone git@github.com:kitconcept/kitconcept.solr.git
     cd kitconcept.solr
     ```
 
@@ -83,6 +92,7 @@ This monorepo consists of the following distinct sections:
 - **frontend**: Contains the React (Volto) package.
 - **devops**: Encompasses Docker stack, Ansible playbooks, and cache settings.
 - **docs**: Scaffold for writing documentation for your project.
+- **solr**: Base SOLR image to be used in Plone projects.
 
 ### Why this structure? 🤔
 
