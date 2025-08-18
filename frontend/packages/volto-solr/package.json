@@ -27,13 +27,19 @@
     "release-alpha": "release-it --preRelease=alpha"
   },
   "addons": [],
-  "dependencies": {},
+  "dependencies": {
+    "react-portal": "4.2.1",
+    "lodash.debounce": "^4.0.8",
+    "buffer": "^5.5.0"
+  },
   "peerDependencies": {
     "react": "18.2.0",
+    "react-autosuggest": "10.1.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@plone/scripts": "^3.6.1",
+    "react-autosuggest": "10.1.0",
     "release-it": "^17.1.1"
   }
 }

@@ -147,7 +147,7 @@ module.exports = {
       resolve: {
         ...config.resolve,
         alias: { ...config.resolve.alias, ...baseConfig.resolve.alias },
-        fallback: { ...config.resolve.fallback, zlib: false },
+        fallback: { ...config.resolve.fallback, zlib: false, buffer: false },
         plugins: [
           ...(config.resolve.plugins || []),
           new RelativeResolverPlugin(registry),
