@@ -334,19 +334,21 @@ class SolrSearch extends Component {
         <Container>
           {this.props.showSearchInput ? (
             <div className="search-input">
-              <form onSubmit={this.onSubmit}>
-                <TranslatedInput
-                  ref={this.inputRef}
-                  placeholder={messages.TypeSearchWords}
-                  className="searchinput"
-                  value={this.state.searchword}
-                  onChange={(e) =>
-                    this.setState({ searchword: e.target.value })
-                  }
-                />
-                <Button onClick={this.onSubmit}>
-                  <FormattedMessage id="Search" defaultMessage="Search" />{' '}
-                </Button>
+              <form className="ui form" onSubmit={this.onSubmit}>
+                <div className="field searchbox">
+                  <TranslatedInput
+                    ref={this.inputRef}
+                    placeholder={messages.TypeSearchWords}
+                    className="searchinput"
+                    value={this.state.searchword}
+                    onChange={(e) =>
+                      this.setState({ searchword: e.target.value })
+                    }
+                  />
+                  <Button onClick={this.onSubmit}>
+                    <FormattedMessage id="Search" defaultMessage="Search" />{' '}
+                  </Button>
+                </div>
               </form>
             </div>
           ) : null}
