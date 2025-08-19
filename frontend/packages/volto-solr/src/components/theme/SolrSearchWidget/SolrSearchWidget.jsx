@@ -67,6 +67,10 @@ const SolrSearchAutosuggestRaw = (props) => {
   const shortenURL = (url) => {
     const arr = url.split('/');
     let str;
+    // Have to remove the initial /
+    if (arr[0] === '') {
+      arr.shift();
+    }
     if (arr.length >= 5) {
       str = `${arr[0]}/${arr[1]}/${arr[2]}/... /${arr.pop()}`;
     } else {

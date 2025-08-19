@@ -461,7 +461,6 @@
     border-left: 0px;
 
     .react-autosuggest__container {
-      background: red;
       width: 100%;
 
       .react-autosuggest__input {
@@ -469,6 +468,7 @@
         border: none;
         font-size: @fontSizeH3;
         text-overflow: ellipsis;
+        border-radius: 0;
 
         &.react-autosuggest__input--focused {
           -o-text-overflow: ellipsis;
@@ -494,7 +494,7 @@
         /* FONT TBD */
 
         .all-results-button {
-          padding: 10px 0 10px 65px;
+          padding: 10px 0 10px 75px;
         }
 
         .react-autosuggest__suggestions-list {
@@ -513,6 +513,7 @@
               align-items: flex-start;
               padding: 5px;
               color: @solr-autosuggest-black-color;
+              gap: 10px;
 
               .icon-wrapper {
                 display: flex;
