@@ -247,6 +247,7 @@ const SolrSearchAutosuggestRaw = (props) => {
   };
 
   const inputProps = {
+    className: 'react-autosuggest__input ' + (props.className || ''),
     placeholder: props.placeholder,
     value: props.value,
     onChange: props.onChange ? enhancedOnChange : undefined,
@@ -267,7 +268,6 @@ const SolrSearchAutosuggestRaw = (props) => {
 
   return (
     <Autosuggest
-      className="search-input"
       ref={storeInputReference}
       suggestions={suggestions || []}
       onSuggestionsFetchRequested={onSuggestionsFetchRequested}
