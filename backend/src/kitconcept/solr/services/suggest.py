@@ -43,9 +43,7 @@ class SolrSuggest(Service):
             data["@id"] = obj.absolute_url()
             return data
 
-        return getMultiAdapter(
-            (brain, self.request), ISerializeToJsonSummary
-        )()
+        return getMultiAdapter((brain, self.request), ISerializeToJsonSummary)()
 
     def parse_response(self, data):
         if "error" in data or "response" not in data:
@@ -56,9 +54,7 @@ class SolrSuggest(Service):
         uids = [doc["UID"] for doc in data["response"]["docs"]]
 
         brains = {brain["UID"]: brain for brain in api.content.find(UID=uids)}
-        return [
-            self.serialize_brain(brains[uid]) for uid in uids if uid in brains
-        ]
+        return [self.serialize_brain(brains[uid]) for uid in uids if uid in brains]
 
     def reply(self):
         query = self.request.form.get("query", "")
