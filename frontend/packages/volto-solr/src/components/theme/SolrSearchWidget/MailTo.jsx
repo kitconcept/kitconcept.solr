@@ -1,5 +1,5 @@
 import { useIntl, defineMessages } from 'react-intl';
-import { Icon } from '@plone/volto/components/theme/Icon/Icon';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import mailSVG from '@plone/volto/icons/email.svg';
 
 const messages = defineMessages({
