@@ -1,5 +1,5 @@
 import { useIntl, defineMessages } from 'react-intl';
-import { Icon } from '@plone/volto/components';
+import { Icon } from '@plone/volto/components/theme/Icon/Icon';
 import mailSVG from '@plone/volto/icons/email.svg';
 
 const messages = defineMessages({
@@ -9,7 +9,7 @@ const messages = defineMessages({
   },
 });
 
-export default ({ email, className }) => {
+const MailTo = ({ email, className }) => {
   let decoded;
   if (!email.includes('@')) {
     const buffer = Buffer.from(email, 'base64');
@@ -51,3 +51,5 @@ export default ({ email, className }) => {
     </span>
   );
 };
+
+export default MailTo;

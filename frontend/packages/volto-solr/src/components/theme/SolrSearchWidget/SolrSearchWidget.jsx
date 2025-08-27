@@ -19,8 +19,8 @@ import Autosuggest from 'react-autosuggest';
 import cx from 'classnames';
 import MailTo from './MailTo';
 
-import { flattenToAppURL } from '@plone/volto/helpers';
-import { Icon } from '@plone/volto/components';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import { Icon } from '@plone/volto/components/theme/Icon/Icon';
 import qs from 'query-string';
 import config from '@plone/volto/registry';
 
