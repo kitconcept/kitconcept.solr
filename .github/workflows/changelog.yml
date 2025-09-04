@@ -32,6 +32,7 @@ jobs:
               - '.vscode/**'
               - 'devops/**'
               - 'docs/**'
+              - 'news/**'
               - 'solr/**'
               - 'docker-compose*'
               - 'README.md'
