@@ -7,6 +7,34 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a2 (2025-09-04)
+
+### Backend
+
+
+#### New features:
+
+- Add support for an autocomplete livesearch widget @reebalazs [#28](https://github.com/kitconcept/kitconcept-solr/issues/28)
+
+
+
+### Frontend
+
+#### Feature
+
+- Add support for an autocomplete livesearch widget @reebalazs [#28](https://github.com/kitconcept/kitconcept-solr/issue/28)
+
+
+
+### Project
+
+
+#### Internal
+
+- Fix top level news folder. @ericof 
+
+
+
 ## 2.0.0a1 (2025-08-04)
 
 ### Backend

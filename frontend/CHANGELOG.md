@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.2 (2025-09-04)
+
+### Feature
+
+- Add support for an autocomplete livesearch widget @reebalazs [#28](https://github.com/kitconcept/kitconcept-solr/issue/28)
+
 ## 2.0.0-alpha.1 (2025-08-04)
 
 ### Feature
