@@ -1,2 +1,3 @@
 import { solrSearchContent, copyContentForSolr } from './solrsearch/solrsearch';
-export { solrSearchContent, copyContentForSolr };
+import { solrSearchSuggestions } from './solrsearch/solrSearchSuggestions';
+export { solrSearchContent, copyContentForSolr, solrSearchSuggestions };
