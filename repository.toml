@@ -18,11 +18,10 @@ base_package = "Products.CMFPlone"
 publish = true
 
 [frontend.package]
-name = "volto-solr"
+name = "@kitconcept/volto-solr"
 path = "frontend/packages/volto-solr"
 changelog = "frontend/packages/volto-solr/CHANGELOG.md"
 towncrier_settings = "frontend/packages/volto-solr/towncrier.toml"
-base_package = "@plone/volto"
 publish = true
 
 [cookieplone]
