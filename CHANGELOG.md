@@ -7,6 +7,30 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a3 (2025-09-22)
+
+### Backend
+
+No significant changes.
+
+
+
+
+### Frontend
+
+#### Bugfix
+
+- Fix broken css that broke sites due to search class @reebalazs [#49](https://github.com/kitconcept/kitconcept-solr/issue/49)
+
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0a2 (2025-09-04)
 
 ### Backend

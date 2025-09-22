@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.3 (2025-09-22)
+
+### Bugfix
+
+- Fix broken css that broke sites due to search class @reebalazs [#49](https://github.com/kitconcept/kitconcept-solr/issue/49)
+
 ## 2.0.0-alpha.2 (2025-09-04)
 
 ### Feature
