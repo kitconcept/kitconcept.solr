@@ -108,6 +108,5 @@ services:
       - plone
       - /plone-config
 
-
 volumes:
   vol-site-data: {}

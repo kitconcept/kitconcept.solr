@@ -182,6 +182,44 @@ stack-rm:  ## Local Stack: Remove Services and Volumes
 	@echo "Remove local volume data"
 	@docker volume rm $(PROJECT_NAME)_vol-site-data
 
+
+###########################################
+# SOLR
+###########################################
+
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
+COMPOSE_PROJECT_NAME=kitconcept_solr
+COMPOSE_PROJECT_NAME=kitconcept_intranet
+SOLR_DATA_FOLDER?=${BACKEND_FOLDER}/data
+SOLR_ONLY_COMPOSE?=${BACKEND_FOLDER}/docker-compose.yml
+
+## Solr docker utils
+test-compose-project-name:
+	# The COMPOSE_PROJECT_NAME env variable must exist and discriminate between your projects,
+	# and the purpose of the container (_DEV, _STACK, _TEST)
+	test -n "$(COMPOSE_PROJECT_NAME)"
+
+.PHONY: solr-start
+solr-start: test-compose-project-name ## Start solr
+	@echo "Start solr"
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${STACK_FILE} up -d solr
+
+.PHONY: solr-start-fg
+solr-start-fg: test-compose-project-name ## Start solr in foreground
+	@echo "Start solr in foreground"
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${STACK_FILE} up solr
+
+.PHONY: solr-stop
+solr-stop: test-compose-project-name ## Stop solr
+	@echo "Stop solr"
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${STACK_FILE} down solr
+
+.PHONY: solr-logs
+solr-logs: test-compose-project-name ## Show solr logs
+	@echo "Show solr logs"
+	@COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME} docker compose -f ${STACK_FILE} logs -f solr
+
 ###########################################
 # Acceptance
 ###########################################
