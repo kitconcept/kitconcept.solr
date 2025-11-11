@@ -7,6 +7,30 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a4 (2025-11-11)
+
+### Backend
+
+No significant changes.
+
+
+
+
+### Frontend
+
+#### Bugfix
+
+- Fixed intranet header in VLT CSS leak. @sneridagh 
+
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0a3 (2025-09-22)
 
 ### Backend

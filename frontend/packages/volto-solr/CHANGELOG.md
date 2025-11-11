@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.4 (2025-11-11)
+
+### Bugfix
+
+- Fixed intranet header in VLT CSS leak. @sneridagh 
+
 ## 2.0.0-alpha.3 (2025-09-22)
 
 ### Bugfix
