@@ -1,6 +1,6 @@
 {
   "name": "@kitconcept/volto-solr",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-alpha.5",
   "description": "An opinionated Solr integration for Plone.",
   "main": "src/index.js",
   "license": "MIT",

@@ -8,6 +8,16 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.5 (2025-11-11)
+
+### Bugfix
+
+- Pass in aria props to the input in SolrSearchAutosuggest @reebalazs [#pass-aria-props-to-input](https://github.com/kitconcept/kitconcept-solr/issue/pass-aria-props-to-input)
+
+### Internal
+
+- Fix solr search widget inline functions @reebalazs 
+
 ## 2.0.0-alpha.4 (2025-11-11)
 
 ### Bugfix
