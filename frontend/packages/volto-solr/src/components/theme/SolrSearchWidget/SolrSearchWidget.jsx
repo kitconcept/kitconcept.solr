@@ -53,9 +53,26 @@ const ID_ALL = '@ALL';
 // always be fetched currently.
 const NR_ITEMS = 8;
 
+const shortenURL = (url) => {
+  const arr = url.split('/');
+  let str;
+  // Have to remove the initial /
+  if (arr[0] === '') {
+    arr.shift();
+  }
+  if (arr.length >= 5) {
+    str = `${arr[0]}/${arr[1]}/${arr[2]}/... /${arr.pop()}`;
+  } else {
+    arr.pop();
+    str = arr.join('/');
+  }
+  return '/' + str;
+};
+
 const SolrSearchAutosuggestRaw = (props) => {
   const originalText = props.value;
   const dispatch = useDispatch();
+  const intl = useIntl();
   let suggestions = useSelector((state) =>
     state.solrSearchSuggestions.items.slice(0, NR_ITEMS),
   ).concat({
@@ -63,109 +80,97 @@ const SolrSearchAutosuggestRaw = (props) => {
     '@id': ID_ALL,
     title: originalText,
   });
+  const hasSuggestions = suggestions.length > 1;
 
-  const shortenURL = (url) => {
-    const arr = url.split('/');
-    let str;
-    // Have to remove the initial /
-    if (arr[0] === '') {
-      arr.shift();
-    }
-    if (arr.length >= 5) {
-      str = `${arr[0]}/${arr[1]}/${arr[2]}/... /${arr.pop()}`;
-    } else {
-      arr.pop();
-      str = arr.join('/');
-    }
-    return '/' + str;
-  };
+  const renderSuggestion = useCallback(
+    (suggestion) => {
+      const getIcon = (type) =>
+        config.settings.contentTypeSearchResultIcons[type] ||
+        config.settings.contentTypeSearchResultDefaultIcon;
+      const getContentTypeTitle = (contentType) =>
+        intl.formatMessage({
+          id: contentType,
+          defaultMessage: contentType,
+        });
 
-  const renderSuggestion = (suggestion) => {
-    const getIcon = (type) =>
-      config.settings.contentTypeSearchResultIcons[type] ||
-      config.settings.contentTypeSearchResultDefaultIcon;
-    const getContentTypeTitle = (contentType) =>
-      props.intl.formatMessage({
-        id: contentType,
-        defaultMessage: contentType,
-      });
-
-    return (
-      <>
-        {suggestion['@type'] === 'ShowAll' && suggestions.length > 1 ? (
-          <button className="all-results-button">
-            <FormattedMessage {...messages.showAllSearchResults} />
-          </button>
-        ) : suggestion['@type'] === 'Member' ? (
-          <div className="member suggestion">
-            <Link
-              className="image-wrapper"
-              to={flattenToAppURL(suggestion['@id'])}
-            >
-              {suggestion.image ? (
-                <img
-                  width="40"
-                  height="40"
-                  src={suggestion.image.scales.thumb.download}
-                  alt={suggestion.title}
-                />
-              ) : (
-                <div className="icon-wrapper placeholder">
-                  <Icon name={personSVG} size="40px" />
-                </div>
-              )}
-            </Link>
-            <div className="member-body">
+      return (
+        <>
+          {suggestion['@type'] === 'ShowAll' && hasSuggestions ? (
+            <button className="all-results-button">
+              <FormattedMessage {...messages.showAllSearchResults} />
+            </button>
+          ) : suggestion['@type'] === 'Member' ? (
+            <div className="member suggestion">
               <Link
+                className="image-wrapper"
                 to={flattenToAppURL(suggestion['@id'])}
-                className="member-title"
               >
-                {`${suggestion.salutation ? suggestion.salutation : ''} ${
-                  suggestion.academic ? suggestion.academic : ''
-                }
-                  ${suggestion.title}`}
+                {suggestion.image ? (
+                  <img
+                    width="40"
+                    height="40"
+                    src={suggestion.image.scales.thumb.download}
+                    alt={suggestion.title}
+                  />
+                ) : (
+                  <div className="icon-wrapper placeholder">
+                    <Icon name={personSVG} size="40px" />
+                  </div>
+                )}
               </Link>
-              <div className="member-info">
-                {suggestion.phone && (
-                  <span>Tel. {suggestion.phone} |&nbsp;</span>
-                )}
-                {suggestion.email && (
-                  <MailTo email={suggestion.email} className="mail" />
-                )}
-                {suggestion.institute && (
-                  <span>{suggestion.institute} |&nbsp;</span>
-                )}
-                <span>
-                  {suggestion.building && `Geb.${suggestion.building}`}
-                  {suggestion.room && `/R.${suggestion.room}`}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          suggestion['@type'] !== 'ShowAll' && (
-            <div
-              className="suggestion"
-              to={flattenToAppURL(suggestion['@id']).split('/')}
-            >
-              <div className="icon-wrapper">
-                <Icon name={getIcon(suggestion['@type'])} size="30px" />
-                <span className="icon-title">
-                  {getContentTypeTitle(suggestion['@type'])}
-                </span>
-              </div>
-              <div className="suggestion-wrapper">
-                <div className="suggestion-path">
-                  {shortenURL(flattenToAppURL(suggestion['@id']))}
+              <div className="member-body">
+                <Link
+                  to={flattenToAppURL(suggestion['@id'])}
+                  className="member-title"
+                >
+                  {`${suggestion.salutation ? suggestion.salutation : ''} ${
+                    suggestion.academic ? suggestion.academic : ''
+                  }
+                  ${suggestion.title}`}
+                </Link>
+                <div className="member-info">
+                  {suggestion.phone && (
+                    <span>Tel. {suggestion.phone} |&nbsp;</span>
+                  )}
+                  {suggestion.email && (
+                    <MailTo email={suggestion.email} className="mail" />
+                  )}
+                  {suggestion.institute && (
+                    <span>{suggestion.institute} |&nbsp;</span>
+                  )}
+                  <span>
+                    {suggestion.building && `Geb.${suggestion.building}`}
+                    {suggestion.room && `/R.${suggestion.room}`}
+                  </span>
                 </div>
-                <div className="suggestion-title">{suggestion.title}</div>
               </div>
             </div>
-          )
-        )}
-      </>
-    );
-  };
+          ) : (
+            suggestion['@type'] !== 'ShowAll' && (
+              <div
+                className="suggestion"
+                to={flattenToAppURL(suggestion['@id']).split('/')}
+              >
+                <div className="icon-wrapper">
+                  <Icon name={getIcon(suggestion['@type'])} size="30px" />
+                  <span className="icon-title">
+                    {getContentTypeTitle(suggestion['@type'])}
+                  </span>
+                </div>
+                <div className="suggestion-wrapper">
+                  <div className="suggestion-path">
+                    {shortenURL(flattenToAppURL(suggestion['@id']))}
+                  </div>
+                  <div className="suggestion-title">{suggestion.title}</div>
+                </div>
+              </div>
+            )
+          )}
+        </>
+      );
+    },
+    [intl, hasSuggestions],
+  );
 
   const cancelRequest = useRef(null);
   const debounceCustom = useRef(
