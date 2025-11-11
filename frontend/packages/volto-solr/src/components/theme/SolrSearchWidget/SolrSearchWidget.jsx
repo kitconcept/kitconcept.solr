@@ -246,6 +246,16 @@ const SolrSearchAutosuggestRaw = (props) => {
     });
   };
 
+  // Due to the unorganized nature of the props, we don't pass all props
+  // directly to the input, only selected ones. In the following we make
+  // sure that all aria- props are passed to the input.
+  const ariaProps = Object.keys(props)
+    .filter((key) => key.startsWith('aria-'))
+    .reduce((obj, key) => {
+      obj[key] = props[key];
+      return obj;
+    }, {});
+
   const inputProps = {
     className: 'react-autosuggest__input ' + (props.className || ''),
     placeholder: props.placeholder,
@@ -254,6 +264,7 @@ const SolrSearchAutosuggestRaw = (props) => {
     onFocus: props.onFocus,
     onBlur: props.onBlur,
     onKeyDown: onKeyDown,
+    ...ariaProps,
   };
 
   const storeInputReference = (autosuggest) => {
