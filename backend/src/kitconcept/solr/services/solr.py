@@ -176,6 +176,16 @@ class SolrSearch(Service):
                 f"{info['name']}"
                 for info in facet_fields
             ],
+            # XXX TBD: apply extra_fq from the solr_params.py from the development branch
+            # XXX targeted towards v3.
+            #
+            # Without this the caveat is that the followings are not applied:
+            #
+            # - path_prefix handling
+            # - portal_type handling
+            # - language filtering and is_multilingual handling - handled, but actually
+            #   not passed in from the service caller
+            #
         }
         if start is not None:
             d["start"] = start
