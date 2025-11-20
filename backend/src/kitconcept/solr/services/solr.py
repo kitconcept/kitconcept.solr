@@ -119,6 +119,7 @@ class SolrSearch(Service):
         start,
         rows,
         sort,
+        raw_query: bool = False,
     ) -> dict:
         """Create a base query for the Solr search."""
         # Note that both escaping and lowercasing reserved words is essential
@@ -128,8 +129,6 @@ class SolrSearch(Service):
         #
         # In addition. support empty search to search all terms, in case this
         # is configured.
-        term = f"({escape(replace_reserved(query))})" if query else "*"
-
         # Search
         #  q: query parameter
         # fq: the "filter query" parameter allows to restrict the search by filtering
@@ -157,13 +156,22 @@ class SolrSearch(Service):
         # - Text Suffix * 0,75
         # - Text Substring * 0,5
         # - searchwords * 1000
-        d = {
-            "q": (
+        # If raw_query is True, use the query as-is without escaping or template
+        # WARNING: raw_query bypasses security escaping.
+        if raw_query:
+            query_string = query if query else "*"
+        else:
+            # Apply escaping and the search template with field weights
+            term = f"({escape(replace_reserved(query))})" if query else "*"
+            query_string = (
                 f"+(Title:{term}^5 OR Description:{term}^2 OR id:{term}^0.75 "
                 f"OR text_prefix:{term}^0.75 OR text_suffix:{term}^0.75 "
                 f"OR default:{term} OR body_text:{term} OR SearchableText:{term} "
                 f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
-            ),
+            )
+
+        d = {
+            "q": query_string,
             "wt": "json",
             "hl": "true",
             "hl.fl": "content",  # only used for highlighting, field is not indexed
@@ -267,6 +275,8 @@ class SolrSearch(Service):
         keep_full_solr_response = (
             form.get("keep_full_solr_response", "").lower() == "true"
         )
+        # WARNING: raw_query bypasses security escaping.
+        raw_query = form.get("raw_query", "").lower() == "true"
 
         is_multilingual, lang = self._language_settings()
         portal = api.portal.get()
@@ -278,7 +288,7 @@ class SolrSearch(Service):
         facet_fields = self._facet_fields(solr_config, group_select)
 
         d = self._base_query(
-            solr_config, query, facet_fields, group_select, start, rows, sort
+            solr_config, query, facet_fields, group_select, start, rows, sort, raw_query
         )
 
         if path_prefix:

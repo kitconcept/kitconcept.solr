@@ -279,6 +279,10 @@
       type="string" indexed="true" stored="true" />
     <field name="portal_type" type="string"
       indexed="true" stored="true" />
+    <field name="organisational_unit_reference" type="string"
+      indexed="true" stored="true" />
+    <field name="location_reference" type="string"
+      indexed="true" stored="true" />
     <field name="review_state" type="string" indexed="true"
       stored="true" />
     <field name="searchwords" type="string" indexed="true" stored="true"
