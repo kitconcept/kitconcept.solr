@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a6 (2025-11-20)
+
+
+### Bug fixes:
+
+- Fix suggestion service @reebalazs 
+
 ## 2.0.0a5 (2025-11-11)
 
 No significant changes.

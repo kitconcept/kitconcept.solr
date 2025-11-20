@@ -7,6 +7,29 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a6 (2025-11-20)
+
+### Backend
+
+
+#### Bug fixes:
+
+- Fix suggestion service @reebalazs 
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0a5 (2025-11-11)
 
 ### Backend
