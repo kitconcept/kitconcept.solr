@@ -44,10 +44,10 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kitconcept/kitconcept-solr"
+Homepage = "https://github.com/kitconcept/kitconcept.solr"
 PyPI = "https://pypi.org/project/kitconcept.solr"
-Source = "https://github.com/kitconcept/kitconcept-solr"
-Tracker = "https://github.com/kitconcept/kitconcept-solr/issues"
+Source = "https://github.com/kitconcept/kitconcept.solr"
+Tracker = "https://github.com/kitconcept/kitconcept.solr/issues"
 
 
 [project.entry-points."plone.autoinclude.plugin"]

@@ -377,6 +377,12 @@
     <field name="mime_type" type="string" indexed="false" stored="true" />
     <field name="allow_image_download" type="boolean" indexed="false" stored="true" />
 
+    <!-- kitconcept.intranet -->
+    <field name="organisational_unit_reference" type="string"
+      indexed="true" stored="true" multiValued="true" />
+    <field name="location_reference" type="string"
+      indexed="true" stored="true" multiValued="true" />
+
   </fields>
 
 </schema>
