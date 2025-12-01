@@ -1,6 +1,6 @@
 {
   "name": "volto-solr-dev",
-  "version": "2.0.0-alpha.6",
+  "version": "2.0.0-alpha.7",
   "description": "An opinionated Solr integration for Plone.",
   "author": "kitconcept GmbH",
   "homepage": "https://github.com/kitconcept/kitconcept-solr",

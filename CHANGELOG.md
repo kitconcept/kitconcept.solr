@@ -7,6 +7,31 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a7 (2025-12-01)
+
+### Backend
+
+
+#### Internal:
+
+- Fix repository URL in package metadata. @davisagli 
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+
+#### Feature
+
+- Add kitconcept.intranet fields to schema: organisational_unit_reference and location_reference. @davisagli 
+
+
+
 ## 2.0.0a6 (2025-11-20)
 
 ### Backend
