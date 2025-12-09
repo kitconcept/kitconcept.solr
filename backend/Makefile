@@ -94,6 +94,14 @@ console: $(VENV_FOLDER) instance/etc/zope.ini ## Start a console into a Plone in
 create-site: $(VENV_FOLDER) instance/etc/zope.ini ## Create a new site from scratch
 	@$(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/create_site.py
 
+.PHONY: solr-activate-and-reindex
+solr-activate-and-reindex: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and reindex content
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py
+
+.PHONY: solr-activate-and-reindex-clear
+solr-activate-and-reindex-clear: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and reindex content with clear
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --clear
+
 # Example Content
 .PHONY: update-example-content
 update-example-content: $(VENV_FOLDER) ## Export example content inside package

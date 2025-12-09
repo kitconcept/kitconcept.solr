@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-  <luceneMatchVersion>4.5</luceneMatchVersion>
+  <luceneMatchVersion>9.12</luceneMatchVersion>
 
   <dataDir>${solr.data.dir:}</dataDir>
 
@@ -10,33 +10,6 @@
 
   <codecFactory class="solr.SchemaCodecFactory" />
   <schemaFactory class="ClassicIndexSchemaFactory" />
-
-  <!-- TIKA START -->
-  <!-- Load Data Import Handler and Apache Tika (extraction) libraries -->
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-dataimporthandler-.*\.jar"
-  />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib"
-       regex=".*\.jar"
-  />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-cell-\d.*\.jar"
-  />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/"
-       regex=".*\.jar"
-  />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-langid-\d.*\.jar"
-  />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib"
-       regex=".*\.jar"
-  />
-  <lib dir="${solr.install.dir:../../../..}/dist/"
-       regex="solr-velocity-\d.*\.jar"
-  />
 
   <!-- Request Dispatcher
        This section contains instructions for how the SolrDispatchFilter
@@ -118,11 +91,16 @@
 
   <!-- Solr Cell Update Request Handler
        http://wiki.apache.org/solr/ExtractingRequestHandler
+       Uses external Tika server for document parsing (CVE-2025-66516 mitigation)
     -->
   <requestHandler class="solr.extraction.ExtractingRequestHandler"
                   name="/update/extract"
                   startup="lazy"
   >
+    <!-- Use external Tika server instead of local (deprecated) backend -->
+    <str name="extraction.backend">tikaserver</str>
+    <str name="tikaserver.url">${solr.tika.url:http://tika:9998}</str>
+
     <lst name="defaults">
       <str name="lowernames">true</str>
       <str name="uprefix">ignored_</str>
@@ -133,7 +111,6 @@
       <str name="fmap.div">ignored_</str>
     </lst>
   </requestHandler>
-  <!-- TIKA END -->
 
   <!-- The default high-performance update handler -->
   <updateHandler class="solr.DirectUpdateHandler2">

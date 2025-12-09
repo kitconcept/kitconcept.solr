@@ -19,6 +19,11 @@ https://diataxis.fr/how-to-guides/
 ```
 
 
+## Security Upgrades
+
+-   {doc}`upgrade-cve-2025-66516`
+
+
 ## Authors
 
 -   {doc}`plone:contributing/documentation/myst-reference`

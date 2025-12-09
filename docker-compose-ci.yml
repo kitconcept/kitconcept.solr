@@ -7,16 +7,28 @@ name: kitconcept-solr-ci
 
 services:
 
+  tika-acceptance:
+    image: apache/tika:3.2.3.0-full
+    profiles: ["ci"]
+    ports:
+      - 9998:9998
+
   solr-acceptance:
     build:
       context: ./solr
     profiles: ["ci"]
+    depends_on:
+      - tika-acceptance
     ports:
       - 8983:8983
     command:
       - solr-precreate
       - plone
       - /plone-config
+    environment:
+      SOLR_MODULES: extraction
+      SOLR_OPTS: "-Dsolr.tika.url=http://tika-acceptance:9998"
+
   frontend-acceptance:
     image: ghcr.io/kitconcept/kitconcept-solr-frontend:${BASE_TAG}
     pull_policy: always
