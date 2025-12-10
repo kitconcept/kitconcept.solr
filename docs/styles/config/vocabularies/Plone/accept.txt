@@ -1,3 +1,7 @@
+`collective.solr`
+collective\.solr
+`kitconcept.solr`
+kitconcept\.solr
 `plone.api`
 `plone.restapi`
 `plone.volto`
@@ -13,6 +17,7 @@ buildout
 cacheable
 CommonJS
 doctest
+Dockerfile
 folderish
 fieldset
 getter
@@ -36,7 +41,10 @@ Razzle
 RichText
 Sass
 Schuko
+Solr
+solrconfig
 subfolder
+Tika
 [Tt]owncrier
 transpile[dr]{0,1}
 [Uu]ncomment

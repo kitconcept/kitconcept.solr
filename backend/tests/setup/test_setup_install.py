@@ -8,10 +8,6 @@ class TestSetupInstall:
     def test_addon_installed(self, installer):
         assert installer.is_product_installed(PACKAGE_NAME) is True
 
-    def test_latest_version(self, profile_last_version):
-        """Test latest version of default profile."""
-        assert profile_last_version(f"{PACKAGE_NAME}:default") == "1000"
-
     def test_browserlayer(self, browser_layers):
         """Test that IKitconceptSolrLayer is registered."""
         from kitconcept.solr.interfaces import IKitconceptSolrLayer

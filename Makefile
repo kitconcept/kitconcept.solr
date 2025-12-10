@@ -182,6 +182,55 @@ stack-rm:  ## Local Stack: Remove Services and Volumes
 	@echo "Remove local volume data"
 	@docker volume rm $(PROJECT_NAME)_vol-site-data
 
+
+###########################################
+# SOLR
+###########################################
+
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
+SOLR_DATA_FOLDER?=${BACKEND_FOLDER}/data
+SOLR_ONLY_COMPOSE?=${BACKEND_FOLDER}/docker-compose.yml
+
+## Solr docker utils
+test-stack-name:
+	# The STACK_NAME env variable must exist and discriminate between your projects,
+	# and the purpose of the container (_DEV, _STACK, _TEST)
+	test -n "$(STACK_NAME)"
+
+.PHONY: solr-start
+solr-start: test-stack-name ## Start solr
+	@echo "Start solr"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${STACK_FILE} up -d solr tika
+
+.PHONY: solr-start-and-rebuild
+solr-start-and-rebuild: test-stack-name ## Start solr and rebuild containers, erases content
+	@echo "Start solr and rebuild"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${STACK_FILE} up -d --build solr tika
+
+.PHONY: solr-start-fg
+solr-start-fg: test-stack-name ## Start solr in foreground
+	@echo "Start solr in foreground"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${STACK_FILE} up solr tika
+
+.PHONY: solr-stop
+solr-stop: test-stack-name ## Stop solr
+	@echo "Stop solr"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${STACK_FILE} down solr tika
+
+.PHONY: solr-logs
+solr-logs: test-stack-name ## Show solr logs
+	@echo "Show solr logs"
+	@COMPOSE_PROJECT_NAME=${STACK_NAME} docker compose -f ${STACK_FILE} logs -f solr
+
+.PHONY: solr-activate-and-reindex
+solr-activate-and-reindex: ## Activate solr and reindex content
+	$(MAKE) -C "./backend/" solr-activate-and-reindex
+
+.PHONY: solr-activate-and-reindex-clear
+solr-activate-and-reindex-clear: ## Activate solr and reindex content with clear
+	$(MAKE) -C "./backend/" solr-activate-and-reindex-clear
+
 ###########################################
 # Acceptance
 ###########################################

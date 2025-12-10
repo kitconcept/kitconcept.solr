@@ -98,16 +98,25 @@ services:
       - traefik.http.routers.rt-backend-classic.service=svc-backend
       - traefik.http.routers.rt-backend-classic.middlewares=gzip,mw-backend-auth,mw-backend-vhm-classic
 
+  tika:
+    image: apache/tika:3.2.3.0-full
+    ports:
+      - 9998:9998
+
   solr:
     build:
       context: solr/
     ports:
       - 8983:8983
+    depends_on:
+      - tika
     command:
       - solr-precreate
       - plone
       - /plone-config
-
+    environment:
+      SOLR_MODULES: extraction
+      SOLR_OPTS: "-Dsolr.tika.url=http://tika:9998"
 
 volumes:
   vol-site-data: {}
