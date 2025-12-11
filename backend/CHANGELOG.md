@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a8 (2025-12-10)
+
+
+### Bug fixes:
+
+- Enable the `use_tika` setting from `collective.solr` to make sure text can be extracted from binary files with recent versions of Solr. @reebalazs 
+
 ## 2.0.0a7 (2025-12-01)
 
 

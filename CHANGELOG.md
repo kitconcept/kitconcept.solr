@@ -7,6 +7,37 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a8 (2025-12-10)
+
+### Backend
+
+
+#### Bug fixes:
+
+- Enable the `use_tika` setting from `collective.solr` to make sure text can be extracted from binary files with recent versions of Solr. @reebalazs 
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+
+#### Bugfix
+
+- Upgrade to Solr 9.10 with external Tika server 3.2.3 to fix CVE-2025-66516.
+  See docs/docs/how-to-guides/upgrade-cve-2025-66516.md for details. @reebalazs 
+
+
+#### Internal
+
+- Fix publishing of ghcr.io/kitconcept/solr image. @davisagli 
+
+
+
 ## 2.0.0a7 (2025-12-01)
 
 ### Backend
