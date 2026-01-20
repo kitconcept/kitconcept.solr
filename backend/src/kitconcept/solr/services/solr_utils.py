@@ -1,6 +1,7 @@
 from plone import api
 
 import base64
+import binascii
 import json
 import logging
 import re
@@ -120,7 +121,11 @@ class FacetConditions:
         if raw is not None:
             try:
                 config = json.loads(base64.b64decode(raw))
-            except (UnicodeDecodeError, json.decoder.JSONDecodeError):
+            except (
+                UnicodeDecodeError,
+                json.decoder.JSONDecodeError,
+                binascii.Error,
+            ):
                 logger.warning("Ignoring invalid base64 encoded string", exc_info=True)
                 config = {}
         else:
@@ -154,6 +159,35 @@ class FacetConditions:
             for name, value in self.config.items()
             if self.field_condition(name, value)
         )
+
+    def field_conditions_with_name(self):
+        return (
+            (name, self.field_condition(name, value))
+            for name, value in self.config.items()
+            if self.field_condition(name, value)
+        )
+
+    @property
+    def field_conditions_solr(self):
+        return [
+            f"{{!tag=cf_{name}}}{condition}"
+            for name, condition in self.field_conditions_with_name()
+        ]
+
+    def ex_all_facets(self, extending=None):
+        if extending is None:
+            extending = []
+        tag_names = extending + [
+            f"cf_{name}"
+            for name, condition in self.field_conditions_with_name()
+            if condition
+        ]
+        joined_tag_names = ",".join(tag_names)
+        return f"{{!ex={joined_tag_names}}}"
+
+    def ex_field_facet(self, field_name):
+        active_fields = [name for name, _ in self.field_conditions_with_name()]
+        return f"{{!ex=cf_{field_name}}}" if field_name in active_fields else ""
 
     @property
     def solr(self):

@@ -26,12 +26,12 @@ const DefaultResultItem = ({ item }) => (
         {item.title}
       </Link>
     </h2>
-    {item?.highlighting && item.highlighting.length > 0 ? (
+    {item?.extras?.highlighting && item.extras.highlighting.length > 0 ? (
       <div className="tileBody">
         <span
           className="description"
           dangerouslySetInnerHTML={{
-            __html: item.highlighting,
+            __html: item.extras.highlighting,
           }}
         />
         {' ...'}

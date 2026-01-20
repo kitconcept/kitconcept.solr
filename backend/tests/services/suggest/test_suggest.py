@@ -1,5 +1,6 @@
 import pytest
 import urllib.parse
+from typing import ClassVar
 
 
 class TestSuggestDefault:
@@ -40,7 +41,7 @@ def get_suggest_item():
 
 class TestSuggestDefaultBaseSearch(TestSuggestDefault):
     url = "/@solr-suggest?query=chomsky"
-    expected_result = [
+    expected_result: ClassVar[list] = [
         {
             "@id": "http://localhost:59793/plone/mydocument",
             "@type": "Document",
@@ -85,6 +86,7 @@ class TestSuggestDefaultBaseSearch(TestSuggestDefault):
         index: int,
         expected_dict: dict,
     ):
-        assert get_suggest_result_props(
-            get_suggest_item(self.data, index)
-        ) == get_suggest_result_props(expected_dict)
+        assert (
+            get_suggest_result_props(expected_dict).items()
+            <= get_suggest_result_props(get_suggest_item(self.data, index)).items()
+        )

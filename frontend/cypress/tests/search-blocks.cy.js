@@ -69,7 +69,7 @@ context('Search Acceptance Tests (Blocks)', () => {
 
     // WHEN: I search for 'Colorless Green Ideas'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('mytextblock');
+    cy.get('.search-input input').type('mytextblock');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -128,7 +128,7 @@ context('Search Acceptance Tests (Blocks)', () => {
     cy.autologout();
     // WHEN: I search for 'My text block with background color'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('My block');
+    cy.get('.search-input input').type('My block');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -240,7 +240,7 @@ context('Search Acceptance Tests (Blocks)', () => {
     cy.autologout();
     // WHEN: I search for 'Introduction Block'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Introduction Block');
+    cy.get('.search-input input').type('Introduction Block');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -249,7 +249,7 @@ context('Search Acceptance Tests (Blocks)', () => {
 
     //also check if we can find the 'topics' and 'thisis me' fields which are part of the block
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Introduction Block Topics');
+    cy.get('.search-input input').type('Introduction Block Topics');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -257,7 +257,7 @@ context('Search Acceptance Tests (Blocks)', () => {
     cy.get('#content-core').contains('Colorless Green Ideas');
 
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Introduction Block Thisis me');
+    cy.get('.search-input input').type('Introduction Block Thisis me');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -377,7 +377,7 @@ context('Search Acceptance Tests (Blocks)', () => {
     cy.autologout();
     // WHEN: I search for 'text in column 2 row 2'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('texxt inn column 2 row 2');
+    cy.get('.search-input input').type('texxt inn column 2 row 2');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');
@@ -423,7 +423,7 @@ context('Search Acceptance Tests (Blocks)', () => {
     cy.autologout();
     // WHEN: I search for 'Headline Block'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Headline Block');
+    cy.get('.search-input input').type('Headline Block');
     cy.get('.search-input button').click();
     // THEN: the search returns '1' results
     cy.get('.total-bar .results').contains('1');

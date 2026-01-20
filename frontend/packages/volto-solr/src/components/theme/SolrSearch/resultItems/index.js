@@ -4,8 +4,9 @@ import NewsItemResultItem from './NewsItemResultItem';
 import PersonResultItem from './PersonResultItem';
 
 // Exporting all result types in this folder makes it possible to `import * as resultItems`
-export { default as DefaultResultItem } from './DefaultResultItem';
+import DefaultResultItem from './DefaultResultItem';
 export {
+  DefaultResultItem,
   EventResultItem,
   ImageResultItem,
   NewsItemResultItem,

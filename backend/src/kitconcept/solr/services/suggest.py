@@ -40,12 +40,17 @@ class SolrSuggest(Service):
         term = f"({escape(replace_reserved(query))})" if query else "*"
         d = {
             "q": (
-                f"+suggest:{term}^10 OR +suggest_ngram:{term} OR +searchwords:{term}^1000 OR +suggest_searchwords_ngram:{term}"
+                f"+suggest:{term}^10 OR +suggest_ngram:{term} "
+                f"OR +searchwords:{term}^1000 OR +suggest_searchwords_ngram:{term}"
             ),
             "fq": [
                 security_filter(),
                 "-showinsearch:False",
-                "-portal_type:Image -portal_type:Glossary -portal_type:FAQ -portal_type:(FAQ Item) -portal_type:(FAQ Category) -portal_type:Link",
+                (
+                    "-portal_type:Image -portal_type:Glossary -portal_type:FAQ "
+                    "-portal_type:(FAQ Item) -portal_type:(FAQ Category) "
+                    "-portal_type:Link"
+                ),
             ],
             "defType": "lucene",
         }
@@ -55,7 +60,7 @@ class SolrSuggest(Service):
 
         d["fq"] = " AND ".join(d["fq"])
         querystring = urllib.parse.urlencode(d)
-        url = "{}/{}".format(connection.solrBase, "suggest?%s" % querystring)
+        url = "{}/{}".format(connection.solrBase, f"suggest?{querystring}")
         try:
             res = connection.doGet(url, {"Accept": "application/json"})
             data = json.loads(res.read())

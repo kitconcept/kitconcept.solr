@@ -1,12 +1,14 @@
 from AccessControl.SecurityManagement import getSecurityManager
 from collective.solr.interfaces import ISolrConnectionManager
 from itertools import zip_longest
+from kitconcept.solr.services.solr_highlighting_utils import SolrHighlightingUtils
 from kitconcept.solr.services.solr_utils import escape
 from kitconcept.solr.services.solr_utils import FacetConditions
 from kitconcept.solr.services.solr_utils import get_facet_fields_result
 from kitconcept.solr.services.solr_utils import replace_colon
 from kitconcept.solr.services.solr_utils import replace_reserved
 from kitconcept.solr.services.solr_utils import SolrConfig
+from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
 from plone import api
 from plone.app.multilingual.interfaces import ITranslatable
 from plone.app.multilingual.interfaces import ITranslationManager
@@ -51,6 +53,7 @@ class SolrSearch(Service):
     context: DexterityContent
     request: HTTPRequest
     _facet_conditions: FacetConditions | None = None
+    _extra_conditions: SolrExtraConditions | None = None
 
     def _language_settings(self) -> tuple[bool, str]:
         lang = self.request.form.get("lang")
@@ -99,6 +102,14 @@ class SolrSearch(Service):
             self._facet_conditions = FacetConditions.from_encoded(raw_value)
         return self._facet_conditions
 
+    @property
+    def extra_conditions(self) -> SolrExtraConditions:
+        """Get the extra conditions from the request."""
+        if self._extra_conditions is None:
+            raw_value = self.request.form.get("extra_conditions")
+            self._extra_conditions = SolrExtraConditions.from_encoded(raw_value)
+        return self._extra_conditions
+
     def _facet_fields(
         self, solr_config: SolrConfig, group_select: int | None
     ) -> list[dict]:
@@ -119,6 +130,9 @@ class SolrSearch(Service):
         start,
         rows,
         sort,
+        highlighting_utils: SolrHighlightingUtils,
+        spellcheck: bool,
+        collate: bool,
     ) -> dict:
         """Create a base query for the Solr search."""
         # Note that both escaping and lowercasing reserved words is essential
@@ -164,28 +178,16 @@ class SolrSearch(Service):
                 f"OR default:{term} OR body_text:{term} OR SearchableText:{term} "
                 f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
             ),
-            "wt": "json",
-            "hl": "true",
-            "hl.fl": "content",  # only used for highlighting, field is not indexed
+            "hl": "true" if highlighting_utils.enabled else "false",
+            "hl.fl": highlighting_utils.fields,
             "fq": [security_filter()],
             "fl": solr_config.field_list,
-            "facet": "true",
-            "facet.contains.ignoreCase": "true",
             "facet.field": [
-                f"{'{!ex=conditionfilter}' if self.facet_conditions.solr else ''}"
-                f"{info['name']}"
+                f"{self.facet_conditions.ex_field_facet(info['name'])}{info['name']}"
                 for info in facet_fields
             ],
-            # XXX TBD: apply extra_fq from the solr_params.py from the development branch
-            # XXX targeted towards v3.
-            #
-            # Without this the caveat is that the followings are not applied:
-            #
-            # - path_prefix handling
-            # - portal_type handling
-            # - language filtering and is_multilingual handling - handled, but actually
-            #   not passed in from the service caller
-            #
+            "spellcheck": "on" if spellcheck else "off",
+            "spellcheck.collate": "true" if collate else "false",
         }
         if start is not None:
             d["start"] = start
@@ -196,23 +198,14 @@ class SolrSearch(Service):
 
         if group_select is not None:
             d["fq"] = d["fq"] + [solr_config.select_condition(group_select)]
-            prefix = (
-                "{!ex=typefilter,conditionfilter}"
-                if self.facet_conditions.solr
-                else "{!ex=typefilter}"
+            ex_all_facets = self.facet_conditions.ex_all_facets(
+                extending=["typefilter"]
             )
-            d["facet.query"] = [f"{prefix}{query}" for query in solr_config.filters]
+            d["facet.query"] = [
+                f"{ex_all_facets}{filter_condition}"
+                for filter_condition in solr_config.filters
+            ]
         return d
-
-    def _apply_facet_conditions(self, query: dict, facet_fields: list[dict]) -> dict:
-        """Apply the facet conditions to the query."""
-        fc = self.facet_conditions
-        # Handle facet conditions
-        if fc.solr:
-            query["fq"] = query["fq"] + ["{!tag=conditionfilter}" + fc.solr]
-        query.update(fc.contains_query)
-        query.update(fc.more_query(facet_fields, multiplier=2))
-        return query
 
     def search_solr(self, query: dict) -> dict:
         """Search Solr for the given query."""
@@ -232,6 +225,7 @@ class SolrSearch(Service):
         facet_fields,
         keep_full_solr_response: bool,
         group_select,
+        highlighting_utils: SolrHighlightingUtils,
     ) -> dict:
         """Enhance the Solr search result."""
         # Add portal path to the result. This can be used by
@@ -253,9 +247,15 @@ class SolrSearch(Service):
             facet_fields,
             self.facet_conditions.more_dict(facet_fields, multiplier=1),
         )
+        # Add highlighting information to the result
+        highlighting_utils.enhance_items(
+            result.get("response", {}).get("docs", []),
+            result.get("highlighting", {}),
+        )
         # Solr response is pruned of the unnecessary parts, unless explicitly requested.
         if not keep_full_solr_response:
-            del result["facet_counts"]
+            result.pop("facet_counts", None)
+            result.pop("highlighting", None)
         # Embellish result with supplemental information for the front-end
         if group_select is not None:
             layouts = solr_config.select_layouts(group_select)
@@ -277,6 +277,8 @@ class SolrSearch(Service):
         keep_full_solr_response = (
             form.get("keep_full_solr_response", "").lower() == "true"
         )
+        spellcheck = form.get("spellcheck", "").lower() == "true"
+        collate = form.get("collate", "").lower() == "true"
 
         is_multilingual, lang = self._language_settings()
         portal = api.portal.get()
@@ -286,9 +288,19 @@ class SolrSearch(Service):
 
         group_select = self._group_select(solr_config)
         facet_fields = self._facet_fields(solr_config, group_select)
+        highlighting_utils = SolrHighlightingUtils(solr_config)
 
         d = self._base_query(
-            solr_config, query, facet_fields, group_select, start, rows, sort
+            solr_config,
+            query,
+            facet_fields,
+            group_select,
+            start,
+            rows,
+            sort,
+            highlighting_utils,
+            spellcheck,
+            collate,
         )
 
         if path_prefix:
@@ -336,15 +348,39 @@ class SolrSearch(Service):
         if lang:
             d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
 
-        d = self._apply_facet_conditions(d, facet_fields)
+        d["fq"] = d["fq"] + self.facet_conditions.field_conditions_solr
 
-        # Run search and enhance the result
+        # Apply extra conditions (date-range, string filters)
+        d["fq"] = d["fq"] + self.extra_conditions.query_list()
+
+        d.update(self.facet_conditions.contains_query)
+        d.update(self.facet_conditions.more_query(facet_fields, multiplier=2))
+
+        # Run search
+        result = self.search_solr(query=d)
+
+        # Replace result with "Did you mean" response, if there are no results
+        # and it's requested by the collate parameter
+        if (
+            result["response"]["numFound"] == 0
+            and "spellcheck" in result
+            and "collations" in result["spellcheck"]
+            and len(result["spellcheck"]["collations"]) > 1
+            and collate
+        ):
+            collation = result["spellcheck"]["collations"][1]
+            d["q"] = collation["collationQuery"]
+            result = self.search_solr(query=d)
+            result["collation_misspellings"] = collation["misspellingsAndCorrections"]
+
+        # Enhance the result
         result = self.enhance_result(
-            self.search_solr(query=d),
+            result,
             solr_config,
             portal_path,
             facet_fields,
             keep_full_solr_response,
             group_select,
+            highlighting_utils,
         )
         return result

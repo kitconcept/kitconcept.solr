@@ -187,8 +187,27 @@
       <str name="echoParams">explicit</str>
       <int name="rows">10</int>
       <str name="df">SearchableText</str>
-      <str name="wt">xml</str>
+      <str name="wt">json</str>
+      <str name="facet">true</str>
+      <str name="facet.contains.ignoreCase">true</str>
+      <str name="spellcheck">off</str>
+      <str name="spellcheck.build">true</str>
+      <str name="spellcheck.dictionary">spellWordbreak</str>
+      <str name="spellcheck.dictionary">spellDefault</str>
+      <str name="spellcheck.dictionary">suggestDictionary</str>
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">4</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.onlyMorePopular">true</str>
+      <str name="spellcheck.collate">false</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">10</str>
     </lst>
+    <arr name="last-components">
+      <str>spellcheckSuggest</str>
+    </arr>
+
   </requestHandler>
 
   <requestHandler class="solr.UpdateRequestHandler"
@@ -236,7 +255,53 @@
       <str name="field">suggest</str>
       <float name="threshold">0.</float>
       <str name="buildOnCommit">true</str>
+    </lst>  
+
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">suggest</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
     </lst>
+
+  </searchComponent>
+
+  <searchComponent class="solr.SpellCheckComponent" name="spellcheckSuggest">
+
+    <lst name="spellchecker">
+      <str name="name">suggestDictionary</str>
+      <str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+      <str name="lookupImpl">org.apache.solr.spelling.suggest.fst.FSTLookupFactory</str>
+      <str name="field">suggest</str>
+      <float name="threshold">0.</float>
+      <str name="buildOnCommit">true</str>
+      <str name="buildOnStartup">true</str>
+    </lst>
+
+    <lst name="spellchecker">
+      <str name="name">spellDefault</str>
+      <str name="field">suggest</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+      <int name="maxEdits">2</int>
+      <int name="minPrefix">1</int>
+      <int name="maxInspections">5</int>
+      <int name="minQueryLength">4</int>
+      <float name="maxQueryFrequency">0.01</float>
+    </lst>
+
+    <lst name="spellchecker">
+      <str name="name">spellWordbreak</str>
+      <str name="field">suggest</str>
+      <str name="classname">solr.WordBreakSolrSpellChecker</str>
+      <str name="combineWords">true</str>
+      <str name="breakWords">true</str>
+      <int name="maxChanges">10</int>
+      <int name="minBreakLength">3</int>
+    </lst>
+
   </searchComponent>
 
 </config>

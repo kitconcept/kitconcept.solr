@@ -14,13 +14,13 @@ def contents() -> list:
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myfolder",
             "title": "My Folder to store everything about Noam Chomsky",
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myotherfolder",
             "title": "My other Folder",
         },

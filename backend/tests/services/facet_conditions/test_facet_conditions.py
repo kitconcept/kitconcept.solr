@@ -96,7 +96,7 @@ class TestFacetConditionsActive(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},
@@ -108,7 +108,7 @@ class TestFacetConditionsActive(TestEndpointCustom):
         "path,expected",
         [
             ("/plone/myimage", False),
-            ("/plone/myfolder", False),
+            ("/plone/myfolder", True),
             ("/plone/myfolder/mynews", False),
             ("/plone/foo_alpha", True),
             ("/plone/foo_beta", True),
@@ -138,11 +138,11 @@ class TestFacetConditionsFiltering1(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6], ["alpha", 2], ["beta", 2], ["gamma", 2]],
+                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
             ],
         ]
 
@@ -180,11 +180,11 @@ class TestFacetConditionsFiltering2(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 2], ["bar", 1], ["foo", 1]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6], ["alpha", 2], ["beta", 2], ["gamma", 2]],
+                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
             ],
         ]
 
@@ -225,11 +225,11 @@ class TestFacetConditionsFiltering3(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 4], ["bar", 2], ["foo", 2]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6], ["alpha", 2], ["beta", 2], ["gamma", 2]],
+                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
             ],
         ]
 
@@ -270,11 +270,11 @@ class TestFacetConditionsFilteringFalseIgnored(TestEndpointCustom):
         assert self.data.get("facet_fields") == [
             [
                 {"name": "Title", "label": "The title"},
-                [["chomsky", 6], ["bar", 3], ["foo", 3]],
+                [["chomsky", 7], ["bar", 3], ["foo", 3]],
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6], ["alpha", 2], ["beta", 2], ["gamma", 2]],
+                [["chomsky", 3], ["alpha", 1], ["beta", 1], ["gamma", 1]],
             ],
         ]
 
@@ -316,7 +316,7 @@ class TestFacetConditionsContainsBeginning(TestEndpointCustom):
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6]],
+                [["chomsky", 3]],
             ],
         ]
 
@@ -358,7 +358,7 @@ class TestFacetConditionsContainsMiddle(TestEndpointCustom):
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6]],
+                [["chomsky", 3]],
             ],
         ]
 
@@ -403,7 +403,7 @@ class TestFacetConditionsContainsCaseInsensitive(TestEndpointCustom):
             ],
             [
                 {"name": "Description", "label": "The description"},
-                [["chomsky", 6]],
+                [["chomsky", 3]],
             ],
         ]
 

@@ -69,7 +69,7 @@ context('Search Acceptance Tests (UI)', () => {
     cy.autologout();
 
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('colorful beta');
+    cy.get('.search-input input').type('colorful beta');
     cy.get('.search-input button').click();
 
     cy.get('.total-bar .results').contains('3');
@@ -123,7 +123,7 @@ context('Search Acceptance Tests (UI)', () => {
     cy.autologout();
 
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('bunch');
+    cy.get('.search-input input').type('bunch');
     cy.get('.search-input button').click();
 
     cy.get('#sort_by .react-select__control').click();
@@ -156,7 +156,7 @@ context('Search Acceptance Tests (UI)', () => {
     cy.autologout();
 
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('colorful beta');
+    cy.get('.search-input input').type('colorful beta');
     cy.get('.search-input button').click();
 
     cy.get('.total-bar .results').contains('4');
@@ -202,7 +202,7 @@ context('Search Acceptance Tests (UI)', () => {
     cy.autologout();
 
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('colorful beta');
+    cy.get('.search-input input').type('colorful beta');
 
     cy.get('.search-input-wrapper .clear-icon').click();
 

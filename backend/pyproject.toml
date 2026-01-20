@@ -148,6 +148,8 @@ lint.select = [
 lint.ignore = [
     # DoNotAssignLambda
     "E731",
+    # Function complexity
+    "C901",
 ]
 
 [tool.ruff.lint.isort]
