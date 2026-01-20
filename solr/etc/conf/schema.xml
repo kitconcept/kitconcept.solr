@@ -382,6 +382,8 @@
       indexed="true" stored="true" multiValued="true" />
     <field name="location_reference" type="string"
       indexed="true" stored="true" multiValued="true" />
+    <field name="responsibilities" type="string"
+      indexed="true" stored="true" multiValued="true" />
 
   </fields>
 

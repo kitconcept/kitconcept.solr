@@ -1,0 +1,1 @@
+Add kitconcept.intranet field to schema: responsibilities. @danalvrz
