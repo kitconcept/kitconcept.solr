@@ -7,6 +7,34 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a9 (2026-01-22)
+
+### Backend
+
+No significant changes.
+
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+
+#### Feature
+
+- Add kitconcept.intranet field to schema: responsibilities. @danalvrz 
+
+
+#### Documentation
+
+- Fix docs for configuring Tika URL. @davisagli 
+
+
+
 ## 2.0.0a8 (2025-12-10)
 
 ### Backend

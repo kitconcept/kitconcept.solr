@@ -9,6 +9,11 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a9 (2026-01-22)
+
+No significant changes.
+
+
 ## 2.0.0a8 (2025-12-10)
 
 
