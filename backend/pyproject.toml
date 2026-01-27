@@ -52,6 +52,7 @@ Tracker = "https://github.com/kitconcept/kitconcept.solr/issues"
 
 [project.entry-points."plone.autoinclude.plugin"]
 target = "plone"
+module = "kitconcept.solr"
 
 [tool.uv]
 managed = false
