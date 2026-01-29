@@ -18,6 +18,7 @@ class TestHighlighting(TestEndpointDefault):
     @pytest.mark.parametrize(
         "path,highlight_field,highlight",
         [
+            # highlighting (content field)
             (
                 "/plone/mydocument",
                 "highlighting",
@@ -37,6 +38,38 @@ class TestHighlighting(TestEndpointDefault):
                 "/plone/myotherfolder",
                 "highlighting",
                 ["Container for material about <em>Chomsky</em>"],
+            ),
+            # highlighting_title (Title field)
+            (
+                "/plone/mydocument",
+                "highlighting_title",
+                ["My Document about Noam <em>Chomsky</em>"],
+            ),
+            (
+                "/plone/noamchomsky",
+                "highlighting_title",
+                ["Prof. Dr. Noam <em>Chomsky</em>"],
+            ),
+            (
+                "/plone/mynews",
+                "highlighting_title",
+                ["My News Item with Noam <em>Chomsky</em>"],
+            ),
+            (
+                "/plone/myotherfolder",
+                "highlighting_title",
+                None,
+            ),
+            # highlighting_description (Description field)
+            (
+                "/plone/noamchomsky",
+                "highlighting_description",
+                ["The real <em>Chomsky</em> is here."],
+            ),
+            (
+                "/plone/mydocument",
+                "highlighting_description",
+                None,
             ),
         ],
     )

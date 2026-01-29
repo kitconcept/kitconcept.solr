@@ -15,15 +15,27 @@ const NewsItemResultItem = ({ item }) => (
     <p className="url">{item['@id']}</p>
     <h2 className="tileHeadline">
       <Link to={item['@id']} className="summary url" title={item['@type']}>
-        {item.title}
+        {item?.extras?.highlighting_title?.[0]?.length > 0 ? (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: item.extras.highlighting_title[0],
+            }}
+          />
+        ) : (
+          item.title
+        )}
       </Link>
     </h2>
-    {item?.extras?.highlighting && item.extras.highlighting.length > 0 ? (
+    {item?.extras?.highlighting_description?.[0]?.length > 0 ||
+    item?.extras?.highlighting?.[0]?.length > 0 ? (
       <div className="tileBody">
         <span
           className="description"
           dangerouslySetInnerHTML={{
-            __html: item.extras.highlighting,
+            __html:
+              (item.extras.highlighting_description?.[0]?.length > 0 &&
+                item.extras.highlighting_description[0]) ||
+              item.extras.highlighting[0],
           }}
         />
         {' ...'}
