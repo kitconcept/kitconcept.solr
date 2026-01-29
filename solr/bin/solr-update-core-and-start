@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Goes in /opt/solr/docker/scripts in the Docker image.
+#
+# Update conf files in existing solr core (if present).
+# Then run solr-precreate which creates the core (if not present)
+# and starts solr.
+
+if [ -d /var/solr/data/plone ]; then
+  cp -r /plone-config/* /var/solr/data/plone
+fi
+
+solr-precreate plone /plone-config

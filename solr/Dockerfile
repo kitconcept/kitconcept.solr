@@ -8,3 +8,6 @@ LABEL maintainer="kitconcept, GmbH <info@kitconcept.com>" \
 
 # Copy default plone configuration for this image
 COPY etc /plone-config
+COPY bin/solr-update-core-and-start /opt/solr/docker/scripts
+
+CMD ["solr-update-core-and-start"]
