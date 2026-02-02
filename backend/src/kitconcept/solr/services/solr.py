@@ -178,10 +178,13 @@ class SolrSearch(Service):
                 f"OR default:{term} OR body_text:{term} OR SearchableText:{term} "
                 f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
             ),
+            "wt": "json",
             "hl": "true" if highlighting_utils.enabled else "false",
             "hl.fl": highlighting_utils.fields,
             "fq": [security_filter()],
             "fl": solr_config.field_list,
+            "facet": "true",
+            "facet.contains.ignoreCase": "true",
             "facet.field": [
                 f"{self.facet_conditions.ex_field_facet(info['name'])}{info['name']}"
                 for info in facet_fields
