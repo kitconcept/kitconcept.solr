@@ -105,10 +105,8 @@ class SolrSearch(Service):
     @property
     def extra_conditions(self) -> SolrExtraConditions:
         """Get the extra conditions from the request."""
-        if self._extra_conditions is None:
-            raw_value = self.request.form.get("extra_conditions")
-            self._extra_conditions = SolrExtraConditions.from_encoded(raw_value)
-        return self._extra_conditions
+        raw_value = self.request.form.get("extra_conditions")
+        return SolrExtraConditions.from_encoded(raw_value)
 
     def _facet_fields(
         self, solr_config: SolrConfig, group_select: int | None
