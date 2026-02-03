@@ -5,6 +5,7 @@ import base64
 import binascii
 import json
 import logging
+from zExceptions import BadRequest
 
 
 logger = logging.getLogger("kitconcept.solr")
@@ -52,7 +53,7 @@ class SolrExtraConditions:
                     or {"ge", "gr"}.issubset(keys)
                     or {"le", "ls"}.issubset(keys)
                 ):
-                    raise RuntimeError(
+                    raise BadRequest(
                         f"invalid keys in options for condition 'date-range' [{keys}]"
                     )
                 result = f"{fieldname}:"
@@ -75,13 +76,13 @@ class SolrExtraConditions:
             elif kind == "string":
                 keys = set(condition.keys())
                 if not keys.issubset({"in"}):
-                    raise RuntimeError(
+                    raise BadRequest(
                         "invalid keys in options for condition 'string', "
                         f"supported: 'in' [{keys}]"
                     )
                 if "in" in condition:
                     if type(condition["in"]) is not list:
-                        raise RuntimeError(
+                        raise BadRequest(
                             "invalid type for condition 'string' "
                             f"[{type(condition['in'])}]"
                         )
@@ -91,12 +92,12 @@ class SolrExtraConditions:
                     result = f"{fieldname}:"
                     result += (
                         "("
-                        + " OR ".join([
-                            replace_reserved(term) for term in condition["in"]
-                        ])
+                        + " OR ".join(
+                            [replace_reserved(term) for term in condition["in"]]
+                        )
                         + ")"
                     )
             else:
-                raise RuntimeError(f"Wrong condition type [{kind}]")
+                raise BadRequest(f"Wrong condition type [{kind}]")
             results.append(result)
         return results

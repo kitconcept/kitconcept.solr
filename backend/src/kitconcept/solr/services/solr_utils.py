@@ -5,6 +5,7 @@ import binascii
 import json
 import logging
 import re
+from zExceptions import BadRequest
 
 
 logger = logging.getLogger("kitconcept.solr")
@@ -53,7 +54,7 @@ def replace_reserved(query):
     return re_replace_reserved.sub(lambda m: m.group(0).lower(), query)
 
 
-class SolrConfigError(RuntimeError):
+class SolrConfigError(BadRequest):
     pass
 
 

@@ -3,6 +3,7 @@ from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
 import base64
 import json
 import pytest
+from zExceptions import BadRequest
 
 
 def encoded(o):
@@ -80,13 +81,13 @@ class TestUtilsExtraConditionsSolr:
     def test_query_list_invalid_keys(self):
         config = [["start", "date-range", {"invalid": "2021-02-01T00:00:00Z"}]]
         obj = SolrExtraConditions(config)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(BadRequest):
             obj.query_list()
 
     def test_query_list_invalid_condition_type(self):
         config = [["start", "invalid-type", {"ge": "2021-02-01T00:00:00Z"}]]
         obj = SolrExtraConditions(config)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(BadRequest):
             obj.query_list()
 
     def test_query_list_invalid_combination_1(self):
@@ -98,7 +99,7 @@ class TestUtilsExtraConditionsSolr:
             ]
         ]
         obj = SolrExtraConditions(config)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(BadRequest):
             obj.query_list()
 
     def test_query_list_invalid_combination_2(self):
@@ -110,7 +111,7 @@ class TestUtilsExtraConditionsSolr:
             ]
         ]
         obj = SolrExtraConditions(config)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(BadRequest):
             obj.query_list()
 
 
@@ -136,5 +137,5 @@ class TestUtilsExtraConditionsString:
     def test_query_list_string_in_invalid_term_type(self):
         config = [["keywords", "string", {"in": "NotAList"}]]
         obj = SolrExtraConditions(config)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(BadRequest):
             obj.query_list()
