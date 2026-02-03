@@ -294,6 +294,12 @@ curl "http://localhost:8080/Plone/@solr-suggest?query=chomsky"
 
 ---
 
+### `getNavigationWithExcluded` action and reducer
+
+Currently not used from the frontend, we keep it for future implementation of the "Results breadcrumbs" feature and eventually will be removed in favor of extended redux in Volto core and plone.restapi.
+
+---
+
 ## Configuration
 
 ### Registry Settings
