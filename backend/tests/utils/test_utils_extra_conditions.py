@@ -90,6 +90,27 @@ class TestUtilsExtraConditionsSolr:
         with pytest.raises(BadRequest):
             obj.query_list()
 
+    def test_query_list_invalid_row_too_few_elements(self):
+        config = [["start", "date-range"]]  # missing third element
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
+    def test_query_list_invalid_row_too_many_elements(self):
+        config = [["start", "date-range", {"ge": "2021-02-01T00:00:00Z"}, "extra"]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
+    def test_query_list_invalid_row_not_iterable(self):
+        config = [None]  # None is not iterable
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
     def test_query_list_invalid_combination_1(self):
         config = [
             [

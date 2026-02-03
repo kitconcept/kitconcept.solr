@@ -44,7 +44,13 @@ class SolrExtraConditions:
 
     def query_list(self):
         results = []
-        for [fieldname, kind, condition] in self.config:
+        for row in self.config:
+            try:
+                [fieldname, kind, condition] = row
+            except (TypeError, ValueError) as err:
+                raise BadRequest(
+                    f"Invalid extra condition row [{row}], needs: [fieldname, kind, condition]"  # noqa: E501
+                ) from err
             fieldname = escape_fieldname(fieldname)
             if kind == "date-range":
                 keys = set(condition.keys())
