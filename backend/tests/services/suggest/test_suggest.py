@@ -1,6 +1,7 @@
+from typing import ClassVar
+
 import pytest
 import urllib.parse
-from typing import ClassVar
 
 
 class TestSuggestDefault:

@@ -1,9 +1,9 @@
 from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
+from zExceptions import BadRequest
 
 import base64
 import json
 import pytest
-from zExceptions import BadRequest
 
 
 def encoded(o):

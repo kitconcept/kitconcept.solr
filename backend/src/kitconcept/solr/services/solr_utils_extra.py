@@ -1,11 +1,11 @@
 from kitconcept.solr.services.solr_utils import escape
 from kitconcept.solr.services.solr_utils import replace_reserved
+from zExceptions import BadRequest
 
 import base64
 import binascii
 import json
 import logging
-from zExceptions import BadRequest
 
 
 logger = logging.getLogger("kitconcept.solr")
@@ -98,9 +98,9 @@ class SolrExtraConditions:
                     result = f"{fieldname}:"
                     result += (
                         "("
-                        + " OR ".join(
-                            [replace_reserved(term) for term in condition["in"]]
-                        )
+                        + " OR ".join([
+                            replace_reserved(term) for term in condition["in"]
+                        ])
                         + ")"
                     )
             else:

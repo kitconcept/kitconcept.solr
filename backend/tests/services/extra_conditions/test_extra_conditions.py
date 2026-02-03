@@ -1,7 +1,8 @@
+from typing import ClassVar
+
 import base64
 import json
 import pytest
-from typing import ClassVar
 
 
 def encoded(o):

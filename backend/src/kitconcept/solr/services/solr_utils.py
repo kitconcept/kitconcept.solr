@@ -1,11 +1,11 @@
 from plone import api
+from zExceptions import BadRequest
 
 import base64
 import binascii
 import json
 import logging
 import re
-from zExceptions import BadRequest
 
 
 logger = logging.getLogger("kitconcept.solr")
