@@ -20,9 +20,9 @@
       source="1001"
       destination="1002"
       >
-    <genericsetup:upgradeDepends
+    <genericsetup:upgradeStep
         title="Update registry with advanced highlighting field setup"
-        import_steps="plone.app.registry"
+        handler=".add_highlighting_config"
         />
   </genericsetup:upgradeSteps>
 
