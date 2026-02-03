@@ -1,1 +1,1 @@
-Add spellcheck with collate support for "did you mean" suggestions, highlighting with alternate field support, and extra conditions filtering. @reebalazs
+Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs

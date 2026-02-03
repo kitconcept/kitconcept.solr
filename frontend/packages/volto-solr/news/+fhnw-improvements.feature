@@ -1,1 +1,1 @@
-Add spellcheck helpers (getCollationMisspellings, getSuggestions), navigation_with_excluded Redux action/reducer, and SearchWidget customization. @reebalazs
+Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs 
