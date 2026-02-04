@@ -29,7 +29,7 @@ dependencies = [
     "plone.restapi",
     "plone.volto",
     "plone.app.multilingual",
-    "collective.solr>=9.0.1",
+    "collective.solr>=9.4.0",
 ]
 
 [project.optional-dependencies]
