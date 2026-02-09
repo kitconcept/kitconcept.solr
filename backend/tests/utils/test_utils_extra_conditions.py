@@ -1,0 +1,162 @@
+from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
+from zExceptions import BadRequest
+
+import base64
+import json
+import pytest
+
+
+def encoded(o):
+    return base64.b64encode(json.dumps(o).encode("utf-8")).decode("ascii")
+
+
+class TestUtilsExtraConditionsSolr:
+    def test_from_encoded_valid(self):
+        raw = encoded([["start", "date-range", {"ge": "2021-02-01T00:00:00Z"}]])
+        obj = SolrExtraConditions.from_encoded(raw)
+        assert obj.config == [["start", "date-range", {"ge": "2021-02-01T00:00:00Z"}]]
+
+    def test_from_encoded_invalid_base64(self):
+        raw = "abcdabcd"  # multiple of 4
+        obj = SolrExtraConditions.from_encoded(raw)
+        assert obj.config == []
+
+    def test_from_encoded_invalid_base64_2(self):
+        raw = "invalid_base64"
+        obj = SolrExtraConditions.from_encoded(raw)
+        assert obj.config == []
+
+    def test_create_ignores_error_unicode(self):
+        c = SolrExtraConditions.from_encoded(
+            base64.b64encode('{"foo": "Atommüll"}'.encode("latin1")).decode("ascii")
+        )
+        assert c.config == []
+
+    def test_create_ignores_error_json(self):
+        c = SolrExtraConditions.from_encoded(
+            base64.b64encode(b'{"foo": what is this, surely not json?').decode("ascii")
+        )
+        assert c.config == []
+
+    def test_from_encoded_none(self):
+        obj = SolrExtraConditions.from_encoded(None)
+        assert obj.config == []
+
+    def test_query_list_ge(self):
+        config = [["start", "date-range", {"ge": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["start:[2021-02-01T00:00:00Z TO *]"]
+
+    def test_query_list_le(self):
+        config = [["start", "date-range", {"le": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["start:[* TO 2021-02-01T00:00:00Z]"]
+
+    def test_query_list_gr(self):
+        config = [["start", "date-range", {"gr": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["start:{2021-02-01T00:00:00Z TO *]"]
+
+    def test_query_list_ls(self):
+        config = [["start", "date-range", {"ls": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["start:[* TO 2021-02-01T00:00:00Z}"]
+
+    def test_query_list_ge_le(self):
+        config = [
+            [
+                "start",
+                "date-range",
+                {"ge": "2021-02-01T00:00:00Z", "le": "2021-03-01T00:00:00Z"},
+            ]
+        ]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["start:[2021-02-01T00:00:00Z TO 2021-03-01T00:00:00Z]"]
+
+    def test_query_list_invalid_keys(self):
+        config = [["start", "date-range", {"invalid": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest):
+            obj.query_list()
+
+    def test_query_list_invalid_condition_type(self):
+        config = [["start", "invalid-type", {"ge": "2021-02-01T00:00:00Z"}]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest):
+            obj.query_list()
+
+    def test_query_list_invalid_row_too_few_elements(self):
+        config = [["start", "date-range"]]  # missing third element
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
+    def test_query_list_invalid_row_too_many_elements(self):
+        config = [["start", "date-range", {"ge": "2021-02-01T00:00:00Z"}, "extra"]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
+    def test_query_list_invalid_row_not_iterable(self):
+        config = [None]  # None is not iterable
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest) as exc_info:
+            obj.query_list()
+        assert "Invalid extra condition row" in str(exc_info.value)
+
+    def test_query_list_invalid_combination_1(self):
+        config = [
+            [
+                "start",
+                "date-range",
+                {"ge": "2021-02-01T00:00:00Z", "gr": "2021-02-01T00:00:00Z"},
+            ]
+        ]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest):
+            obj.query_list()
+
+    def test_query_list_invalid_combination_2(self):
+        config = [
+            [
+                "start",
+                "date-range",
+                {"le": "2021-02-01T00:00:00Z", "ls": "2021-02-01T00:00:00Z"},
+            ]
+        ]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest):
+            obj.query_list()
+
+
+class TestUtilsExtraConditionsString:
+    def test_query_list_string_in_single_term(self):
+        config = [["keywords", "string", {"in": ["term1"]}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["keywords:(term1)"]
+
+    def test_query_list_string_in_multiple_terms(self):
+        config = [["keywords", "string", {"in": ["term1", "term2"]}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ["keywords:(term1 OR term2)"]
+
+    def test_query_list_string_in_empty_term(self):
+        config = [["keywords", "string", {"in": []}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == []
+
+    def test_query_list_string_in_invalid_term_type(self):
+        config = [["keywords", "string", {"in": "NotAList"}]]
+        obj = SolrExtraConditions(config)
+        with pytest.raises(BadRequest):
+            obj.query_list()

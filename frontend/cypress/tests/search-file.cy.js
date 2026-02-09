@@ -34,7 +34,7 @@ context('Search Acceptance Tests (File)', () => {
 
     // WHEN: I search for 'Colorless'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Colorless');
+    cy.get('.search-input input').type('Colorless');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -70,7 +70,7 @@ context('Search Acceptance Tests (File)', () => {
 
     // WHEN: I search for 'Sleep Furiously'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Sleep Furiously');
+    cy.get('.search-input input').type('Sleep Furiously');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -106,7 +106,7 @@ context('Search Acceptance Tests (File)', () => {
 
     // WHEN: I search for 'Sleep Furiously'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Furiously');
+    cy.get('.search-input input').type('Furiously');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results

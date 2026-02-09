@@ -10,6 +10,7 @@ describe('SOLR search reducer', () => {
     expect(search()).toEqual({
       error: null,
       items: [],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -29,6 +30,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -55,7 +57,6 @@ describe('SOLR search reducer', () => {
             ],
             numFound: 1,
           },
-          highlighting: { UID1: ['<em>Blah</em>'] },
           portal_path: '/Plone',
         },
       }),
@@ -71,11 +72,11 @@ describe('SOLR search reducer', () => {
           description: undefined,
           effective: undefined,
           extras: {},
-          highlighting: ['<em>Blah</em>'],
           image_field: undefined,
           review_state: undefined,
         },
       ],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -96,6 +97,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: 'failed',
       items: [],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -115,6 +117,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -135,6 +138,7 @@ describe('SOLR search reducer', () => {
     ).toEqual({
       error: null,
       items: [],
+      spellcheck: [],
       facetGroups: [],
       facetFields: [],
       layouts: [],
@@ -146,6 +150,7 @@ describe('SOLR search reducer', () => {
         'my-subrequest': {
           error: null,
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],
@@ -166,6 +171,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: [],
+              spellcheck: [],
               facetGroups: [],
               facetFields: [],
               layouts: [],
@@ -190,7 +196,6 @@ describe('SOLR search reducer', () => {
               ],
               numFound: 1,
             },
-            highlighting: { UID1: ['<em>Blah</em>'] },
             portal_path: '/Plone',
             facet_groups: [
               ['One', 1],
@@ -234,11 +239,11 @@ describe('SOLR search reducer', () => {
               description: undefined,
               effective: undefined,
               extras: {},
-              highlighting: ['<em>Blah</em>'],
               image_field: undefined,
               review_state: undefined,
             },
           ],
+          spellcheck: [],
           facetGroups: [
             ['One', 1],
             ['Two', 2],
@@ -281,6 +286,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: [],
+              spellcheck: [],
               facetGroups: [],
               facetFields: [],
               layouts: [],
@@ -302,6 +308,7 @@ describe('SOLR search reducer', () => {
         'my-subrequest': {
           error: 'failed',
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],
@@ -322,6 +329,7 @@ describe('SOLR search reducer', () => {
             'my-subrequest': {
               error: null,
               items: ['random'],
+              spellcheck: [],
               facetGroups: [],
               facetFields: [],
               layouts: [],
@@ -366,6 +374,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],
@@ -409,6 +418,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],
@@ -440,6 +450,7 @@ describe('SOLR search reducer', () => {
             {
               error: null,
               items: [],
+              spellcheck: [],
               facetGroups: [],
               facetFields: [],
               layouts: [],
@@ -465,6 +476,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],
@@ -491,6 +503,7 @@ describe('SOLR search reducer', () => {
             {
               error: null,
               items: [],
+              spellcheck: [],
               facetGroups: [],
               facetFields: [],
               layouts: [],
@@ -521,6 +534,7 @@ describe('SOLR search reducer', () => {
         ).toEqual({
           error: null,
           items: [],
+          spellcheck: [],
           facetGroups: [],
           facetFields: [],
           layouts: [],

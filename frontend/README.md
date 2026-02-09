@@ -16,7 +16,6 @@ yarn add @kitconcept/volto-solr
 
 The configuration is provided by default and can be overwritten from any package.
 
-
 ### Result type templates
 
 The search results are rendered by default components, which are customizable.
@@ -63,3 +62,7 @@ All supported content type templates respect these settings, so an icon for a co
 ### Other options
 
 The rest of the options provide the baselines for the package and the `Search` compoment to work. You can override various components via these options, including the `Search` component and the underlying reducers and actions that it uses. There is currently no supported use case for this, so please refer to the source code if you wish to do this. You most likely won't need to do this.
+
+## getNavigationWithExcluded action and reducer
+
+Currently not used from the frontend, we keep it for future implementation of the "Results breadcrumbs" feature and eventually will be removed in favor of extended redux in Volto core and plone.restapi.

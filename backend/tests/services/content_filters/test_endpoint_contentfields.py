@@ -12,7 +12,7 @@ class TestEndpointContentFields:
 
 
 class TestEndpointContentFieldsId(TestEndpointContentFields):
-    url = "/@solr?q=red"
+    url = "/@solr?q=redandblue"
 
     @pytest.mark.parametrize(
         "path,expected",

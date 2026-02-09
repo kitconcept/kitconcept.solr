@@ -23,6 +23,16 @@ class TestUtilsFacetConditionsSolr:
         c = FacetConditions.from_encoded(None)
         assert c.config == {}
 
+    def test_from_encoded_invalid_base64(self):
+        raw = "abcdabcd"  # multiple of 4
+        obj = FacetConditions.from_encoded(raw)
+        assert obj.config == {}
+
+    def test_from_encoded_invalid_base64_2(self):
+        raw = "invalid_base64"
+        obj = FacetConditions.from_encoded(raw)
+        assert obj.config == {}
+
     def test_create_ignores_error_unicode(self):
         c = FacetConditions.from_encoded(
             base64.b64encode('{"foo": "Atommüll"}'.encode("latin1")).decode("ascii")

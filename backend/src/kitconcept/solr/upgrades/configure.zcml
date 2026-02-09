@@ -15,4 +15,15 @@
         />
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+      profile="kitconcept.solr:default"
+      source="1001"
+      destination="1002"
+      >
+    <genericsetup:upgradeStep
+        title="Update registry with advanced highlighting field setup"
+        handler=".add_highlighting_config"
+        />
+  </genericsetup:upgradeSteps>
+
 </configure>

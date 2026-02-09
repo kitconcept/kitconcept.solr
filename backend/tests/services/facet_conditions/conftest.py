@@ -15,7 +15,7 @@ def contents() -> list:
         },
         {
             "_container": "",
-            "type": "Folder",
+            "type": "Document",
             "id": "myfolder",
             "title": "My Folder to store everything about Noam Chomsky",
             "language": "en",

@@ -50,7 +50,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Colorless'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Colorless');
+    cy.get('.search-input input').type('Colorless');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -102,7 +102,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Sleep Furiously'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Sleep Furiously');
+    cy.get('.search-input input').type('Sleep Furiously');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -129,7 +129,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Lorem ipsum'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Lorem ipsum');
+    cy.get('.search-input input').type('Lorem ipsum');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -178,7 +178,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Colorless Green Ideas'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('colorless green ideas');
+    cy.get('.search-input input').type('colorless green ideas');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -227,7 +227,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Colorless Green Ideas'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Colorless Green Ideas');
+    cy.get('.search-input input').type('Colorless Green Ideas');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -279,7 +279,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'green ideas'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('green');
+    cy.get('.search-input input').type('green');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -332,7 +332,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Color'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Color');
+    cy.get('.search-input input').type('Color');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -381,7 +381,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'less'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('less');
+    cy.get('.search-input input').type('less');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -433,7 +433,7 @@ context('Search Acceptance Tests (Features)', () => {
 
   //   // WHEN: I search for 'lorless'
   //   cy.visit('http://localhost:3000/search');
-  //   cy.get('.searchinput').type('lorless');
+  //   cy.get('.search-input input').type('lorless');
   //   cy.get('.search-input button').click();
 
   //   // THEN: the search returns '1' results
@@ -483,7 +483,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Residence'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Residence');
+    cy.get('.search-input input').type('Residence');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -532,7 +532,7 @@ context('Search Acceptance Tests (Features)', () => {
 
     // WHEN: I search for 'Colorless Green Ideas'
     cy.visit('http://localhost:3000/search');
-    cy.get('.searchinput').type('Colorless Green Ideas');
+    cy.get('.search-input input').type('Colorless Green Ideas');
     cy.get('.search-input button').click();
 
     // THEN: the search returns '1' results
@@ -583,7 +583,7 @@ context('Search Acceptance Tests (Features)', () => {
     // This only works in @@search. Caveat - Old usage search is deprecated and
     // although works, does not support this switch.
     cy.visit('http://localhost:3000/@@search');
-    cy.get('.searchinput').type('Colorless');
+    cy.get('.search-input input').type('Colorless');
     cy.get('.search-input button').click();
 
     cy.get('.total-bar .results').contains('1');
