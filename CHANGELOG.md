@@ -7,6 +7,30 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a11 (2026-02-09)
+
+### Backend
+
+No significant changes.
+
+
+
+
+### Frontend
+
+#### Bugfix
+
+- Add missing exports in package.json to fix eslint errors in consumers @reebalazs 
+
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0a10 (2026-02-08)
 
 ### Backend

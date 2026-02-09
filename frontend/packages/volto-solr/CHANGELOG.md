@@ -8,6 +8,12 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.11 (2026-02-09)
+
+### Bugfix
+
+- Add missing exports in package.json to fix eslint errors in consumers @reebalazs 
+
 ## 2.0.0-alpha.10 (2026-02-08)
 
 ### Feature
