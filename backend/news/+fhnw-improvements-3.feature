@@ -1,1 +1,0 @@
-Make it possible to override the SolrSearchWidget component by setting config.widgets.SolrSearchWidget @reebalazs

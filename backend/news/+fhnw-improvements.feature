@@ -1,1 +1,0 @@
-Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs

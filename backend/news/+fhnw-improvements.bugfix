@@ -1,1 +1,0 @@
-Fix filtering by multiple facet conditions failing to correctly disable voided conditions. @reebalazs

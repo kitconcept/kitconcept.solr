@@ -7,6 +7,55 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a10 (2026-02-08)
+
+### Backend
+
+
+#### New features:
+
+- Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs 
+- In search results, highlight search terms in both title and description @reebalazs 
+- Make it possible to override the SolrSearchWidget component by setting config.widgets.SolrSearchWidget @reebalazs 
+
+
+#### Bug fixes:
+
+- Fix filtering by multiple facet conditions failing to correctly disable voided conditions. @reebalazs 
+
+
+
+### Frontend
+
+#### Feature
+
+- Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs 
+- In search results, highlight search terms in both title and description @reebalazs 
+- Make it possible to override the SolrSearchWidget component by setting config.widgets.SolrSearchWidget @reebalazs 
+
+#### Bugfix
+
+- Fix filtering by multiple facet conditions failing to correctly disable voided conditions. @reebalazs 
+
+
+
+### Project
+
+
+#### Feature
+
+- Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs 
+- In search results, highlight search terms in both title and description @reebalazs 
+- Make it possible to override the SolrSearchWidget component by setting config.widgets.SolrSearchWidget @reebalazs 
+
+
+#### Bugfix
+
+- Fix filtering by multiple facet conditions failing to correctly disable voided conditions. @reebalazs 
+- In the ghcr.io/kitconcept/solr image, make sure existing solr cores are updated with schema changes. @davisagli 
+
+
+
 ## 2.0.0a9 (2026-01-22)
 
 ### Backend

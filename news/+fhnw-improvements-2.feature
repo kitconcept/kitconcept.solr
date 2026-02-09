@@ -1,1 +1,0 @@
-In search results, highlight search terms in both title and description @reebalazs

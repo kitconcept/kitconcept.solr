@@ -9,6 +9,20 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a10 (2026-02-08)
+
+
+### New features:
+
+- Add support for spelling suggestions and collations ("Did you mean ___?") @reebalazs 
+- In search results, highlight search terms in both title and description @reebalazs 
+- Make it possible to override the SolrSearchWidget component by setting config.widgets.SolrSearchWidget @reebalazs 
+
+
+### Bug fixes:
+
+- Fix filtering by multiple facet conditions failing to correctly disable voided conditions. @reebalazs 
+
 ## 2.0.0a9 (2026-01-22)
 
 No significant changes.
