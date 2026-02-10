@@ -7,6 +7,29 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a12 (2026-02-10)
+
+### Backend
+
+
+#### New features:
+
+- Add @navigation_with_excluded service for breadcrumbs that includes items excluded from navigation @reebalazs 
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0a11 (2026-02-09)
 
 ### Backend
