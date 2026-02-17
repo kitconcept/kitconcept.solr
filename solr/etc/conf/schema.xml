@@ -361,6 +361,7 @@
     <field name="contact_phone" type="string" indexed="true" stored="true" />
     <field name="contact_room" type="string" indexed="true" stored="true" />
     <field name="contact_building" type="string" indexed="true" stored="true" />
+    <field name="job_title" type="string" indexed="true" stored="true" />
 
     <!-- Autocomplete suggest fields -->
     <field name="suggest" type="text_suggest" indexed="true" stored="false" />
