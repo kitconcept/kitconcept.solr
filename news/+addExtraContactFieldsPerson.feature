@@ -1,0 +1,1 @@
+Add phone, building and room fields for Person content type in schema. @danalvrz
