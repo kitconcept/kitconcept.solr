@@ -347,7 +347,7 @@
 
     <!-- custom content type: Event -->
     <field
-      name="contact_email" type="string" indexed="true" stored="false" />
+      name="contact_email" type="string" indexed="true" stored="true" />
     <field name="contact_name"
       type="text" indexed="true" stored="false" />
     <field name="event_url" type="text" indexed="true"
@@ -356,6 +356,12 @@
     <copyField
       source="contact_name" dest="default" />
     <copyField source="event_url" dest="default" />
+
+    <!-- custom content type: Person -->
+    <field name="contact_phone" type="string" indexed="false" stored="true" />
+    <field name="contact_room" type="string" indexed="true" stored="true" />
+    <field name="contact_building" type="string" indexed="true" stored="true" />
+    <field name="job_title" type="string" indexed="false" stored="true" />
 
     <!-- Autocomplete suggest fields -->
     <field name="suggest" type="text_suggest" indexed="true" stored="false" />
