@@ -11,9 +11,16 @@ const empty = {};
 
 const getIntlMessage = (id) => ({ id, defaultMessage: id });
 
+const emptyArray = [];
+
+const findLabel = (vocabItems, value) =>
+  vocabItems.find((item) => item.value === value)?.label;
+
 export const SearchConditionsField = ({
   fieldDef,
   values: v,
+  vocabItems = emptyArray,
+  hasVocab = false,
   conditionTree: c,
   setCondition: setC,
   setContains: setP,
@@ -21,6 +28,7 @@ export const SearchConditionsField = ({
 }) => {
   const intl = useIntl();
   const { name } = fieldDef;
+
   const setCondition = useCallback(
     (value, checked) => setC(name, value, checked),
     [setC, name],
@@ -77,10 +85,12 @@ export const SearchConditionsField = ({
       <div className="searchConditionsField">
         <div className="searchConditionsFieldHeader">
           {intl.formatMessage(getIntlMessage(fieldDef.label ?? fieldDef.name))}
-          <SearchConditionsFieldSearch
-            value={contains}
-            setValue={setContains}
-          />
+          {hasVocab ? null : (
+            <SearchConditionsFieldSearch
+              value={contains}
+              setValue={setContains}
+            />
+          )}
         </div>
         <div className="searchConditionsFieldContent">
           {values.map(([value, counter], index) => (
@@ -88,6 +98,9 @@ export const SearchConditionsField = ({
               key={index}
               fieldDef={fieldDef}
               value={value}
+              displayValue={
+                hasVocab ? findLabel(vocabItems, value) || '' : value
+              }
               counter={counter}
               condition={condition}
               setCondition={setCondition}
@@ -113,6 +126,8 @@ export const SearchConditionsField = ({
       more,
       // eslint-disable-next-line react-hooks/exhaustive-deps
       JSON.stringify(condition),
+      vocabItems,
+      hasVocab,
     ],
   );
 };

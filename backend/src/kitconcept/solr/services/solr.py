@@ -253,6 +253,7 @@ class SolrSearch(Service):
             result.get("response", {}).get("docs", []),
             result.get("highlighting", {}),
         )
+        result["vocabularies"] = solr_config.vocabularies
         # Solr response is pruned of the unnecessary parts, unless explicitly requested.
         if not keep_full_solr_response:
             result.pop("facet_counts", None)

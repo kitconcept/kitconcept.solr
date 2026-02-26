@@ -3,7 +3,13 @@
  * @module components/theme/SearchWidget/SearchWidget
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Form } from 'semantic-ui-react';
 import { compose } from 'redux';
@@ -13,7 +19,7 @@ import {
   FormattedMessage,
   useIntl,
 } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { solrSearchSuggestions } from '../../../actions';
 import Autosuggest from 'react-autosuggest';
 import cx from 'classnames';
@@ -73,13 +79,19 @@ const SolrSearchAutosuggestRaw = (props) => {
   const originalText = props.value;
   const dispatch = useDispatch();
   const intl = useIntl();
-  let suggestions = useSelector((state) =>
-    state.solrSearchSuggestions.items.slice(0, NR_ITEMS),
-  ).concat({
-    '@type': 'ShowAll',
-    '@id': ID_ALL,
-    title: originalText,
-  });
+  const suggestionItems = useSelector(
+    (state) => state.solrSearchSuggestions.items,
+    shallowEqual,
+  );
+  const suggestions = useMemo(
+    () =>
+      suggestionItems.slice(0, NR_ITEMS).concat({
+        '@type': 'ShowAll',
+        '@id': ID_ALL,
+        title: originalText,
+      }),
+    [suggestionItems, originalText],
+  );
   const hasSuggestions = suggestions.length > 1;
 
   const renderSuggestion = useCallback(
@@ -327,9 +339,9 @@ const SolrSearchWidget = (props) => {
   const [text, setText] = useState('');
   // const [originalText, setOriginalText] = useState('');
 
-  const onChange = (event, { newValue, method }) => {
+  const onChange = (event, { value, method }) => {
     // method === 'type' && setOriginalText(newValue);
-    typeof newValue === 'string' ? setText(newValue) : setText(newValue.title);
+    typeof value === 'string' ? setText(value) : setText(value.title);
   };
 
   useEffect(() => {

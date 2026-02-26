@@ -90,16 +90,33 @@ class SolrConfig:
         condition = filters[group_select]
         return f"{base_query}{condition}"
 
+    @staticmethod
+    def _field_name(item) -> str:
+        """Extract the field name from a fieldList item (string or dict)."""
+        if isinstance(item, dict):
+            return item["name"]
+        return item
+
     @property
     def field_list(self) -> str:
         raw_value = self.config.get("fieldList", [])
-        invalid_fields = [item for item in raw_value if "," in item]
+        names = [self._field_name(item) for item in raw_value]
+        invalid_fields = [name for name in names if "," in name]
         if invalid_fields:
             raise SolrConfigError(
                 "Error parsing solr config, fieldList item contains comma (,) "
                 "which is prohibited"
             )
-        return ",".join(raw_value)
+        return ",".join(names)
+
+    @property
+    def vocabularies(self) -> list:
+        raw_value = self.config.get("fieldList", [])
+        return [
+            {"field": item["name"], **item["vocabulary"]}
+            for item in raw_value
+            if isinstance(item, dict) and "vocabulary" in item
+        ]
 
     def select_layouts(self, group_select: int) -> list:
         return self.listOflayouts[group_select]

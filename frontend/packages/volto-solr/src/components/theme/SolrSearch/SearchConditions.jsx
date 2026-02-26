@@ -1,6 +1,9 @@
 import { SearchConditionsField } from './SearchConditionsField';
 import { useCallback, useMemo } from 'react';
 import { bToA, aToB } from './base64Helpers';
+import { useVocabs } from './vocabs/useVocab';
+
+const emptyArray = [];
 
 function isEmpty(obj) {
   for (const prop in obj) {
@@ -60,10 +63,23 @@ export const pruneConditionTree = (conditionTree) =>
 export const SearchConditions = ({
   groupSelect,
   facetFields,
+  vocabularies = emptyArray,
   conditionTree = {},
   setConditionTree = () => {},
 }) => {
   facetFields = facetFields || [];
+
+  const vocabData = useVocabs(
+    vocabularies.length > 0 ? vocabularies : emptyArray,
+  );
+  const hasVocab = useMemo(
+    () =>
+      vocabularies.reduce((acc, v) => {
+        acc[v.field] = true;
+        return acc;
+      }, {}),
+    [vocabularies],
+  );
 
   const setCondition = useCallback(
     (fieldName, value, checked) =>
@@ -108,20 +124,31 @@ export const SearchConditions = ({
     () =>
       facetFields.length > 0 ? (
         <div className="searchConditions ui">
-          {facetFields.map(([fieldDef, values], index) => (
-            <SearchConditionsField
-              key={index}
-              fieldDef={fieldDef}
-              values={values}
-              conditionTree={conditionTree}
-              setCondition={setCondition}
-              setContains={setContains}
-              setMore={setMore}
-            />
-          ))}
+          {facetFields.map(([fieldDef, values], index) => {
+            const vocabDef = vocabularies.find(
+              (v) => v.field === fieldDef.name,
+            );
+            const vocabItems = vocabDef
+              ? vocabData[vocabDef.name] || emptyArray
+              : emptyArray;
+            return (
+              <SearchConditionsField
+                key={index}
+                fieldDef={fieldDef}
+                values={values}
+                vocabItems={vocabItems}
+                hasVocab={!!hasVocab[fieldDef.name]}
+                conditionTree={conditionTree}
+                setCondition={setCondition}
+                setContains={setContains}
+                setMore={setMore}
+              />
+            );
+          })}
         </div>
       ) : null,
+    // Use spread operator to perform a shallow equality check on the vocabData object
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(facetFields), conditionTree],
+    [JSON.stringify(facetFields), conditionTree, ...Object.values(vocabData)],
   );
 };
