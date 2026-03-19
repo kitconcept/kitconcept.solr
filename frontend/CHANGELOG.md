@@ -8,6 +8,17 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.13 (2026-03-19)
+
+### Feature
+
+- Add vocabulary support for facet conditions. @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issue/63)
+
+### Bugfix
+
+- Fix useSelector rerenders in SolrSearchAutosuggest and routes @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issue/63)
+- Fix livesearch widget exception during text changes @reebalazs 
+
 ## 2.0.0-alpha.12 (2026-02-10)
 
 ## 2.0.0-alpha.11 (2026-02-09)

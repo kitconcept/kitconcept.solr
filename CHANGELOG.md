@@ -7,6 +7,49 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a13 (2026-03-19)
+
+### Backend
+
+
+#### New features:
+
+- Add vocabulary support for facet conditions. @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issues/63)
+
+
+#### Bug fixes:
+
+- Fix test_services_navigation.py which used the wrong layer and corrupted ZODB state @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issues/63)
+
+
+
+### Frontend
+
+#### Feature
+
+- Add vocabulary support for facet conditions. @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issue/63)
+
+#### Bugfix
+
+- Fix useSelector rerenders in SolrSearchAutosuggest and routes @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issue/63)
+- Fix livesearch widget exception during text changes @reebalazs 
+
+
+
+### Project
+
+
+#### Feature
+
+- Add phone, building and room fields for Person content type in schema. @danalvrz 
+
+
+#### Documentation
+
+- Add instructions for vocabulary support and calculated fields in facet conditions. @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/pull/63)
+
+
+
 ## 2.0.0a12 (2026-02-10)
 
 ### Backend

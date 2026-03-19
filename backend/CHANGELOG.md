@@ -9,6 +9,18 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0a13 (2026-03-19)
+
+
+### New features:
+
+- Add vocabulary support for facet conditions. @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issues/63)
+
+
+### Bug fixes:
+
+- Fix test_services_navigation.py which used the wrong layer and corrupted ZODB state @reebalazs [#63](https://github.com/kitconcept/kitconcept-solr/issues/63)
+
 ## 2.0.0a12 (2026-02-10)
 
 
