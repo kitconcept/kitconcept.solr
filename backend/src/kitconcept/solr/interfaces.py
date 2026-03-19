@@ -17,7 +17,26 @@ CONFIG_SCHEMA = json.dumps({
     "properties": {
         "fieldList": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+                "oneOf": [
+                    {"type": "string"},
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "vocabulary": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "isMultilingual": {"type": "boolean"},
+                                },
+                                "required": ["name"],
+                            },
+                        },
+                        "required": ["name"],
+                    },
+                ],
+            },
         },
         "searchTabs": {
             "type": "array",

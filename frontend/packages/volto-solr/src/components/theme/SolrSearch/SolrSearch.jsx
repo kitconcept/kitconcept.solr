@@ -38,6 +38,7 @@ import { SearchResultInfo } from './SearchResultInfo';
 import { SearchTabs } from './SearchTabs';
 import { SearchConditions } from './SearchConditions';
 import { queryStateFromParams, queryStateToParams } from './SearchQuery';
+import { VocabProvider } from './vocabs/VocabContext';
 
 const messages = defineMessages({
   TypeSearchWords: {
@@ -371,90 +372,93 @@ class SolrSearch extends Component {
             setGroupSelect={(groupSelect) => this.setGroupSelect(groupSelect)}
             facetGroups={this.props.facetGroups}
           />
-          <article id="content">
-            <header>
-              {this.props.total > 0 ? (
-                <div className="sorting-bar">
-                  <SelectLayout
-                    layouts={this.props.layouts}
-                    value={this.state.layout}
-                    onChange={(value) => {
-                      this.setState({ layout: value });
-                    }}
-                  />
-                  <SelectSorting
-                    value={this.state.sortOn}
-                    onChange={(selectedOption, order) => {
-                      this.onSortChange(selectedOption, order);
-                    }}
-                  />
-                </div>
-              ) : null}
-            </header>
-            <div className="searchContentWrapper">
-              <SearchConditions
-                groupSelect={this.state.groupSelect}
-                facetFields={this.props.facetFields}
-                conditionTree={this.state.facetConditions}
-                setConditionTree={this.setConditionTree}
-              />
-              <Dimmer active={this.props.loading} inverted>
-                <Loader indeterminate size="small">
-                  <FormattedMessage id="loading" defaultMessage="Loading" />
-                </Loader>
-              </Dimmer>
-              <section
-                id="content-core"
-                className={`layout-${this.state.layout}`}
-              >
-                <div className="search-items">
-                  {this.props.items?.map((item, index) => (
-                    <div key={'' + index + '-' + item['@id']}>
-                      {createElement(resultTypeMapper(item['@type']), {
-                        key: item['@id'],
-                        item,
-                        layout: this.state.layout,
-                      })}
-                    </div>
-                  ))}
-                </div>
-                {this.props.batching &&
-                  this.props.total / settings.defaultPageSize > 1 && (
-                    <div className="search-footer">
-                      <Pagination
-                        activePage={this.state.currentPage}
-                        totalPages={Math.ceil(
-                          this.props.total / settings.defaultPageSize,
-                        )}
-                        onPageChange={this.handleQueryPaginationChange}
-                        firstItem={null}
-                        lastItem={null}
-                        prevItem={{
-                          content: (
-                            <Icon name={paginationLeftSVG} size="18px" />
-                          ),
-                          icon: true,
-                          'aria-disabled': !this.props.batching.prev,
-                          className: !this.props.batching.prev
-                            ? 'disabled'
-                            : null,
-                        }}
-                        nextItem={{
-                          content: (
-                            <Icon name={paginationRightSVG} size="18px" />
-                          ),
-                          icon: true,
-                          'aria-disabled': !this.props.batching.next,
-                          className: !this.props.batching.next
-                            ? 'disabled'
-                            : null,
-                        }}
-                      />
-                    </div>
-                  )}
-              </section>
-            </div>
-          </article>
+          <VocabProvider>
+            <article id="content">
+              <header>
+                {this.props.total > 0 ? (
+                  <div className="sorting-bar">
+                    <SelectLayout
+                      layouts={this.props.layouts}
+                      value={this.state.layout}
+                      onChange={(value) => {
+                        this.setState({ layout: value });
+                      }}
+                    />
+                    <SelectSorting
+                      value={this.state.sortOn}
+                      onChange={(selectedOption, order) => {
+                        this.onSortChange(selectedOption, order);
+                      }}
+                    />
+                  </div>
+                ) : null}
+              </header>
+              <div className="searchContentWrapper">
+                <SearchConditions
+                  groupSelect={this.state.groupSelect}
+                  facetFields={this.props.facetFields}
+                  vocabularies={this.props.vocabularies}
+                  conditionTree={this.state.facetConditions}
+                  setConditionTree={this.setConditionTree}
+                />
+                <Dimmer active={this.props.loading} inverted>
+                  <Loader indeterminate size="small">
+                    <FormattedMessage id="loading" defaultMessage="Loading" />
+                  </Loader>
+                </Dimmer>
+                <section
+                  id="content-core"
+                  className={`layout-${this.state.layout}`}
+                >
+                  <div className="search-items">
+                    {this.props.items?.map((item, index) => (
+                      <div key={'' + index + '-' + item['@id']}>
+                        {createElement(resultTypeMapper(item['@type']), {
+                          key: item['@id'],
+                          item,
+                          layout: this.state.layout,
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                  {this.props.batching &&
+                    this.props.total / settings.defaultPageSize > 1 && (
+                      <div className="search-footer">
+                        <Pagination
+                          activePage={this.state.currentPage}
+                          totalPages={Math.ceil(
+                            this.props.total / settings.defaultPageSize,
+                          )}
+                          onPageChange={this.handleQueryPaginationChange}
+                          firstItem={null}
+                          lastItem={null}
+                          prevItem={{
+                            content: (
+                              <Icon name={paginationLeftSVG} size="18px" />
+                            ),
+                            icon: true,
+                            'aria-disabled': !this.props.batching.prev,
+                            className: !this.props.batching.prev
+                              ? 'disabled'
+                              : null,
+                          }}
+                          nextItem={{
+                            content: (
+                              <Icon name={paginationRightSVG} size="18px" />
+                            ),
+                            icon: true,
+                            'aria-disabled': !this.props.batching.next,
+                            className: !this.props.batching.next
+                              ? 'disabled'
+                              : null,
+                          }}
+                        />
+                      </div>
+                    )}
+                </section>
+              </div>
+            </article>
+          </VocabProvider>
         </Container>
         {this.state.isClient &&
           createPortal(
@@ -524,6 +528,7 @@ export default compose(
         facetGroups,
         facetFields,
         layouts,
+        vocabularies,
         total,
         loaded,
         loading,
@@ -534,6 +539,7 @@ export default compose(
         facetGroups,
         facetFields,
         layouts,
+        vocabularies,
         total,
         loaded,
         loading,

@@ -15,6 +15,7 @@ const formattedCounter = (value) =>
 export const SearchConditionsValue = ({
   fieldDef,
   value,
+  displayValue,
   counter,
   condition,
   setCondition: setC,
@@ -27,7 +28,7 @@ export const SearchConditionsValue = ({
 
   return useMemo(
     () =>
-      value ? (
+      displayValue ? (
         <div className="searchConditionsValue">
           {counter != null ? (
             <div className="searchConditionsCounter ui circular label lightgrey">
@@ -37,7 +38,7 @@ export const SearchConditionsValue = ({
             <div className="searchConditionsCounter" />
           )}
           <div className="searchConditionsLabel">
-            <ValueLabel value={value} />
+            <ValueLabel value={displayValue} />
           </div>
           <div className="searchConditionsCheckbox">
             <Checkbox
@@ -48,6 +49,6 @@ export const SearchConditionsValue = ({
         </div>
       ) : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(fieldDef), value, counter, checked, setCondition],
+    [JSON.stringify(fieldDef), displayValue, counter, checked, setCondition],
   );
 };

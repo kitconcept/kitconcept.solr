@@ -1,3 +1,4 @@
+from kitconcept.solr.testing import FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
@@ -5,7 +6,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.dexterity.utils import createContentInContainer
 from plone.registry.interfaces import IRegistry
 from plone.restapi.bbb import INavigationSchema
-from plone.restapi.testing import PLONE_RESTAPI_DX_FUNCTIONAL_TESTING
 from plone.restapi.testing import RelativeSession
 from zope.component import getUtility
 
@@ -13,8 +13,17 @@ import transaction
 import unittest
 
 
+LANG = "en"
+
+
+def create(container, portal_type, **kw):
+    content = createContentInContainer(container, portal_type, **kw)
+    content.language = LANG
+    return content
+
+
 class TestServicesNavigation(unittest.TestCase):
-    layer = PLONE_RESTAPI_DX_FUNCTIONAL_TESTING
+    layer = FUNCTIONAL_TESTING
 
     def setUp(self):
         self.app = self.layer["app"]
@@ -22,35 +31,44 @@ class TestServicesNavigation(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
+        # Re-enable Folder type (disabled by plone.volto profile)
+        fti = self.portal.portal_types["Folder"]
+        fti.global_allow = True
+
+        # Ensure Folder is in displayed_types for navigation
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix="plone")
+        displayed_types = settings.displayed_types
+        if "Folder" not in displayed_types:
+            settings.displayed_types = tuple(list(displayed_types) + ["Folder"])
+
         self.api_session = RelativeSession(self.portal_url, test=self)
         self.api_session.headers.update({"Accept": "application/json"})
         self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 
-        self.folder = createContentInContainer(
-            self.portal, "Folder", id="folder", title="Some Folder"
-        )
-        self.folder2 = createContentInContainer(
+        self.folder = create(self.portal, "Folder", id="folder", title="Some Folder")
+        self.folder2 = create(
             self.portal, "Folder", id="folder2", title="Some Folder 2"
         )
-        self.subfolder1 = createContentInContainer(
+        self.subfolder1 = create(
             self.folder, "Folder", id="subfolder1", title="SubFolder 1"
         )
-        self.subfolder2 = createContentInContainer(
+        self.subfolder2 = create(
             self.folder, "Folder", id="subfolder2", title="SubFolder 2"
         )
-        self.thirdlevelfolder = createContentInContainer(
+        self.thirdlevelfolder = create(
             self.subfolder1,
             "Folder",
             id="thirdlevelfolder",
             title="Third Level Folder",
         )
-        self.fourthlevelfolder = createContentInContainer(
+        self.fourthlevelfolder = create(
             self.thirdlevelfolder,
             "Folder",
             id="fourthlevelfolder",
             title="Fourth Level Folder",
         )
-        createContentInContainer(self.folder, "Document", id="doc1", title="A document")
+        create(self.folder, "Document", id="doc1", title="A document")
         transaction.commit()
 
     def tearDown(self):
@@ -93,13 +111,13 @@ class TestServicesNavigation(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix="plone")
         displayed_types = settings.displayed_types
         settings.displayed_types = tuple(list(displayed_types) + ["File"])
-        createContentInContainer(
+        create(
             self.portal,
             "File",
             id="example-file",
             title="Example file",
         )
-        createContentInContainer(
+        create(
             self.folder,
             "File",
             id="example-file-1",
@@ -123,7 +141,7 @@ class TestServicesNavigation(unittest.TestCase):
         # False for Plone 6.0 and True for Plone 5.2
         # explicitly set the value to False to avoid test failures
         settings.show_excluded_items = False
-        createContentInContainer(
+        create(
             self.folder,
             "Folder",
             id="excluded-subfolder",
@@ -161,13 +179,13 @@ class TestServicesNavigation(unittest.TestCase):
             "Collection",
             "File",
         )
-        createContentInContainer(
+        create(
             self.portal,
             "File",
             id="example-file",
             title="Example file",
         )
-        createContentInContainer(
+        create(
             self.folder,
             "File",
             id="example-file-1",
@@ -208,7 +226,7 @@ class TestServicesNavigation(unittest.TestCase):
         title = "Example Document"
         nav_title = "Fancy title"
 
-        createContentInContainer(
+        create(
             self.folder,
             "DXTestDocument",
             id="example-dx-document",

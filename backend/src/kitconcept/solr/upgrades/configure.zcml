@@ -26,4 +26,15 @@
         />
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+      profile="kitconcept.solr:default"
+      source="1002"
+      destination="1003"
+      >
+    <genericsetup:upgradeStep
+        title="Update registry schema"
+        handler=".update_registry_schema"
+        />
+  </genericsetup:upgradeSteps>
+
 </configure>

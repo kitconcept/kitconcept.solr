@@ -14,8 +14,10 @@ import { useSelector } from 'react-redux';
  */
 
 const makeConditionalSolrSearch = (config) => (props) => {
-  const state = useSelector((state) => state);
-  if (config.settings.solrSearchOptions.isBackendAvailable(state)) {
+  const isAvailable = useSelector(
+    config.settings.solrSearchOptions.isBackendAvailable,
+  );
+  if (isAvailable) {
     return config.widgets.SolrSearch({
       ...config.settings.solrSearchOptions,
       ...props,

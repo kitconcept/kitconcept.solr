@@ -1,4 +1,7 @@
+from kitconcept.solr.interfaces import IKitconceptSolrSettings
 from plone import api
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
 
 def add_highlighting_config(context):
@@ -10,3 +13,8 @@ def add_highlighting_config(context):
             {"field": "Description", "prop": "highlighting_description"},
         ]
         api.portal.set_registry_record("kitconcept.solr.config", value)
+
+
+def update_registry_schema(context):
+    registry = getUtility(IRegistry)
+    registry.registerInterface(IKitconceptSolrSettings, prefix="kitconcept.solr")

@@ -90,6 +90,34 @@ class TestUtilsFieldList(TestUtils):
         )
 
 
+solr_config_with_dict_fields = {
+    **solr_config,
+    "fieldList": [
+        "UID",
+        {
+            "name": "Title",
+            "vocabulary": {
+                "name": "kitconcept.solr.vocabularies.test",
+                "isMultilingual": False,
+            },
+        },
+        "Description",
+        "Type",
+    ],
+}
+
+
+class TestUtilsFieldListWithDictFields(TestUtils):
+    @pytest.fixture()
+    def registry_config(self) -> dict:
+        return {
+            "kitconcept.solr.config": solr_config_with_dict_fields,
+        }
+
+    def test_field_list(self):
+        assert self.solr_config.field_list == "UID,Title,Description,Type"
+
+
 class TestUtilsSelectLayouts(TestUtils):
     def test_select_layouts(self):
         assert self.solr_config.select_layouts(0) is None
