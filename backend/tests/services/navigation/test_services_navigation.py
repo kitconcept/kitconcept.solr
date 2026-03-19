@@ -1,3 +1,4 @@
+from kitconcept.solr.testing import FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
@@ -5,7 +6,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.dexterity.utils import createContentInContainer
 from plone.registry.interfaces import IRegistry
 from plone.restapi.bbb import INavigationSchema
-from kitconcept.solr.testing import FUNCTIONAL_TESTING
 from plone.restapi.testing import RelativeSession
 from zope.component import getUtility
 

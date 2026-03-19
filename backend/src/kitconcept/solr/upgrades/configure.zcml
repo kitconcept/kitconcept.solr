@@ -26,7 +26,7 @@
         />
   </genericsetup:upgradeSteps>
 
-    <genericsetup:upgradeSteps
+  <genericsetup:upgradeSteps
       profile="kitconcept.solr:default"
       source="1002"
       destination="1003"
