@@ -225,6 +225,14 @@
       </analyzer>
     </fieldType>
 
+    <fieldType name="knn_vector_768"
+               class="solr.DenseVectorField"
+               vectorDimension="768"
+               similarityFunction="cosine"
+               hnswM="hnsw"
+               hnswEfConstruction="16"
+               hnswBeamWidth="200" />
+
   </types>
 
 
@@ -390,6 +398,10 @@
       indexed="true" stored="true" multiValued="true" />
     <field name="responsibilities" type="string"
       indexed="true" stored="true" multiValued="true" />
+
+    <!-- embedding of SearchableText, queried via {!knn} -->
+    <field name="content_vector" type="knn_vector_768"
+      indexed="true" stored="false" multiValued="false" />
 
   </fields>
 
