@@ -228,10 +228,8 @@
     <fieldType name="knn_vector_768"
                class="solr.DenseVectorField"
                vectorDimension="768"
-               similarityFunction="cosine"
-               hnswM="hnsw"
-               hnswEfConstruction="16"
-               hnswBeamWidth="200" />
+               similarityFunction="dot_product"
+               hnswEfConstruction="200"/>
 
   </types>
 
