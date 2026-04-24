@@ -399,7 +399,7 @@
 
     <!-- embedding of SearchableText, queried via {!knn} -->
     <field name="content_vector" type="knn_vector_768"
-      indexed="true" stored="false" multiValued="false" />
+      indexed="true" stored="true" multiValued="false" />
 
   </fields>
 
