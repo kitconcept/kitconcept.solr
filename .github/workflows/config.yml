@@ -86,9 +86,11 @@ jobs:
               - 'docker-compose*'
               - 'backend/**'
               - 'frontend/**'
+              - 'solr/**'
             backend:
               - 'backend/**'
               - '.github/workflows/backend*'
+              - 'solr/**'
             docs:
               - '.readthedocs.yaml'
               - 'docs/**'

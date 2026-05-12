@@ -8,6 +8,7 @@ on:
       - "backend/**"
       - "docs/**"
       - "frontend/**"
+      - "solr/**"
   workflow_dispatch:
 
 env:

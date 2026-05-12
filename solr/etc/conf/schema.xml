@@ -229,7 +229,7 @@
                class="solr.DenseVectorField"
                vectorDimension="768"
                similarityFunction="dot_product"
-               hnswEfConstruction="200"/>
+               hnswBeamWidth="200"/>
 
   </types>
 

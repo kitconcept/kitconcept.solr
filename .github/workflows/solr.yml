@@ -42,6 +42,34 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Build amd64 image for smoke test
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64
+          context: solr
+          file: solr/Dockerfile
+          load: true
+          tags: kitconcept-solr-smoke:local
+
+      - name: Smoke test - plone core loads on startup
+        run: |
+          docker run -d --name solr-smoke -p 8983:8983 kitconcept-solr-smoke:local
+          # If the schema is broken the core fails to load, but Jetty still
+          # starts. /solr/plone/admin/ping returns 404 in that case.
+          for i in $(seq 1 60); do
+            if curl -fsS "http://localhost:8983/solr/plone/admin/ping?wt=json" 2>/dev/null | grep -q '"status":"OK"'; then
+              echo "Solr plone core loaded and healthy"
+              docker rm -f solr-smoke >/dev/null
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Solr plone core failed to come up healthy after 120s"
+          echo "--- container logs ---"
+          docker logs solr-smoke
+          docker rm -f solr-smoke >/dev/null
+          exit 1
+
       - name: Login to Container Registry
         uses: docker/login-action@v2
         with:
