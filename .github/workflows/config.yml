@@ -90,6 +90,7 @@ jobs:
             backend:
               - 'backend/**'
               - '.github/workflows/backend*'
+              - 'solr/**'
             docs:
               - '.readthedocs.yaml'
               - 'docs/**'
