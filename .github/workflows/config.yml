@@ -86,6 +86,7 @@ jobs:
               - 'docker-compose*'
               - 'backend/**'
               - 'frontend/**'
+              - 'solr/**'
             backend:
               - 'backend/**'
               - '.github/workflows/backend*'
