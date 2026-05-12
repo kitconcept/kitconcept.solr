@@ -1,0 +1,1 @@
+Run acceptance tests on `solr/**` changes and smoke-test the built Solr image (boot it and ping the `plone` core) before pushing it. @reebalazs
