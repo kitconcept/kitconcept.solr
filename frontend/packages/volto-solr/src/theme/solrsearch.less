@@ -219,6 +219,13 @@
     display: inline-block;
   }
 
+  // Hide the empty search tabs container (e.g. on an empty search term, when
+  // there are no facet groups). Semantic UI's `.ui.menu` enforces a `min-height`,
+  // so an empty `.searchTabs` would otherwise render as a stray grey rectangle.
+  .searchTabs.ui.tabular.menu:empty {
+    display: none;
+  }
+
   .searchTabs.ui.tabular.menu {
     display: block;
     border-bottom: none;
