@@ -7,6 +7,43 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0a14 (2026-06-10)
+
+### Backend
+
+No significant changes.
+
+
+
+
+### Frontend
+
+#### Bugfix
+
+- Fix grey bars around facets in search @iRohitSingh [#75](https://github.com/kitconcept/kitconcept-solr/issue/75)
+- Hide the empty search tabs container on an empty search term, so it no longer renders as a stray grey rectangle. @reebalazs 
+
+
+
+### Project
+
+
+#### Feature
+
+- Add dense 768 dimension vector field for embeddings. @danalvrz 
+
+
+#### Bugfix
+
+- Fix `knn_vector_768` field type so the Solr core can load: use `hnswBeamWidth` instead of the unrecognized `hnswEfConstruction` attribute on `solr.DenseVectorField`. @reebalazs 
+
+
+#### Internal
+
+- Run acceptance and backend tests on `solr/**` changes, and smoke-test the built Solr image (boot it and ping the `plone` core) before pushing it. @reebalazs 
+
+
+
 ## 2.0.0a13 (2026-03-19)
 
 ### Backend

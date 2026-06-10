@@ -1,1 +1,0 @@
-Fix `knn_vector_768` field type so the Solr core can load: use `hnswBeamWidth` instead of the unrecognized `hnswEfConstruction` attribute on `solr.DenseVectorField`. @reebalazs

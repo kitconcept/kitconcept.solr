@@ -8,6 +8,13 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0-alpha.14 (2026-06-10)
+
+### Bugfix
+
+- Fix grey bars around facets in search @iRohitSingh [#75](https://github.com/kitconcept/kitconcept-solr/issue/75)
+- Hide the empty search tabs container on an empty search term, so it no longer renders as a stray grey rectangle. @reebalazs 
+
 ## 2.0.0-alpha.13 (2026-03-19)
 
 ### Feature

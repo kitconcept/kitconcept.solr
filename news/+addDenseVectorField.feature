@@ -1,1 +1,0 @@
-Add dense 768 dimension vector field for embeddings. @danalvrz 
