@@ -1,0 +1,41 @@
+name: Retag Solr image
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: "Existing image tag to copy from (e.g. sha-a4152ea)"
+        required: true
+      target_tag:
+        description: "New tag to create (e.g. 2.0.0a14)"
+        required: true
+
+env:
+    IMAGE_NAME: ghcr.io/kitconcept/solr
+
+jobs:
+
+  retag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v2
+        with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Retag image
+        run: |
+          docker buildx imagetools create \
+            -t "${IMAGE_NAME}:${{ inputs.target_tag }}" \
+            "${IMAGE_NAME}:${{ inputs.source_tag }}"
+
+      - name: Inspect result
+        run: |
+          docker buildx imagetools inspect "${IMAGE_NAME}:${{ inputs.target_tag }}"
