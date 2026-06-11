@@ -1,0 +1,1 @@
+Tag the published Solr image (`ghcr.io/kitconcept/solr`) with the release number in addition to the commit SHA, so consumers can pin the same release number for the backend, frontend and Solr image. @reebalazs

@@ -405,6 +405,20 @@ Create a file `profiles/default/registry/kitconcept.solr.interfaces.IKitconceptS
 
 This repository provides a Solr Docker image preconfigured for Plone at `ghcr.io/kitconcept/solr`.
 
+The image is published with the following tags:
+
+| Tag | Description |
+| --- | --- |
+| `latest` | Latest build from the `main` branch. |
+| `2.0.0a14` (release number) | Published for each release. Pin this to the same release number as the `kitconcept.solr` backend and `@kitconcept/volto-solr` frontend packages so that compatible versions are used together. |
+| `sha-db2c24c` (commit SHA) | Build of a specific commit. |
+
+For production deployments, pin the release-number tag matching the backend and frontend package versions, e.g.:
+
+```yaml
+    image: ghcr.io/kitconcept/solr:2.0.0a14
+```
+
 #### Docker Compose Example
 
 ```yaml
