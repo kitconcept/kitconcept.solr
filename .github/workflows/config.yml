@@ -84,6 +84,7 @@ jobs:
               - '.github/workflows/frontend*'
               - '.github/workflows/config*'
               - 'docker-compose*'
+              - 'Makefile'
               - 'backend/**'
               - 'frontend/**'
               - 'solr/**'
