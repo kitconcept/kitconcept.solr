@@ -237,7 +237,10 @@ solr-activate-and-reindex-clear: ## Activate solr and reindex content with clear
 .PHONY: acceptance-backend-dev-start
 acceptance-backend-dev-start:
 	@echo "Start acceptance backend and solr"
-	@docker compose -f $(STACK_FILE_DEV) up backend-acceptance solr-acceptance --build
+	@# tika-acceptance is named explicitly (not just pulled in as a solr-acceptance
+	@# dependency) so that `docker compose up` also stops it on Ctrl-C. Otherwise
+	@# the tika container is left running after the stack is stopped.
+	@docker compose -f $(STACK_FILE_DEV) up backend-acceptance solr-acceptance tika-acceptance --build
 
 .PHONY: acceptance-frontend-dev-start
 acceptance-frontend-dev-start:

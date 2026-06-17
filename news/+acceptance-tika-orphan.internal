@@ -1,0 +1,1 @@
+Stop the `tika-acceptance` container when the acceptance backend is stopped. `make acceptance-backend-dev-start` now names it explicitly in `docker compose up` so Ctrl-C tears it down instead of leaving it running. @reebalazs
