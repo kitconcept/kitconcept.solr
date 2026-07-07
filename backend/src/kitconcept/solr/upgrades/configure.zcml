@@ -37,4 +37,19 @@
         />
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+      profile="kitconcept.solr:default"
+      source="1003"
+      destination="1004"
+      >
+    <genericsetup:upgradeStep
+        title="Add the rag_enabled registry record (AI search toggle)"
+        handler=".update_registry_schema"
+        />
+    <genericsetup:upgradeDepends
+        title="Register the RAG indexing queue processor"
+        import_steps="componentregistry"
+        />
+  </genericsetup:upgradeSteps>
+
 </configure>

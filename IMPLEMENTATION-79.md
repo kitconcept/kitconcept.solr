@@ -30,42 +30,99 @@ is live. This is the riskiest layer, so it goes first.
 
 **Foundations (1.5d):**
 
-- [ ] **1.1 LLM client module** (`backend/src/kitconcept/solr/llm/`):
+- [x] **1.1 LLM client module** (`backend/src/kitconcept/solr/llm/`):
       thin HTTP client for `POST /api/embed` (batched, `num_ctx` set,
       task prefixes `search_document:` / `search_query:`, truncation
       detection) and `POST /api/chat` (used in Step 3). Explicit timeouts;
       typed errors; no third-party LLM framework dependency.
-- [ ] **1.2 Minimal configuration**: the "AI search" toggle as a registry
+- [x] **1.2 Minimal configuration**: the "AI search" toggle as a registry
       record on `IKitconceptSolrSettings`
       (`backend/src/kitconcept/solr/interfaces.py` +
       `profiles/default/registry/`); endpoint URL + token as env vars wired
       through `docker-compose.yml` (pattern: `COLLECTIVE_SOLR_HOST`). Model
       names, topK, chunk parameters, prompt template: code defaults.
-- [ ] **1.3 Schema additions** for chunk sibling documents in
+- [x] **1.3 Schema additions** for chunk sibling documents in
       `solr/etc/conf/schema.xml` (chunk fields: `parent_uid`, denormalized
       `Title`, `path`, `allowedRolesAndUsers`, `Language`;
       `content_vector` populated on chunks).
 
 **Indexing (3d):**
 
-- [ ] **1.4 Chunking**: split extracted block text (reusing the traversal in
+- [x] **1.4 Chunking**: split extracted block text (reusing the traversal in
       `backend/src/kitconcept/solr/indexers/text.py`) into ~400-token
       structure-aware chunks with 10–15% overlap, merging tiny fragments.
       One kind of chunking (per the kick-off clarification); design kept
       compatible with the second kind.
-- [ ] **1.5 Index-time embedding**: hook after document assembly for
+- [x] **1.5 Index-time embedding**: hook after document assembly for
       `collective.solr` so each indexed object also writes its chunk
       documents with vectors — synchronous, short timeout,
       **skip-on-failure** (a save must never fail on embedding errors).
       Delete/unindex removes chunks. Record the embedding model name for
       reindex detection.
-- [ ] **1.6 Full-reindex support**: `solr-activate-and-reindex` populates
+- [x] **1.6 Full-reindex support**: `solr-activate-and-reindex` populates
       vectors using batched `/api/embed` calls.
-- [ ] Minimal inline test coverage with the PRs (repo CI standards); the
+- [x] Minimal inline test coverage with the PRs (repo CI standards); the
       full test pass is post-MVP (Step P1).
 
 Demo at end of step: indexed site content visible in Solr with chunk
 documents and populated vectors.
+
+### Implementation notes — Step 1 (design decisions made on the way)
+
+- **Hook: own indexing queue processor, not `ISolrAddHandler` adders.**
+  collective.solr queries its add handlers as *named* adapters by
+  portal type, so a single adapter cannot intercept all types. Instead,
+  `RagIndexProcessor` is registered as an `IIndexQueueProcessor`
+  utility (`componentregistry.xml`) — Plone's indexing queue dispatches
+  to every such utility, next to collective.solr's own processor, and
+  the RAG processor shares the same Solr connection. The module path
+  became `kitconcept/solr/rag/` (not `llm/` as sketched above): it
+  holds config, client, chunker, extraction, processor and reindex.
+- **Chunks are invisible to keyword search by construction.**
+  `chunk_text`/`parent_title` are stored-only (not indexed); chunks
+  carry none of the fields the `@solr` main query matches on. A
+  defensive `-is_rag_chunk:true` filter query was added to `@solr`
+  anyway.
+- **Chunk lifecycle**: chunk UIDs are `<parent UID>#rag-<n>`; a text
+  rebuild is delete-by-query + re-add (the chunk count may shrink).
+  A `MAX_CHUNKS_PER_DOCUMENT = 100` safety cap guards against
+  pathological documents (~40k tokens covered per document).
+- **Workflow transitions don't re-embed.** An attribute-limited
+  reindex that touches only metadata (`allowedRolesAndUsers`,
+  `Language`, path) updates the denormalized chunk fields in place via
+  Solr atomic updates; only text-affecting attributes trigger
+  re-chunking/re-embedding.
+- **Failure policy**: embedding errors log a warning and *keep* the
+  previously indexed chunks (slightly stale beats absent); the content
+  save itself never fails. Chunk cleanup on delete is gated on the
+  registry toggle only, so it works while the endpoint is unconfigured.
+- **Token sizing is heuristic** (4 chars/token, no tokenizer
+  dependency): chunk target 1600 chars ≈ 400 tokens under the model's
+  512-token limit; the client warns when an input still estimates over
+  the limit.
+- **Full reindex needs its own pass**: collective.solr's
+  `@@solr-maintenance` talks to Solr directly and bypasses queue
+  processors, so `reindex_helpers.reindex` now calls `reindex_rag`
+  afterwards (no-op when the feature is off).
+- **MVP text coverage**: title + description + Volto blocks. Binary
+  content (File/Image) is extracted by Tika *inside* Solr — the text
+  never passes through Plone, so it cannot be chunked/embedded here.
+  Post-MVP follow-up.
+- **Env overrides** `KITCONCEPT_SOLR_LLM_EMBED_MODEL`/`_CHAT_MODEL`
+  exist besides the code defaults, to ease testing against different
+  servers.
+- **Verified end to end against real Solr + the kitconcept LLM server**
+  (`tests/rag/test_e2e_live.py`, runs only when the LLM env vars are
+  set): indexing a document creates chunk documents with real vectors
+  through collective.solr's XML `update="set"` path; a `{!knn}` query
+  with the embedded question retrieves the right chunk; deletion
+  removes the chunks. Note: knn queries must be POSTed to Solr — the
+  768-float vector exceeds GET URL limits.
+- **kitconcept Genie (Open WebUI) endpoint constraints**: the server's
+  API key allowlist permits exactly `/ollama/api/embed` and
+  `/api/chat/completions`, so the client uses those as path defaults
+  (env-overridable for plain Ollama), chat speaks the OpenAI format,
+  and the embed model name needs its explicit `:latest` tag.
 
 ## Step 2 — Test corpus (0.5d)
 

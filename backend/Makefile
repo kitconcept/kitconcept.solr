@@ -102,6 +102,14 @@ solr-activate-and-reindex: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr
 solr-activate-and-reindex-clear: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and reindex content with clear
 	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --clear
 
+.PHONY: solr-activate-and-reindex-with-rag
+solr-activate-and-reindex-with-rag: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and RAG (AI search) and reindex content
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --rag-enable
+
+.PHONY: solr-activate-and-reindex-with-rag-clear
+solr-activate-and-reindex-with-rag-clear: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and RAG (AI search) and reindex content with clear
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --rag-enable --clear
+
 # Example Content
 .PHONY: update-example-content
 update-example-content: $(VENV_FOLDER) ## Export example content inside package

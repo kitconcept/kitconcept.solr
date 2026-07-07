@@ -300,6 +300,7 @@ All major open questions from the draft phase have been decided (team review
 | 7 | Demo corpus | Translated German template content + ~20 hand-written questions; English first |
 | 8 | Search UX | External (kitconcept.intranet search modal project); "AI search" toggle |
 | 9 | Chunk vs. document context for the prompt | Prompt with matched chunks (+ parent title/URL), cite parents |
+| 10 | Failure policy: hard error vs. graceful degradation | **Graceful degradation, applied consistently** (2026-07-13): toggle on without credentials = the feature silently reports unavailable (no error); AI service down = users fall back to the classic search instead of a hard error. The effective state is exposed to the client as `kitconcept.solr.rag_available` on the @site endpoint (registry toggle AND credentials), so the UI renders the right thing from the first paint. Recorded as revisitable: if operational practice shows silent degradation hides real misconfigurations, we can move toward hard errors. |
 
 Remaining open point:
 

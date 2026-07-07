@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<componentregistry>
+  <utilities>
+    <utility interface="Products.CMFCore.interfaces.IIndexQueueProcessor"
+             name="kitconcept.solr.rag"
+             remove="true"
+    />
+  </utilities>
+</componentregistry>
