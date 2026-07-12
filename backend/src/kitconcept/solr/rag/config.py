@@ -53,6 +53,16 @@ EMBED_BATCH_SIZE = 32
 # generation prompt).
 TOP_K = 5
 
+# Reciprocal Rank Fusion constant for hybrid retrieval (the standard
+# value from Cormack et al. 2009; Solr's native RRF uses it as well).
+RRF_K = 60
+
+# Retrieval mode: "hybrid" (BM25 + vector, RRF-fused; the default) or
+# "knn" (pure vector). The env override exists for the evaluation on
+# the real corpus (compare the two modes); not a supported setting.
+RETRIEVAL_HYBRID = "hybrid"
+RETRIEVAL_KNN = "knn"
+
 REGISTRY_ENABLED_KEY = "kitconcept.solr.rag_enabled"
 
 # Endpoint paths, relative to the server root URL. The defaults match
@@ -70,6 +80,7 @@ ENV_EMBED_MODEL = "KITCONCEPT_SOLR_LLM_EMBED_MODEL"
 ENV_CHAT_MODEL = "KITCONCEPT_SOLR_LLM_CHAT_MODEL"
 ENV_EMBED_PATH = "KITCONCEPT_SOLR_LLM_EMBED_PATH"
 ENV_CHAT_PATH = "KITCONCEPT_SOLR_LLM_CHAT_PATH"
+ENV_RETRIEVAL = "KITCONCEPT_SOLR_RAG_RETRIEVAL"
 
 
 @dataclass(frozen=True)
@@ -84,6 +95,7 @@ class RagConfig:
     chat_path: str = DEFAULT_CHAT_PATH
     embed_timeout: float = EMBED_TIMEOUT
     chat_timeout: float = CHAT_TIMEOUT
+    retrieval: str = RETRIEVAL_HYBRID
 
 
 def rag_enabled() -> bool:
@@ -119,6 +131,7 @@ def get_rag_config() -> RagConfig | None:
         chat_model=os.environ.get(ENV_CHAT_MODEL, "").strip() or DEFAULT_CHAT_MODEL,
         embed_path=os.environ.get(ENV_EMBED_PATH, "").strip() or DEFAULT_EMBED_PATH,
         chat_path=os.environ.get(ENV_CHAT_PATH, "").strip() or DEFAULT_CHAT_PATH,
+        retrieval=os.environ.get(ENV_RETRIEVAL, "").strip() or RETRIEVAL_HYBRID,
     )
 
 
