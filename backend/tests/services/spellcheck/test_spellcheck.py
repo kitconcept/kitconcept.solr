@@ -2,10 +2,10 @@ import pytest
 
 
 class TestSpellcheck:
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content, manager_request):
-        self.portal = portal_with_content
-        self.manager_request = manager_request
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content, manager_request):
+        request.cls.portal = portal_with_content
+        request.cls.manager_request = manager_request
 
 
 class TestSpellcheckCollateWithResults(TestSpellcheck):

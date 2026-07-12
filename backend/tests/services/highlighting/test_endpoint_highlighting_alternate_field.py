@@ -47,7 +47,7 @@ solr_config = {
 }
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def registry_config() -> dict:
     """Override registry configuration."""
     return {

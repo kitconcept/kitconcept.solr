@@ -4,7 +4,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def contents() -> list:
     return [
         {
@@ -23,17 +23,17 @@ def contents() -> list:
     ]
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def user_credentials() -> tuple:
     return "user2", "averylongpasswordbutnotthatlong"
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def member_as_user1_credentials() -> tuple:
     return "member_as_user1", "averylongpasswordbutnotthatlong"
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def users(user_credentials, member_as_user1_credentials) -> list:
     return [
         {
