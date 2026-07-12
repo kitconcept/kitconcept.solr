@@ -7,7 +7,9 @@ services:
     image: apache/tika:3.2.3.0-full
     profiles: ["acceptance", "dev", "solr"]
     ports:
-      - 9998:9998
+      # Host port for the container. Pytest sets this to 0 (ephemeral)
+      # so test runs never collide with a locally running stack.
+      - "${TIKA_ACCEPTANCE_PORT:-9998}:9998"
 
   solr-acceptance:
     build:
@@ -17,7 +19,10 @@ services:
     depends_on:
       - tika-acceptance
     ports:
-      - 8983:8983
+      # Host port for the container. Pytest sets this to 0 (ephemeral)
+      # so test runs never touch (or get blocked by) a locally running
+      # site Solr on 8983; manual/acceptance use keeps the fixed port.
+      - "${SOLR_ACCEPTANCE_PORT:-8983}:8983"
     command:
       - solr-precreate
       - plone
