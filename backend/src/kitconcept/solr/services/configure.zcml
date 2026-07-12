@@ -21,8 +21,6 @@
       name="@solr-suggest"
       />
 
-  <!-- RAG: TESTING - rough draft of the RAG query pipeline, to be
-       replaced by the proper implementation (query pipeline ticket) -->
   <plone:service
       method="GET"
       factory=".rag_search.RagSearch"

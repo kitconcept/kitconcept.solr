@@ -1,8 +1,8 @@
-"""Live test of the minimal @rag-search endpoint (RAG: TESTING).
+"""Live end-to-end test of the @rag-search endpoint.
 
 Same gating as test_e2e_live.py: runs only with the LLM env vars set
-and the docker Solr running. Goes with the throwaway endpoint and is
-removed together with it.
+(``KITCONCEPT_SOLR_LLM_URL``/``_TOKEN``) and the docker Solr running;
+skipped otherwise, so CI is unaffected.
 """
 
 from plone import api
@@ -79,10 +79,16 @@ class TestLiveRagSearch:
         assert response.status_code == 200
         data = response.json()
         assert data["error"] is None
+        assert data["error_code"] is None
         assert data["answer"], "expected a generated answer"
         assert "30" in data["answer"]
         assert data["sources"]
-        assert data["sources"][0]["title"] == "Vacation policy"
+        source = data["sources"][0]
+        assert source["title"] == "Vacation policy"
+        # Solr's Type field carries the friendly type name, consistent
+        # with what the classic search returns as @type
+        assert source["@type"] == "Page"
+        assert source["description"]
         assert "<think>" not in data["answer"]
 
     def test_missing_question_is_bad_request(self, manager_session):

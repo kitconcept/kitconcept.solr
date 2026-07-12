@@ -106,6 +106,14 @@ def environment(obj):
 
 
 class TestIndexRebuild:
+    def test_image_is_not_chunked(self, proc, conn, obj):
+        """Binary content (Image) gets no chunks; stale chunks from
+        before the exclusion are removed."""
+        obj.portal_type = "Image"
+        proc.index(obj)
+        assert conn.added == []
+        assert conn.deleted_queries == [chunk_query(UID)]
+
     def test_deletes_then_adds_chunks(self, proc, conn, obj):
         proc.index(obj)
         assert conn.deleted_queries == [chunk_query(UID)]

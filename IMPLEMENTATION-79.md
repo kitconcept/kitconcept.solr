@@ -224,7 +224,7 @@ Goal: `@rag-search` returns `{answer, sources}` end to end.
 
 **Retrieval endpoint (1d):**
 
-- [ ] **3.1** New restapi service `@rag-search`
+- [x] **3.1** New restapi service `@rag-search`
       (`backend/src/kitconcept/solr/services/`, staged behind the toggle):
       embed query (`search_query:` prefix), run
       `{!knn f=content_vector topK=K}` with the same `fq` security/path/
@@ -234,20 +234,73 @@ Goal: `@rag-search` returns `{answer, sources}` end to end.
 
 **Answer generation (1.5d):**
 
-- [ ] **3.2 Prompt template**: fixed instruction template (answer only from
+- [x] **3.2 Prompt template**: fixed instruction template (answer only from
       the provided context; answer in the question's language; decline
       explicitly when no answer is found; refer to sources). Code default;
       registry override is post-MVP.
-- [ ] **3.3 Generation call**: send question + matched chunks (+ parent
+- [x] **3.3 Generation call**: send question + matched chunks (+ parent
       title/URL) to `qwen3:14b`; compose the `{answer, sources}` response;
       structured errors for timeout/unavailable/not-configured.
-- [ ] Validate against the Step 2 questions (smoke level: right documents
-      found, declines when it should).
+- [x] Validate against the Step 2 questions (smoke level: right documents
+      found, declines when it should). Note: Step 2 (the proper corpus,
+      internal ticket 459) was deferred by decision - validation ran
+      against a minimal hand-made corpus; re-run once the corpus lands.
 
 Demo at end of step: full RAG loop over REST on the demo corpus. **This is
 the MVP backend.** The user-facing MVP completes when the search UI from the
 kitconcept.intranet modal project integrates this endpoint (outside this
 repository's estimates).
+
+### Implementation notes — Step 3 (design decisions made on the way)
+
+- **Pipeline extracted from the HTTP layer**: the logic lives in
+  `rag/pipeline.py` (`run_rag_search`) with the prompt in
+  `rag/prompt.py`; the restapi service is a thin wrapper. This keeps
+  the pipeline testable with faked Solr/LLM and reusable by a future
+  evaluation harness.
+- **Structured errors with codes**: the response carries `error`
+  (human readable) plus `error_code` (`not_configured`,
+  `embedding_failed`, `generation_failed`, `solr_unavailable`) so the
+  frontend can degrade to the classic search. A generation failure
+  still returns the retrieved sources. Empty retrieval is NOT an
+  error: `answer: null, sources: []`.
+- **Sources are enriched parent documents**: one extra Solr query
+  fetches parent metadata (`Title`, `Description`, `Type`); each
+  source carries the best-ranked chunk's text as `snippet`. `@type`
+  is Solr's friendly type name (e.g. "Page"), consistent with the
+  classic search results.
+- **Optional filters**: `path_prefix` and `lang` request parameters
+  compose as additional pre-filter queries next to the security
+  filter.
+- **Model bake-off** (`qwen3:14b` vs alternatives) stays in the
+  overflow list per the re-scoping; the model remains fixed.
+- Observation from live testing on the minimal corpus: with only a
+  handful of documents, `topK=5` spans the whole corpus, so weakly
+  related sources appear below the top hit. On a realistic corpus a
+  score threshold (`{!vectorSimilarity}` / `minReturn`) or a smaller
+  source cutoff is worth evaluating - noted for the quality pass.
+
+## Known issues (accepted for the MVP)
+
+1. **The Solr tests and a local dev site share the Solr core.** The
+   test compose project uses the fixed host port 8983 — the same port
+   a dev Solr uses — and the test fixtures clear/recreate the index
+   (`down -v` at session start, `maintenance.clear()` in the portal
+   fixtures; the RAG live e2e tests behave exactly like the
+   pre-existing service tests here). Consequences and workarounds:
+   (a) stop the site's Solr before running the tests so the situation
+   does not arise, or (b) if it has happened, no harm is done — simply
+   reindex with `make solr-activate-and-reindex` before using the
+   site again. A real fix (ephemeral host ports for the test project,
+   wired into the test layer's `collective.solr.port`) is a **post-MVP
+   improvement**, tracked in the overflow list.
+2. **Weak sources on small corpora (topK semantics).** `{!knn topK=5}`
+   returns the 5 *nearest* chunks unconditionally, so on a small
+   corpus weakly related documents appear in the source list (answer
+   quality is unaffected — the grounding prompt handles weak context;
+   verified by the decline behavior). Accepted for now; **re-check
+   with the real corpus** (internal ticket 459) and evaluate a
+   similarity cutoff for displayed sources in the quality pass.
 
 ## Post-MVP follow-ups
 
@@ -274,6 +327,7 @@ remains):
 | Generation model comparison (`qwen3:14b` vs `qwen3.5:9b-q8_0` vs others) on the test questions | 0.5d |
 | Full configuration surface: registry records for model names, topK, chunk size, prompt override | 0.5d |
 | Acceptance test flow + full CI wiring (after the search-UI integration, so acceptance tests target the real UI) | 1d |
+| Separate Solr core/ports for tests vs. local dev site (see known issue 1) | 0.5d |
 
 **Later roadmap** (tracked, not scheduled): full evaluation harness
 (Recall@k/MRR/nDCG as CI regression gate, RAGAS faithfulness/relevancy with
