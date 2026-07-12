@@ -50,7 +50,7 @@ solr_config = {
 }
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def registry_config() -> dict:
     """Override registry configuration."""
     return {
@@ -60,11 +60,13 @@ def registry_config() -> dict:
 
 
 class TestEndpointCustom:
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content, manager_request):
-        self.portal = portal_with_content
-        response = manager_request.get(self.url)
-        self.data = response.json()
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content, manager_request):
+        request.cls.portal = portal_with_content
+        # url can be an instance property (derived per class); evaluate
+        # it on a throwaway instance
+        response = manager_request.get(request.cls().url)
+        request.cls.data = response.json()
 
 
 class TestFacetConditionsInactive(TestEndpointCustom):

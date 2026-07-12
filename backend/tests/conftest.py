@@ -19,6 +19,45 @@ globals().update(
 )
 
 
+@pytest.fixture(scope="class")
+def functional_class_bracket(functional_class):
+    """A class-scoped test bracket on the functional layer.
+
+    Runs the layer's testSetUp/testTearDown once per test *class*
+    instead of once per test function, so expensive per-class fixtures
+    (content creation, a shared query) can be set up a single time and
+    shared by all tests of the class - the pattern the old
+    zope.testrunner layers provided. plone.testing layer resources are
+    stacked (LIFO), so per-function brackets can still nest inside if
+    a test also uses the function-scoped ``functional`` fixture.
+
+    Tests of a class using this bracket share one ZODB/Solr state:
+    suitable for the common read-only pattern (create content, run a
+    query, assert many times); not for tests that mutate content.
+    """
+    layer = functional_class
+    layer.testSetUp()
+    yield layer
+    layer.testTearDown()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def keep_zope_layers(functional_session, integration_session):
+    """Keep the expensive Plone test layers alive for the whole session.
+
+    zope.pytestlayer only preserves layers across test classes for
+    zope.testrunner style tests (with a ``layer`` class attribute);
+    for pytest style tests its class-scoped layer fixture tears the
+    whole layer stack down after every test class, so the Plone site
+    got rebuilt many times per run - the main reason the suite became
+    much slower after the unittest to pytest migration. Depending on
+    the session-scoped layer fixtures marks the layers as
+    keep-for-whole-session: they are set up once and torn down at the
+    end of the session. Per-test isolation (testSetUp/testTearDown)
+    is unaffected.
+    """
+
+
 def is_responsive(url):
     """Helper fixture to check if Solr is up and running."""
     try:
@@ -51,7 +90,7 @@ def docker_compose_file(pytestconfig):
     return repo_root / "docker-compose-dev.yml"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def solr_service(docker_ip, docker_services):
     """Ensure that Solr service is up and responsive."""
     port = docker_services.port_for("solr-acceptance", 8983)

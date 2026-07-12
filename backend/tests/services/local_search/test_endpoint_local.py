@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def contents() -> list:
     return [
         {
@@ -40,11 +40,11 @@ def contents() -> list:
 
 
 class TestEndpointLocalSearch:
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content, manager_request):
-        self.portal = portal_with_content
-        response = manager_request.get(self.url)
-        self.data = response.json()
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content, manager_request):
+        request.cls.portal = portal_with_content
+        response = manager_request.get(request.cls.url)
+        request.cls.data = response.json()
 
 
 class TestEndpointLocalSearchGlobal(TestEndpointLocalSearch):
