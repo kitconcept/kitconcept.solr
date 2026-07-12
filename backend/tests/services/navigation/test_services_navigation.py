@@ -40,7 +40,7 @@ class TestServicesNavigation(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix="plone")
         displayed_types = settings.displayed_types
         if "Folder" not in displayed_types:
-            settings.displayed_types = tuple(list(displayed_types) + ["Folder"])
+            settings.displayed_types = (*displayed_types, "Folder")
 
         self.api_session = RelativeSession(self.portal_url, test=self)
         self.api_session.headers.update({"Accept": "application/json"})
@@ -110,7 +110,7 @@ class TestServicesNavigation(unittest.TestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(INavigationSchema, prefix="plone")
         displayed_types = settings.displayed_types
-        settings.displayed_types = tuple(list(displayed_types) + ["File"])
+        settings.displayed_types = (*displayed_types, "File")
         create(
             self.portal,
             "File",
@@ -221,7 +221,7 @@ class TestServicesNavigation(unittest.TestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(INavigationSchema, prefix="plone")
         displayed_types = settings.displayed_types
-        settings.displayed_types = tuple(list(displayed_types) + ["DXTestDocument"])
+        settings.displayed_types = (*displayed_types, "DXTestDocument")
 
         title = "Example Document"
         nav_title = "Fancy title"
