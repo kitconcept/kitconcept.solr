@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/getty-images-oe3artcekh8-unsplash.jpg",
+  "@type": "Image",
+  "UID": "825a131aefea4bb6a3e3792f3a51f6e3",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:07+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Techniker arbeitet an Netzwerkkabeln in blau-gelb beleuchteter Server-Infrastruktur eines Rechenzentrums.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-oe3artcekh8-unsplash.jpg",
+  "image": {
+    "blob_path": "825a131aefea4bb6a3e3792f3a51f6e3/image/getty-images-OE3ARtcEKH8-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-OE3ARtcEKH8-unsplash.jpg",
+    "height": 800,
+    "size": 243055,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:08+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Digitalisierung",
+    "Technologieforschung",
+    "Datensicherheit"
+  ],
+  "title": "Rechenzentrum Netzwerkinfrastruktur",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

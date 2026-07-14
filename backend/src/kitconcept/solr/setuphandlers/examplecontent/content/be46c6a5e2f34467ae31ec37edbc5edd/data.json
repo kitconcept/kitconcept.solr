@@ -1,0 +1,41 @@
+{
+  "@id": "/icons/icons_intranet_icn_raum.svg",
+  "@type": "Image",
+  "UID": "be46c6a5e2f34467ae31ec37edbc5edd",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-06-04T10:29:46+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": "2026-02-20T14:50:00+00:00",
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "icons_intranet_icn_raum.svg",
+  "image": {
+    "blob_path": "be46c6a5e2f34467ae31ec37edbc5edd/image/icons_intranet_icn_service 1.svg",
+    "content-type": "image/svg+xml",
+    "filename": "icons_intranet_icn_service 1.svg",
+    "height": 125,
+    "size": 3277,
+    "width": 125
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-16T15:30:08+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Service icon",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/zheng-xue-_u87r-igiwg-unsplash.jpg",
+  "@type": "Image",
+  "UID": "2443ca30d181450f8fd7d113d0739d3d",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:07:07+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Modernes Geb\u00e4ude mit horizontalen Fensterreihen spiegelt sich in blaugr\u00fcnem Teich mit Weide und gr\u00fcner Vegetation.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "zheng-xue-_u87r-igiwg-unsplash.jpg",
+  "image": {
+    "blob_path": "2443ca30d181450f8fd7d113d0739d3d/image/zheng-xue-_u87R-IgIWg-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "zheng-xue-_u87R-IgIWg-unsplash.jpg",
+    "height": 750,
+    "size": 292314,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:23:45+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Standorte",
+    "Forschungsinfrastruktur"
+  ],
+  "title": "Nachhaltige Architektur Wasserreflexion",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

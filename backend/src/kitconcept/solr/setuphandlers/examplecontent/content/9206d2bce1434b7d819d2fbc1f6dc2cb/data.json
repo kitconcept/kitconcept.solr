@@ -1,0 +1,68 @@
+{
+  "@id": "/community/gesundheit-wohlbefinden/stressmanagement",
+  "@type": "Document",
+  "UID": "9206d2bce1434b7d819d2fbc1f6dc2cb",
+  "allow_discussion": false,
+  "blocks": {
+    "83c2670f-e264-49d7-8347-6717786d4ac5": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "83c2670f-e264-49d7-8347-6717786d4ac5"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:32:05+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Workshops und Coaching-Angebote zur Stressbew\u00e4ltigung und Resilienzf\u00f6rderung: Programm, Termine und Anmeldem\u00f6glichkeiten.",
+  "effective": "2026-03-05T16:32:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "stressmanagement",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:32:08+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Stressmanagement",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:31+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:31+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

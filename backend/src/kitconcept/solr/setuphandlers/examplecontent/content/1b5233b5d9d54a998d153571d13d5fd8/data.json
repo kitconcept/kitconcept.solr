@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/steve-busch-ozrnsqislj0-unsplash.jpg",
+  "@type": "Image",
+  "UID": "1b5233b5d9d54a998d153571d13d5fd8",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:58+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Magenta-rosafarbene kosmische Nebula mit schwarzen Staublinien und Sternen, symbolisiert Sternenentstehung im All.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "steve-busch-ozrnsqislj0-unsplash.jpg",
+  "image": {
+    "blob_path": "1b5233b5d9d54a998d153571d13d5fd8/image/steve-busch-OZrnSqISLJ0-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "steve-busch-OZrnSqISLJ0-unsplash.jpg",
+    "height": 1065,
+    "size": 260732,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:22:07+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Raumfahrt",
+    "Geowissenschaften"
+  ],
+  "title": "Kosmische Nebula Gaswolke",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

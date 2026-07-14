@@ -1,0 +1,68 @@
+{
+  "@id": "/ueber-uns/presse-kommunikation/logo-corporate-design",
+  "@type": "Document",
+  "UID": "aadde568689045eba8daefccfe5e9968",
+  "allow_discussion": false,
+  "blocks": {
+    "784abc51-a305-4a1c-ad94-d0362fbcccbf": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "784abc51-a305-4a1c-ad94-d0362fbcccbf"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:30:17+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Download von Logos, Bildmarken und Corporate-Design-Vorlagen: Nutzungsregeln, Farbcodes und Schriftarten des DFNT-Erscheinungsbilds.",
+  "effective": "2026-03-05T16:30:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "logo-corporate-design",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:30:23+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Logo & Corporate Design",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:35+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:35+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/national-cancer-institute-oylhhhzksuk-unsplash.jpg",
+  "@type": "Image",
+  "UID": "0a6d1f6ec4114a09b200e3aae4b49fe0",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:14+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Mikromanipulation an biologischer Zellprobe unter dem Mikroskop",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "national-cancer-institute-oylhhhzksuk-unsplash.jpg",
+  "image": {
+    "blob_path": "0a6d1f6ec4114a09b200e3aae4b49fe0/image/national-cancer-institute-OYlhHhzksuk-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "national-cancer-institute-OYlhHhzksuk-unsplash.jpg",
+    "height": 781,
+    "size": 96909,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:21:23+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Medizin",
+    "Life Sciences",
+    "Laborforschung"
+  ],
+  "title": "Zellul\u00e4re Mikromanipulation",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

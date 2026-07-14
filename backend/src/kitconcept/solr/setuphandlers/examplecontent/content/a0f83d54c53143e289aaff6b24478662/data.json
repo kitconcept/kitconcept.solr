@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/oleg-ivanov-qlfv4c_mlgy-unsplash.jpg",
+  "@type": "Image",
+  "UID": "a0f83d54c53143e289aaff6b24478662",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:31+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Stapel bunter 3,5-Zoll-Disketten auf gr\u00fcnem Hintergrund",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "oleg-ivanov-qlfv4c_mlgy-unsplash.jpg",
+  "image": {
+    "blob_path": "a0f83d54c53143e289aaff6b24478662/image/oleg-ivanov-qlFv4c_MLgY-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "oleg-ivanov-qlFv4c_MLgY-unsplash.jpg",
+    "height": 1800,
+    "size": 201026,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:21:43+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Digitalisierung",
+    "Technologieforschung"
+  ],
+  "title": "Digitale Datenarchivierung im Wandel der Zeit",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

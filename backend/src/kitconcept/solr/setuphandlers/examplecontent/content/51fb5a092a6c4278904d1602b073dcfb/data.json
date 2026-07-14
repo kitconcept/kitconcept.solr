@@ -1,0 +1,68 @@
+{
+  "@id": "/ueber-uns/gremien-kommissionen/doktorandenvertretung",
+  "@type": "Document",
+  "UID": "51fb5a092a6c4278904d1602b073dcfb",
+  "allow_discussion": false,
+  "blocks": {
+    "7261424e-2f2e-4673-bc59-9b07bb399e51": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "7261424e-2f2e-4673-bc59-9b07bb399e51"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:29:24+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Interessenvertretung der Promovierenden: Anliegen, aktuelle Aktivit\u00e4ten, Mitglieder und Kontaktm\u00f6glichkeiten zur Doktorandenvertretung.",
+  "effective": "2026-03-05T16:29:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "doktorandenvertretung",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-06T10:12:44+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Doktorandenvertretung",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:34+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:34+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

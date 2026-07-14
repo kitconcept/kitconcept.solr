@@ -1,0 +1,41 @@
+{
+  "@id": "/aktuelles/temine/alle-termine/ideenlabor-zukunft-der-materialforschung/max-van-den-oetelaar-ssv4ck4gisu-unsplash.jpg",
+  "@type": "Image",
+  "UID": "d5a532c9619d4432b923124f800c1d45",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-08-13T13:40:23+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": "2025-08-13T16:04:00+00:00",
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "max-van-den-oetelaar-ssv4ck4gisu-unsplash.jpg",
+  "image": {
+    "blob_path": "d5a532c9619d4432b923124f800c1d45/image/max-van-den-oetelaar-SsV4Ck4GISU-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "max-van-den-oetelaar-SsV4Ck4GISU-unsplash.jpg",
+    "height": 800,
+    "size": 203545,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:05:26+00:00",
+  "review_state": null,
+  "rights": "Foto von Max van den Oetelaar auf Unsplash",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Zukunft der Materialforschung",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

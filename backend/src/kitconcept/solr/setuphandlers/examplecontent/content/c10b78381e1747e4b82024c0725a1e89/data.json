@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/vitaly-gariev-xq4ppzzr1li-unsplash.jpg",
+  "@type": "Image",
+  "UID": "c10b78381e1747e4b82024c0725a1e89",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:06:56+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Junger Mann mit Brille, blaukariertem Hemd und schwarzer Weste vor Tafel mit mathematischen Formeln.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "vitaly-gariev-xq4ppzzr1li-unsplash.jpg",
+  "image": {
+    "blob_path": "c10b78381e1747e4b82024c0725a1e89/image/vitaly-gariev-Xq4PPZZR1lI-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "vitaly-gariev-Xq4PPZZR1lI-unsplash.jpg",
+    "height": 675,
+    "size": 164271,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:23:29+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Lehre",
+    "Mitarbeitende"
+  ],
+  "title": "Junger Wissenschaftler Portrait",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

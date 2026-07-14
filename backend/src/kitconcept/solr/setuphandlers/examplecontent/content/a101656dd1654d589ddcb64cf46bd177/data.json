@@ -1,0 +1,41 @@
+{
+  "@id": "/services/features/ticket-tools/ticket-tool.png",
+  "@type": "Image",
+  "UID": "a101656dd1654d589ddcb64cf46bd177",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-08-13T09:21:02+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "ticket-tool.png",
+  "image": {
+    "blob_path": "a101656dd1654d589ddcb64cf46bd177/image/Ticket-Tool.png",
+    "content-type": "image/png",
+    "filename": "Ticket-Tool.png",
+    "height": 800,
+    "size": 1373398,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-22T15:20:29+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Ticket-Tool",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

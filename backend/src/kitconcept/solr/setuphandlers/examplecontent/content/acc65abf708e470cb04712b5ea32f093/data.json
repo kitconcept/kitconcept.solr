@@ -1,0 +1,41 @@
+{
+  "@id": "/aktuelles/nachrichten/alle-nachrichten/neues-hpc-cluster-erfolgreich-in-betrieb-genommen/article-4_image-1.png",
+  "@type": "Image",
+  "UID": "acc65abf708e470cb04712b5ea32f093",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-08-12T12:53:23+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Das neue HPC-Cluster bietet modernste Rechenleistung f\u00fcr Simulationen, KI-Anwendungen und datenintensive Analysen am Standort.",
+  "effective": "2026-03-05T10:18:00+00:00",
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "article-4_image-1.png",
+  "image": {
+    "blob_path": "acc65abf708e470cb04712b5ea32f093/image/article-4_image-1.png",
+    "content-type": "image/png",
+    "filename": "article-4_image-1.png",
+    "height": 800,
+    "size": 1403804,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T10:31:48+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Rechenpower f\u00fcr Forschung und Entwicklung",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

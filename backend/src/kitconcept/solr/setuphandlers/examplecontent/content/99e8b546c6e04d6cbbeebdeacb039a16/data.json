@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/hal-gatewood-tzc3vjpck-q-unsplash.jpg",
+  "@type": "Image",
+  "UID": "99e8b546c6e04d6cbbeebdeacb039a16",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:20+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Drei handgezeichnete, aquarellierte Wireframe-Skizzen f\u00fcr Website-Layouts in Blau, Lila und Gr\u00fcn",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "hal-gatewood-tzc3vjpck-q-unsplash.jpg",
+  "image": {
+    "blob_path": "99e8b546c6e04d6cbbeebdeacb039a16/image/hal-gatewood-tZc3vjPCk-Q-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "hal-gatewood-tZc3vjPCk-Q-unsplash.jpg",
+    "height": 800,
+    "size": 134328,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:27+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Digitalisierung",
+    "Innovation",
+    "Kommunikation"
+  ],
+  "title": "UX-Design und Websitekonzeption",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,68 @@
+{
+  "@id": "/community/onboarding/campus-tour",
+  "@type": "Document",
+  "UID": "40d8c4d5368d432e963ea0e80a9a1ba1",
+  "allow_discussion": false,
+  "blocks": {
+    "15924a7e-b028-431d-a523-9102517f85dc": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "15924a7e-b028-431d-a523-9102517f85dc"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:32:37+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Orientierung auf dem Gel\u00e4nde: virtuelle und physische F\u00fchrungen durch den Campus \u2013 Geb\u00e4udepl\u00e4ne, wichtige Orte und Kontakte.",
+  "effective": "2026-03-05T16:32:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "campus-tour",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:32:39+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Campus-Tour",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:31+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:31+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,41 @@
+{
+  "@id": "/aktuelles/nachrichten/alle-nachrichten/das-neue-intranet/neues-intranet.jpg",
+  "@type": "Image",
+  "UID": "58fb0c07c2e14897bcab4685dc0d5a41",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-08-12T12:28:02+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Mit der Open-Source-Software Plone haben wir endlich einen hervorragenden Ersatz f\u00fcr unsere bisherige L\u00f6sung gefunden.",
+  "effective": "2025-08-12T16:17:00+00:00",
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "neues-intranet.jpg",
+  "image": {
+    "blob_path": "58fb0c07c2e14897bcab4685dc0d5a41/image/Neues-Intranet.jpg",
+    "content-type": "image/jpeg",
+    "filename": "Neues-Intranet.jpg",
+    "height": 675,
+    "size": 103759,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T10:31:47+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Das neue PT-Intranet mit Plone",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

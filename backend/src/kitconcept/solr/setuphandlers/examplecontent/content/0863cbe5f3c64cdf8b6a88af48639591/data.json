@@ -1,0 +1,43 @@
+{
+  "@id": "/bilder/towfiqu-barbhuiya-bwoaixlg0uc-unsplash.jpg",
+  "@type": "Image",
+  "UID": "0863cbe5f3c64cdf8b6a88af48639591",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:06:42+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Wandkalender mit roten Rei\u00dfzwecken auf mehreren Daten und eingekreistem Datum 30",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "towfiqu-barbhuiya-bwoaixlg0uc-unsplash.jpg",
+  "image": {
+    "blob_path": "0863cbe5f3c64cdf8b6a88af48639591/image/towfiqu-barbhuiya-bwOAixLG0uc-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "towfiqu-barbhuiya-bwOAixLG0uc-unsplash.jpg",
+    "height": 800,
+    "size": 91970,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:23:22+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Management"
+  ],
+  "title": "Terminplanung und Projektfristen",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

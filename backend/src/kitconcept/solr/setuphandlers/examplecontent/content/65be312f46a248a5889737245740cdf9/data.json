@@ -1,0 +1,68 @@
+{
+  "@id": "/community/onboarding/willkommen-am-dfnt",
+  "@type": "Document",
+  "UID": "65be312f46a248a5889737245740cdf9",
+  "allow_discussion": false,
+  "blocks": {
+    "f2fafcfb-f9eb-4210-b173-08488896a331": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "f2fafcfb-f9eb-4210-b173-08488896a331"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:32:22+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Erste Schritte f\u00fcr neue Mitarbeitende: die wichtigsten Informationen, Kontakte und Ressourcen f\u00fcr einen guten Start am DFNT.",
+  "effective": "2026-03-05T16:32:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "willkommen-am-dfnt",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:32:25+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Willkommen am DFNT",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:31+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:31+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

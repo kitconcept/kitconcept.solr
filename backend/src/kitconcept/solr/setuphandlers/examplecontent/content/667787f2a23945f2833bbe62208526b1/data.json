@@ -1,0 +1,43 @@
+{
+  "@id": "/bilder/levin-i8ipxsmjwta-unsplash.jpg",
+  "@type": "Image",
+  "UID": "667787f2a23945f2833bbe62208526b1",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:04:10+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Nachtaufnahme von Berlin-Schriftzug mit Lichtspuren vor modernem Geb\u00e4ude",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "levin-i8ipxsmjwta-unsplash.jpg",
+  "image": {
+    "blob_path": "667787f2a23945f2833bbe62208526b1/image/levin-i8IPxSMJWtA-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "levin-i8IPxSMJWtA-unsplash.jpg",
+    "height": 675,
+    "size": 193533,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:53+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Standorte"
+  ],
+  "title": "Berlin bei Nacht",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}
