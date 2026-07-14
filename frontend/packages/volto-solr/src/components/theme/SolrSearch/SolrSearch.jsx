@@ -39,6 +39,9 @@ import { SearchTabs } from './SearchTabs';
 import { SearchConditions } from './SearchConditions';
 import { queryStateFromParams, queryStateToParams } from './SearchQuery';
 import { VocabProvider } from './vocabs/VocabContext';
+// RAG: TESTING
+import { ragSearch, resetRagSearch } from '../../../actions';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 
 const messages = defineMessages({
   TypeSearchWords: {
@@ -201,6 +204,8 @@ class SolrSearch extends Component {
     batching: null,
     searchableText: null,
     path: null,
+    // RAG: TESTING
+    rag: {},
   };
 
   constructor(props) {
@@ -210,6 +215,8 @@ class SolrSearch extends Component {
       currentPage: 1,
       isClient: false,
       searchwordInStatus: '',
+      // RAG: TESTING - "Use AI" toggle, on by default
+      useAI: true,
     };
     this.inputRef = createRef();
   }
@@ -265,12 +272,28 @@ class SolrSearch extends Component {
    */
   doSearch = (params) => {
     this.setState({ searchwordInStatus: params.SearchableText || '' });
+    // RAG: TESTING - when RAG is available (the @site endpoint
+    // reported the feature enabled and configured, known before the
+    // first render) and the toggle is on, the question goes to the
+    // RAG endpoint instead of the classic solr search
+    if (this.props.ragAvailable && this.state.useAI && params.SearchableText) {
+      this.props.ragSearch('', params.SearchableText);
+      return;
+    }
     this.props.searchContent('', {
       ...params,
       sort_on: params.sort_on !== 'relevance' ? params.sort_on : '',
       b_start: (this.state.currentPage - 1) * config.settings.defaultPageSize,
       path_prefix: getPathPrefix(window.location),
       doEmptySearch: this.props.doEmptySearch,
+    });
+  };
+
+  // RAG: TESTING
+  setUseAI = (checked) => {
+    this.setState({ useAI: checked }, () => {
+      this.props.resetRagSearch();
+      this.doSearch(this.searchParams());
     });
   };
 
@@ -354,6 +377,58 @@ class SolrSearch extends Component {
                   </Button>
                 </div>
               </form>
+            </div>
+          ) : null}
+          {/* RAG: TESTING - debug toggle + answer area (real UX comes
+              from the search modal ticket, styling intentionally raw).
+              Rendered only when the backend reports the feature
+              available - an unconfigured site shows the classic
+              search, untouched. */}
+          {this.props.ragAvailable ? (
+            <div className="rag-debug" style={{ margin: '1em 0' }}>
+              <Checkbox
+                toggle
+                label="Use AI"
+                checked={this.state.useAI}
+                onChange={(e, { checked }) => this.setUseAI(checked)}
+              />
+              {this.state.useAI &&
+              (this.props.rag.loading || this.props.rag.loaded) ? (
+                <div
+                  style={{
+                    border: '1px solid #ccc',
+                    background: '#f8f8f8',
+                    padding: '1em',
+                    marginTop: '0.5em',
+                  }}
+                >
+                  {this.props.rag.loading ? <p>Thinking…</p> : null}
+                  {this.props.rag.error ? (
+                    <p style={{ color: 'red' }}>{this.props.rag.error}</p>
+                  ) : null}
+                  {this.props.rag.answer ? (
+                    <p style={{ whiteSpace: 'pre-wrap' }}>
+                      {this.props.rag.answer}
+                    </p>
+                  ) : null}
+                  {this.props.rag.loaded &&
+                  !this.props.rag.answer &&
+                  !this.props.rag.error ? (
+                    <p>No answer — no matching documents found.</p>
+                  ) : null}
+                  {(this.props.rag.sources || []).length > 0 ? (
+                    <ul>
+                      {this.props.rag.sources.map((source) => (
+                        <li key={source.UID}>
+                          <a href={flattenToAppURL(source['@id'])}>
+                            {source.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : null}
           {this.state.allowLocal &&
@@ -544,6 +619,10 @@ export default compose(
         loaded,
         loading,
         batching,
+        // RAG: TESTING
+        rag: state.ragsearch || {},
+        ragAvailable:
+          state?.site?.data?.['kitconcept.solr.rag_available'] === true,
         intl: state.intl,
         pathname: props.history.location.pathname,
         contentTypeSearchResultViews: contentTypeSearchResultViewsWithDefault(
@@ -558,6 +637,9 @@ export default compose(
     (dispatch, { searchAction }) => ({
       searchContent: (...args) =>
         dispatch(searchActionWithDefault(searchAction)(...args)),
+      // RAG: TESTING
+      ragSearch: (...args) => dispatch(ragSearch(...args)),
+      resetRagSearch: () => dispatch(resetRagSearch()),
     }),
   ),
   asyncConnect([

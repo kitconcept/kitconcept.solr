@@ -401,6 +401,27 @@
     <field name="content_vector" type="knn_vector_768"
       indexed="true" stored="true" multiValued="false" />
 
+    <!-- RAG chunk documents (AI search).
+    Chunks are indexed as sibling documents next to the regular content
+    documents: UID is "<parent UID>#rag-<n>", is_rag_chunk marks them,
+    parent_uid points back to the content object. Security and language
+    fields (allowedRolesAndUsers, Language, path_*) are denormalized
+    from the parent so the existing filter queries compose with {!knn}
+    vector queries as pre-filters. chunk_text is stored for prompt
+    building but NOT indexed, so chunks never match keyword searches. -->
+    <field name="is_rag_chunk" type="boolean"
+      indexed="true" stored="true" multiValued="false" />
+    <field name="parent_uid" type="string"
+      indexed="true" stored="true" multiValued="false" />
+    <field name="chunk_index" type="tint"
+      indexed="true" stored="true" multiValued="false" />
+    <field name="chunk_text" type="string"
+      indexed="false" stored="true" multiValued="false" />
+    <field name="parent_title" type="string"
+      indexed="false" stored="true" multiValued="false" />
+    <field name="rag_embedding_model" type="string"
+      indexed="true" stored="true" multiValued="false" />
+
   </fields>
 
 </schema>

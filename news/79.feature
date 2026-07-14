@@ -1,0 +1,1 @@
+Add the foundations of the RAG AI search: LLM client (embeddings + chat), the AI search toggle with LLM endpoint configuration, structure-aware chunking, index-time chunk embedding into Solr, and full-reindex support. The feature is off unless configured. @reebalazs

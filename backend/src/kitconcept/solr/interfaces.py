@@ -2,6 +2,7 @@
 
 from kitconcept.solr import _
 from plone.schema import JSONField
+from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
@@ -87,4 +88,19 @@ class IKitconceptSolrSettings(Interface):
         schema=CONFIG_SCHEMA,
         default=DEFAULT_CONFIG,
         missing_value={"fieldList": [], "searchTabs": []},
+    )
+
+    rag_enabled = schema.Bool(
+        title=_("label_rag_enabled", default="AI search enabled"),
+        description=_(
+            "help_rag_enabled",
+            default=(
+                "Turn the RAG based AI search on or off. The feature also"
+                " requires the LLM endpoint to be configured through the"
+                " KITCONCEPT_SOLR_LLM_URL (and optionally"
+                " KITCONCEPT_SOLR_LLM_TOKEN) environment variables."
+            ),
+        ),
+        required=False,
+        default=False,
     )

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<componentregistry>
+  <utilities>
+    <!-- Indexing queue processor maintaining the RAG chunk documents.
+    Registered for the base IIndexQueueProcessor interface so the
+    Plone indexing queue dispatches to it next to collective.solr's
+    own processor. -->
+    <utility factory="kitconcept.solr.rag.processor.RagIndexProcessor"
+             interface="Products.CMFCore.interfaces.IIndexQueueProcessor"
+             name="kitconcept.solr.rag"
+    />
+  </utilities>
+</componentregistry>

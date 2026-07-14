@@ -63,6 +63,9 @@ services:
       COLLECTIVE_SOLR_HOST: solr-acceptance
       COLLECTIVE_SOLR_PORT: 8983
       COLLECTIVE_SOLR_BASE: /solr/plone
+      # RAG / AI search: LLM endpoint (feature is off when unset)
+      KITCONCEPT_SOLR_LLM_URL: ${KITCONCEPT_SOLR_LLM_URL:-}
+      KITCONCEPT_SOLR_LLM_TOKEN: ${KITCONCEPT_SOLR_LLM_TOKEN:-}
     depends_on:
       - solr-acceptance
     ports:

@@ -1,6 +1,8 @@
 import solrsearch from './solrsearch/solrsearch';
 import solrSearchSuggestions from './solrsearch/solrSearchSuggestions';
 import navigation_with_excluded from './navigation_with_excluded/navigation_with_excluded';
+// RAG: TESTING
+import ragsearch from './ragsearch/ragsearch';
 import { defineMessages } from 'react-intl';
 
 // needed to add as overrides are not parsed by i18n
@@ -38,6 +40,8 @@ const reducers = {
   solrsearch,
   solrSearchSuggestions,
   navigation_with_excluded,
+  // RAG: TESTING
+  ragsearch,
 };
 
 export default reducers;

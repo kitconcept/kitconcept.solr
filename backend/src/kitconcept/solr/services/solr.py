@@ -179,7 +179,10 @@ class SolrSearch(Service):
             "wt": "json",
             "hl": "true" if highlighting_utils.enabled else "false",
             "hl.fl": highlighting_utils.fields,
-            "fq": [security_filter()],
+            # RAG chunk documents carry no indexed text fields, so they
+            # cannot match the query above; the filter is defense in
+            # depth to keep them out of search results in any case.
+            "fq": [security_filter(), "-is_rag_chunk:true"],
             "fl": solr_config.field_list,
             "facet": "true",
             "facet.contains.ignoreCase": "true",
