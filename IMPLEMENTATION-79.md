@@ -189,7 +189,7 @@ remains):
 
 | Work item | Est. |
 | --- | --- |
-| Adapt chunking to the second kind | 1d |
+| ~~Adapt chunking to the second kind~~ (done 2026-07-14: Plate block storage, per-block detection, unit-tested) | 1d |
 | Shared export/import dump: same corpus drives the kitconcept.intranet demo site and this repository's CI tests | 0.5d |
 | Generation model comparison (`qwen3:14b` vs `qwen3.5:9b-q8_0` vs others) on the test questions | 0.5d |
 | Full configuration surface: registry records for model names, topK, chunk size, prompt override | 0.5d |

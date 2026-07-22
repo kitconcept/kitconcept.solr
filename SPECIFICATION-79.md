@@ -72,7 +72,6 @@ POC-grade scope: quality tooling and tuning are deliberately deferred.
   layer is factored so it is a bounded add-on. The pure-knn MVP results
   should confirm the deferral is acceptable (earlier experiments suggested
   pure vector search may not be sufficient — see §3).
-- The second kind of chunking.
 - Full test pass (beyond minimal inline coverage accompanying the MVP PRs)
   and acceptance/CI wiring — acceptance tests are deferred until the real
   search UI is integrated, so they target that UI rather than a throwaway
@@ -302,12 +301,20 @@ All major open questions from the draft phase have been decided (team review
 | 9 | Chunk vs. document context for the prompt | Prompt with matched chunks (+ parent title/URL), cite parents |
 | 10 | Failure policy: hard error vs. graceful degradation | **Graceful degradation, applied consistently** (2026-07-13): toggle on without credentials = the feature silently reports unavailable (no error); AI service down = users fall back to the classic search instead of a hard error. The effective state is exposed to the client as `kitconcept.solr.rag_available` on the @site endpoint (registry toggle AND credentials), so the UI renders the right thing from the first paint. Recorded as revisitable: if operational practice shows silent degradation hides real misconfigurations, we can move toward hard errors. |
 
-Remaining open point:
+Resolved open point:
 
-1. **The two kinds of chunking.** Two kinds of chunking have been identified
-   for the intranet use case; details are to be clarified at implementation
-   kick-off. The MVP implements one kind; the design must stay compatible
-   with the second (post-MVP follow-up).
+1. **The two kinds of chunking** (resolved 2026-07-14): the second kind
+   is the block storage of the new Volto editor (Plate) - the rich
+   text block carries a ``value`` list of editor nodes instead of the
+   classic per-block fields. Detection is per block (the Plate block
+   ``@type``), so both kinds coexist in the same site and even on the
+   same page; the chunking logic is shared, only the reading differs.
+   Based on plone.restapi's Plate support (the authoritative
+   implementation of the storage); the provisional upstream block type
+   name may change when the new editor settles - isolated in one
+   constant. Covered by unit tests only for now: Plate pages cannot
+   yet be produced manually, e2e tests follow when the editor
+   settles.
 
 ## 9. References
 
