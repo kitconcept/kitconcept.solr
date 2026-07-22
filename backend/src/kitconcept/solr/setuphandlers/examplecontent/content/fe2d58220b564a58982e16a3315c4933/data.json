@@ -1,0 +1,68 @@
+{
+  "@id": "/services/it-services/it-schulungen",
+  "@type": "Document",
+  "UID": "fe2d58220b564a58982e16a3315c4933",
+  "allow_discussion": false,
+  "blocks": {
+    "f3355dad-34ec-4cc5-9bef-65c195cef100": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "f3355dad-34ec-4cc5-9bef-65c195cef100"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:28:17+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Workshops zu Anwendungen, IT-Sicherheit und digitalen Tools: aktuelles Schulungsangebot, Anmeldung und Schulungsmaterialien.",
+  "effective": "2026-03-05T16:28:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "it-schulungen",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:28:24+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "IT-Schulungen",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:34+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:34+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

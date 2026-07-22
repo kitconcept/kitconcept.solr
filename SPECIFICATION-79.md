@@ -45,8 +45,8 @@ POC-grade scope: quality tooling and tuning are deliberately deferred.
 3. **One model provider, fixed models.** The MVP connects to the kitconcept
    LLM server (Ollama-compatible) using two models, both fixed:
    - embedding: **`nomic-embed-text-v2-moe`** (multilingual — chosen from the
-     start even though the MVP is English-only, so adding German content later
-     does not require a full reindex; its 512-token sequence limit makes
+     start so switching or mixing content languages never requires a full
+     reindex; its 512-token sequence limit makes
      chunking mandatory and sets the chunk target to ~400 tokens);
    - generation: **`qwen3:14b`** (model comparison is a post-MVP task).
 4. **Minimal configuration, no UI.** An **"AI search" toggle** plus the
@@ -62,8 +62,9 @@ POC-grade scope: quality tooling and tuning are deliberately deferred.
    most), and the finalized UX is integrated before the MVP ships. The
    "AI search" toggle means RAG does not unconditionally replace the normal
    search. See §6.
-7. **Test corpus + smoke checks.** A translated demo corpus with ~20
-   hand-written questions with expected sources (see §7).
+7. **Test corpus + smoke checks.** A German demo corpus with ~20
+   hand-written questions with expected sources (see §7; German-first
+   decided 2026-07-11, English later).
 
 ### Explicitly out of scope for the MVP (post-MVP roadmap)
 
@@ -85,9 +86,9 @@ POC-grade scope: quality tooling and tuning are deliberately deferred.
 - Integration with the community LLM-connector add-on. Long-term we commit
   to using it (it gives us any-provider support); it first needs support for
   the kitconcept Ollama setup. For the MVP we connect directly.
-- Sharing the demo corpus export/import dump with this repository's CI.
-- German content rollout (the architecture is German-ready via the
-  multilingual embedding model).
+- Wiring the demo corpus dump into this repository's CI tests.
+- English content rollout (German-first since 2026-07-11; the architecture
+  is language-agnostic via the multilingual embedding model).
 
 ## 3. Architecture overview
 
@@ -264,16 +265,20 @@ the MVP ships. Decisions that affect this repository:
 
 MVP-level (this is a POC — minimal by decision):
 
-- **Corpus**: existing German template demo content (translated to English),
-  imported into the kitconcept.intranet demo site. Research confirmed no
-  suitable open intranet-shaped corpus with ready-made questions exists
-  (public QA datasets are Wikipedia/web-shaped; open handbooks have no
-  questions), so a translated in-house corpus plus hand-written questions is
-  the pragmatic and correct choice. English first; German later with
-  expected-similar results (the embedding model is already multilingual).
-- **Questions**: ~20 hand-written questions with expected source documents,
-  stored alongside the corpus; used as smoke tests ("are the right documents
-  found? does the answer decline when it should?").
+- **Corpus**: **German-first** (revised 2026-07-11, Timo — supersedes the
+  earlier translate-to-English plan): a curated export of the fictional
+  German intranet demo site `plone-intranet.kitconcept.io`, kept in German
+  with no translation. Research confirmed no suitable open intranet-shaped
+  corpus with ready-made questions exists (public QA datasets are
+  Wikipedia/web-shaped; open handbooks have no questions), so an in-house
+  corpus plus hand-written questions is the pragmatic and correct choice.
+  The corpus ships in this repository as a plone.exportimport dump
+  (`backend/src/kitconcept/solr/setuphandlers/examplecontent`, see its
+  README for curation and usage); the English corpus comes later with
+  expected-similar results (the embedding model is multilingual).
+- **Questions**: ~20 hand-written German questions with expected source
+  documents, stored alongside the corpus; used as smoke tests ("are the
+  right documents found? does the answer decline when it should?").
 - The demo site lives in the kitconcept.intranet project; making the same
   export/import dump also drive this repository's CI tests is post-MVP.
 
@@ -296,7 +301,7 @@ All major open questions from the draft phase have been decided (team review
 | 4 | Index-time embedding | Synchronous, skip-on-failure; async queue only if editing latency demands it |
 | 5 | Generation model | `qwen3:14b` fixed for the MVP; comparison post-MVP |
 | 6 | Similarity function | `dot_product` (existing schema, no change) |
-| 7 | Demo corpus | Translated German template content + ~20 hand-written questions; English first |
+| 7 | Demo corpus | **German-first** (revised 2026-07-11, Timo): the corpus stays German — no translation; German hand-written questions; the English corpus comes later. Corpus source: curated export of the fictional `plone-intranet.kitconcept.io` demo site, shipped in this repository as plone.exportimport data (`setuphandlers/examplecontent`). |
 | 8 | Search UX | External (kitconcept.intranet search modal project); "AI search" toggle |
 | 9 | Chunk vs. document context for the prompt | Prompt with matched chunks (+ parent title/URL), cite parents |
 | 10 | Failure policy: hard error vs. graceful degradation | **Graceful degradation, applied consistently** (2026-07-13): toggle on without credentials = the feature silently reports unavailable (no error); AI service down = users fall back to the classic search instead of a hard error. The effective state is exposed to the client as `kitconcept.solr.rag_available` on the @site endpoint (registry toggle AND credentials), so the UI renders the right thing from the first paint. Recorded as revisitable: if operational practice shows silent degradation hides real misconfigurations, we can move toward hard errors. |

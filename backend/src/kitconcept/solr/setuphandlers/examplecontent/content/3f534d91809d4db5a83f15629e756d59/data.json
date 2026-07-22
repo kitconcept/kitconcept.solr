@@ -1,0 +1,68 @@
+{
+  "@id": "/services/hr-services/altersvorsorge",
+  "@type": "Document",
+  "UID": "3f534d91809d4db5a83f15629e756d59",
+  "allow_discussion": false,
+  "blocks": {
+    "f21b170e-8759-4bdf-afa7-a57d77f2d176": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "f21b170e-8759-4bdf-afa7-a57d77f2d176"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:28:31+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Betriebliche Altersvorsorge, VBL und individuelle Beratungsangebote: \u00dcberblick \u00fcber Vorsorgeleistungen und Kontakt zur Beratung.",
+  "effective": "2026-03-05T16:28:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "altersvorsorge",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:28:37+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Altersvorsorge",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:33+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:33+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

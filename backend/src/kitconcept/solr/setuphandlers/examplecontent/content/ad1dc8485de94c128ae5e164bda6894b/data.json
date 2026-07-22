@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/becca-tapert-gny_mw1q6xc-unsplash.jpg",
+  "@type": "Image",
+  "UID": "ad1dc8485de94c128ae5e164bda6894b",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:01:52+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Forscherin sucht Fachliteratur in wissenschaftlicher Bibliothek",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "becca-tapert-gny_mw1q6xc-unsplash.jpg",
+  "image": {
+    "blob_path": "ad1dc8485de94c128ae5e164bda6894b/image/becca-tapert-GnY_mW1Q6Xc-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "becca-tapert-GnY_mW1Q6Xc-unsplash.jpg",
+    "height": 800,
+    "size": 247410,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:18:36+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Lehre",
+    "Forschungsinfrastruktur",
+    "Wissensmanagement"
+  ],
+  "title": "Literaturrecherche in der Bibliothek",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

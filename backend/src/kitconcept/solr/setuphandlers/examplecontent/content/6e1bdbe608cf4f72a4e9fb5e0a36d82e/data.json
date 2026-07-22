@@ -1,0 +1,68 @@
+{
+  "@id": "/community/initiativen-netzwerke/schwerbehindertenvertretung",
+  "@type": "Document",
+  "UID": "6e1bdbe608cf4f72a4e9fb5e0a36d82e",
+  "allow_discussion": false,
+  "blocks": {
+    "a483b1cf-7fce-4931-917e-c16ce47adca1": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "a483b1cf-7fce-4931-917e-c16ce47adca1"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:30:42+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Beratung, Unterst\u00fctzung und Interessenvertretung f\u00fcr schwerbehinderte und gleichgestellte Besch\u00e4ftigte: Kontakt und Sprechzeiten.",
+  "effective": "2026-03-05T16:30:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "schwerbehindertenvertretung",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-06T10:11:46+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Schwerbehindertenvertretung",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:31+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:31+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

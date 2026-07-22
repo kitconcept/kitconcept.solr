@@ -1,0 +1,72 @@
+{
+  "@id": "/impressum",
+  "@type": "Document",
+  "UID": "c9d80221770245b1ad768fa89c5e8dac",
+  "allow_discussion": false,
+  "blocks": {
+    "62b82d09-5b70-47ef-8130-e0931da5ad1a": {
+      "@type": "slate"
+    },
+    "f7b55967-dbff-4bcb-aa6a-fdb7f6cdf4ee": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "f7b55967-dbff-4bcb-aa6a-fdb7f6cdf4ee",
+      "62b82d09-5b70-47ef-8130-e0931da5ad1a"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2025-08-13T08:38:46+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": "2025-08-13T08:40:00+00:00",
+  "exclude_from_nav": true,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "impressum",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2025-08-13T08:40:19+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Impressum",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:33+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:33+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

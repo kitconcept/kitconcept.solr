@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/national-cancer-institute-glzv6ygcuym-unsplash.jpg",
+  "@type": "Image",
+  "UID": "1d7efbe733bd43c5b8af81d81df45167",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:12+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Forscherteam bei der Arbeit in modernem, gut ausgestattetem Labor",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "national-cancer-institute-glzv6ygcuym-unsplash.jpg",
+  "image": {
+    "blob_path": "1d7efbe733bd43c5b8af81d81df45167/image/national-cancer-institute-GlZv6YgCUyM-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "national-cancer-institute-GlZv6YgCUyM-unsplash.jpg",
+    "height": 800,
+    "size": 191337,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:21:21+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Laborforschung",
+    "Life Sciences",
+    "Zusammenarbeit"
+  ],
+  "title": "Teamwork im Forschungslabor",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -28,6 +28,7 @@ def asbool(s):
 
 DELETE_EXISTING = asbool(os.getenv("DELETE_EXISTING"))
 EXAMPLE_CONTENT = asbool(os.getenv("EXAMPLE_CONTENT", "1"))
+SITE_DEFAULT_LANGUAGE = os.getenv("SITE_DEFAULT_LANGUAGE", "en")
 
 app = makerequest(globals()["app"])
 
@@ -49,7 +50,7 @@ payload = {
     "profile_id": _DEFAULT_PROFILE,
     "distribution_name": "volto",
     "setup_content": False,
-    "default_language": "en",
+    "default_language": SITE_DEFAULT_LANGUAGE,
     "portal_timezone": "UTC",
 }
 

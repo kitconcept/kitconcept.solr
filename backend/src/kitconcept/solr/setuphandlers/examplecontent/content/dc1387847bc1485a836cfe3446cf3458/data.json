@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/zheng-xue-ur7_a4rdjem-unsplash.jpg",
+  "@type": "Image",
+  "UID": "dc1387847bc1485a836cfe3446cf3458",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:07:08+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Modernes Geb\u00e4ude mit Glasfassade auf Betonst\u00fctzen \u00fcber blaugr\u00fcnem Teich, mit Trauerweide, symbolisiert Nachhaltigkeits-Architektur.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "zheng-xue-ur7_a4rdjem-unsplash.jpg",
+  "image": {
+    "blob_path": "dc1387847bc1485a836cfe3446cf3458/image/zheng-xue-uR7_A4rDjeM-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "zheng-xue-uR7_A4rDjeM-unsplash.jpg",
+    "height": 749,
+    "size": 300067,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:23:50+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Standorte",
+    "Forschungsinfrastruktur"
+  ],
+  "title": "Moderne Geb\u00e4ude-Wasserbau Architektur",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

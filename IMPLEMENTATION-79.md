@@ -129,14 +129,94 @@ documents and populated vectors.
 Goal: content and questions to validate Step 3 against. Lands before or
 together with Step 3.
 
-- [ ] **2.1 Corpus**: translated German template demo content (English),
-      imported into the kitconcept.intranet demo site.
-- [ ] **2.2 Questions**: ~20 hand-written questions with expected source
-      documents, stored alongside the corpus; includes questions whose
-      answer is *not* in the corpus (the system should decline).
+- [x] **2.1 Corpus**: German-first (decision revised 2026-07-11, see spec
+      §7/§8): curated export of the fictional `plone-intranet.kitconcept.io`
+      demo site, shipped as a plone.exportimport dump in
+      `backend/src/kitconcept/solr/setuphandlers/examplecontent`
+      (409 objects, 80 images, 7 example users — see its README).
+- [ ] **2.2 Questions**: ~20 hand-written German questions with expected
+      source documents, stored alongside the corpus; includes questions
+      whose answer is *not* in the corpus (the system should decline).
 
 Post-MVP: the same export/import dump also drives this repository's CI
 tests (see Step P2 overflow list).
+
+### Implementation notes — Step 2 (corpus build, 2026-07-14)
+
+How the dump was produced (pipeline preserved in
+`~/work/kitconcept/solr/intranet-corpus-source/`: raw restapi crawl,
+transform script, and the pre-import tree):
+
+1. Crawled the live demo site over plone.restapi (`@search?fullobjects=1`;
+   the site has no exportimport views installed), including folder
+   orderings, `@users`, `@groups` and `@sharing`.
+2. Transformed the crawl into plone.exportimport format with the curation
+   listed in the corpus README (drops, ~1200px image scales instead of
+   originals — 228 MB → 19 MB, language normalized to `de`,
+   relation fields removed, comments out of scope).
+3. Imported into a fresh local site created with `SITE_DEFAULT_LANGUAGE=de`
+   via a one-off wrapper that skipped portal types not installed on the
+   target site (17 Person, 5 Organisational Unit, 3 Location from the
+   intranet distribution).
+4. Re-exported with the official `plone-exporter` — that round-tripped
+   dump is what ships (canonical field serializations, workflow history,
+   hashed user passwords).
+
+Importer decision — two tiers:
+
+- **Daily workflow: the stock `plone-importer`** of plone.exportimport
+  (`make import-example-content`) — the shipped dump contains only
+  standard types, so no custom import code is needed. Caveat: the stock
+  importer **crashes on content whose portal type is not installed**
+  (aborts on the first unknown type instead of skipping).
+- **One-time operations: `scripts/import_content_robust.py`**
+  (`make import-content-robust IMPORT_CONTENT_FOLDER=<path>`) — the
+  skip-unknown-types wrapper used during the corpus build (step 3
+  above), kept for dumps that contain uninstalled types, e.g.
+  re-importing the original intranet source tree. Long-term, this
+  behavior is a candidate for an upstream plone.exportimport
+  contribution (skip-and-report option).
+
+Verified end to end: German site renders in Volto, RAG reindex embeds
+489 chunks for 409 objects, German questions get grounded German answers
+with correct sources, and permission trimming holds (private Betriebsrat
+page appears in admin's sources, not in plain-member `f.meier`'s).
+
+Corpus v2 (2026-07-22, after Balazs's manual review found rendering
+problems): the crawl-form data broke the demo look on a plain Volto
+frontend — three causes, all fixed in the transform (now
+`transform_corpus.py [solr|intranet]` beside the preserved source):
+
+1. Block data carried the source site's absolute URLs and embedded
+   `image_scales` with foreign scale hashes → broken in-page images.
+   Fixed by converting content links in blocks to `resolveuid` form and
+   stripping embedded `image_scales`; plone.restapi then injects fresh
+   scales at serve time.
+2. `preview_image_link`/`relatedItems` had been dropped → missing
+   listing/teaser preview images. Restored through `relations.json`
+   (the relations importer runs after content, so targets resolve; the
+   site's IIntIds utility works — the earlier crash was a commit
+   OUTSIDE the site context, fixed in `import_content_robust.py`).
+3. volto-light-theme / kitconcept blocks rendered as "Unknown Block".
+   The `solr` variant maps them to core blocks (`introduction` → slate,
+   `__button` → slate link, `highlight`/`banner` → image + slate
+   heading, `slider` → gridBlock of teasers; decorative
+   `separator`/`eventMetadata`/`eventCalendar` dropped). The `intranet`
+   variant keeps native blocks for the later kitconcept.intranet demo
+   site — decision: two regenerable dumps rather than one compromise
+   dump.
+
+Known limitations (acceptable for the MVP corpus):
+
+- The intranet-only types (Persons — the `/kontakte` contacts, the five
+  institute Organisational Units, Locations) are not in the dump; the
+  full pre-import tree that still contains them is preserved with the
+  pipeline (see above) for the eventual intranet-distribution demo site.
+- The live site had no explicit local-role grants and no custom groups
+  (verified via `@sharing`/`@groups`), so permission tests rest on the
+  three `private`-state documents.
+- Site-root `logo`/`footer_logo` are intranet-distribution fields and are
+  not part of the dump.
 
 ## Step 3 — Query pipeline: retrieval endpoint + answer generation (2.5d)
 

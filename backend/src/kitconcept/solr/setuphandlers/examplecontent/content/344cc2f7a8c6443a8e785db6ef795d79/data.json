@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/getty-images-mrp_tjhviua-unsplash.jpg",
+  "@type": "Image",
+  "UID": "344cc2f7a8c6443a8e785db6ef795d79",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:05+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Wissenschaftliche Datenvisualisierung mit Wellenformen auf Computerbildschirm",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-mrp_tjhviua-unsplash.jpg",
+  "image": {
+    "blob_path": "344cc2f7a8c6443a8e785db6ef795d79/image/getty-images-MrP_TjHviuA-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-MrP_TjHviuA-unsplash.jpg",
+    "height": 805,
+    "size": 117220,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:07+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Technologieforschung",
+    "Digitalisierung"
+  ],
+  "title": "Datenvisualisierung und Analyse",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

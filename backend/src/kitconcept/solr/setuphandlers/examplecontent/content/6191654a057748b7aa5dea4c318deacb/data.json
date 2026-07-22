@@ -1,0 +1,43 @@
+{
+  "@id": "/bilder/getty-images-mj5cuzncqrg-unsplash.jpg",
+  "@type": "Image",
+  "UID": "6191654a057748b7aa5dea4c318deacb",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:02+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Luftaufnahme einer Stadt mit herbstlichem Park im Abendlicht",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-mj5cuzncqrg-unsplash.jpg",
+  "image": {
+    "blob_path": "6191654a057748b7aa5dea4c318deacb/image/getty-images-MJ5cuzNcQrg-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-MJ5cuzNcQrg-unsplash.jpg",
+    "height": 899,
+    "size": 256308,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:03+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Standorte"
+  ],
+  "title": "Stadtansicht mit Herbstpark",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/getty-images-kvtm0t2lsci-unsplash.jpg",
+  "@type": "Image",
+  "UID": "4fd7dcfe675c455490e0b6da4103e3c8",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:01+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Digitales Gehirn-Netzwerk mit leuchtend blauen Neuronen-Verbindungen, symbolisiert k\u00fcnstliche Intelligenz.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-kvtm0t2lsci-unsplash.jpg",
+  "image": {
+    "blob_path": "4fd7dcfe675c455490e0b6da4103e3c8/image/getty-images-kvTm0T2lSCI-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-kvTm0T2lSCI-unsplash.jpg",
+    "height": 800,
+    "size": 143970,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:01+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "KI",
+    "Technologieforschung",
+    "Digitalisierung"
+  ],
+  "title": "Digitales Neuronales Netzwerk",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

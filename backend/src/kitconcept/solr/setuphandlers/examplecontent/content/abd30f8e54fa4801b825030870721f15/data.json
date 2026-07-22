@@ -1,0 +1,43 @@
+{
+  "@id": "/bilder/christian-buehner-ditylc26zvi-unsplash.jpg",
+  "@type": "Image",
+  "UID": "abd30f8e54fa4801b825030870721f15",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:02:05+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Portr\u00e4t eines l\u00e4chelnden Wissenschaftlers mit Brille vor neutralem Hintergrund",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "christian-buehner-ditylc26zvi-unsplash.jpg",
+  "image": {
+    "blob_path": "abd30f8e54fa4801b825030870721f15/image/christian-buehner-DItYlc26zVI-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "christian-buehner-DItYlc26zVI-unsplash.jpg",
+    "height": 800,
+    "size": 111542,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:19:21+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Mitarbeitende"
+  ],
+  "title": "Mitarbeiterportr\u00e4t",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -80,6 +80,117 @@ make stack-start
 
 And... you're all set! Your Plone site is up and running locally! 🚀
 
+## Demo Site Installation 🎪
+
+This sets up the full kitconcept.solr demo site from zero: a German
+research-institute intranet (409 pages, images, example users) shipped
+in this repository as a
+[plone.exportimport](https://github.com/plone/plone.exportimport) dump,
+indexed in Solr, with the AI (RAG) search enabled. See
+`backend/src/kitconcept/solr/setuphandlers/examplecontent/README.md`
+for the corpus details (curation, example users, golden questions).
+
+### 1. Install the code base and start Solr
+
+```shell
+make install
+STACK_NAME=kitconcept-solr-dev make solr-start
+```
+
+`solr-start` builds and starts the Solr and Tika containers from this
+repository's configuration (Docker required).
+
+### 2. Provide the AI credentials (optional)
+
+The AI search connects to an LLM server (Ollama-compatible, e.g. the
+kitconcept Genie). The backend picks the credentials up **from the
+environment** — they are read by every backend process, so they must be
+set in the shell **both when reindexing and when starting the backend**.
+Keep them in a file outside the repository and source it, e.g.
+`~/.config/kitconcept-solr-llm.env`:
+
+```shell
+export KITCONCEPT_SOLR_LLM_URL=https://your-llm-server.example.com
+export KITCONCEPT_SOLR_LLM_TOKEN=sk-...
+```
+
+Optional overrides: `KITCONCEPT_SOLR_LLM_EMBED_MODEL`,
+`KITCONCEPT_SOLR_LLM_CHAT_MODEL`, `KITCONCEPT_SOLR_LLM_EMBED_PATH`,
+`KITCONCEPT_SOLR_LLM_CHAT_PATH`.
+
+The feature degrades gracefully: it is available only when **both** the
+registry toggle is on (the `--rag-enable` reindex below) **and** the
+credentials are present in the environment. Without credentials the
+site works normally and the AI search silently reports unavailable
+(`kitconcept.solr.rag_available` on the `@site` endpoint). Never commit
+the credentials.
+
+### 3. Create the German site and import the example content
+
+```shell
+DELETE_EXISTING=1 SITE_DEFAULT_LANGUAGE=de make backend-create-site
+make import-example-content
+```
+
+The import uses the stock `plone-importer` of plone.exportimport on the
+dump shipped in this repository. The site default language **must** be
+`de` — the importer downgrades every object's language to the site
+default when `de` is not among the site's available languages.
+
+### 4. Index the content in Solr
+
+With AI search (source the credentials first):
+
+```shell
+source ~/.config/kitconcept-solr-llm.env
+make solr-activate-and-reindex-with-rag-clear
+```
+
+Without AI search: `make solr-activate-and-reindex-clear`.
+
+### 5. Start the servers
+
+```shell
+source ~/.config/kitconcept-solr-llm.env   # when using AI search
+make backend-start
+# in a second shell:
+make frontend-start
+```
+
+The demo site is at <http://localhost:3000/>. Logins: `admin`/`admin`,
+plus the fictional corpus users (shared password `intranet-demo-2026`),
+notably `f.meier` — a plain Member used to demonstrate
+permission-trimmed search and AI answers.
+
+### Importing content from external sources 🧳
+
+`make import-example-content` (the stock importer) is the daily
+workflow for the bundled dump — but it **crashes on content whose
+portal type is not installed** on the target site. For one-time imports
+of richer dumps — e.g. content exported from a kitconcept.intranet site
+with its custom types (Person, Organisational Unit, Location) — use the
+robust variant, which skips such items and reports them:
+
+```shell
+cd backend
+make import-content-robust IMPORT_CONTENT_FOLDER=/path/to/dump
+```
+
+The dump path is a plone.exportimport base directory (containing
+`content/` and optionally `principals.json`, `relations.json`, …).
+
+To re-export the current site's content back into this repository as
+the bundled example content (after editing the demo site):
+
+```shell
+make backend-update-example-content
+```
+
+The bundled corpus itself is regenerable from the preserved source
+pipeline (raw crawl of the origin site + `transform_corpus.py`, kept
+outside this repository), which can also produce a native-blocks
+variant for the kitconcept.intranet distribution.
+
 ## Project structure 🏗️
 
 This monorepo consists of the following distinct sections:

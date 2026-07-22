@@ -1,0 +1,68 @@
+{
+  "@id": "/ueber-uns/zahlen-fakten/mitarbeitende",
+  "@type": "Document",
+  "UID": "fb519c4ed44b45e5a757853934697fca",
+  "allow_discussion": false,
+  "blocks": {
+    "c4f3b930-3e36-44f2-a75f-ee31499534e9": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "c4f3b930-3e36-44f2-a75f-ee31499534e9"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:29:36+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Anzahl und Verteilung der Besch\u00e4ftigten nach Bereichen, Standorten und Qualifikationsstufen: aktuelle Statistiken und Entwicklung \u00fcber die vergangenen Jahre.",
+  "effective": "2026-03-05T16:29:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "mitarbeitende",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:29:46+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Mitarbeitende",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:35+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:35+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}
