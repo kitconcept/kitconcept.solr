@@ -70,6 +70,13 @@ PARENT_DATA_ATTRIBUTES = [
 # this covers roughly 40k tokens of text per document.
 MAX_CHUNKS_PER_DOCUMENT = 100
 
+# Content types excluded from chunking. An Image's only chunkable text
+# is its title/description - metadata about an illustration, not
+# knowledge - and it pollutes answer sources (a photo cited as a
+# source). File stays included: its title/description locates real
+# documents (and the post-MVP Tika body text will build on it).
+EXCLUDED_PORTAL_TYPES = frozenset({"Image"})
+
 
 def chunk_uid(uid: str, index: int) -> str:
     return f"{uid}#rag-{index}"
@@ -133,6 +140,10 @@ class RagIndexProcessor:
             return
         manager, conn = self._connection()
         if conn is None:
+            return
+        if getattr(obj, "portal_type", None) in EXCLUDED_PORTAL_TYPES:
+            # also drop chunks indexed before the type was excluded
+            conn.deleteByQuery(chunk_query(uid))
             return
         if attributes is not None:
             attributes = set(attributes)

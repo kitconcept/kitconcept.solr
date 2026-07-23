@@ -49,6 +49,10 @@ CHAT_TIMEOUT = 120.0
 # Number of texts sent to /api/embed in one request.
 EMBED_BATCH_SIZE = 32
 
+# Number of chunks retrieved for a question (and passed to the
+# generation prompt).
+TOP_K = 5
+
 REGISTRY_ENABLED_KEY = "kitconcept.solr.rag_enabled"
 
 # Endpoint paths, relative to the server root URL. The defaults match

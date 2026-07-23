@@ -274,11 +274,11 @@ class SolrSearch extends Component {
     this.setState({ searchwordInStatus: params.SearchableText || '' });
     // RAG: TESTING - when RAG is available (the @site endpoint
     // reported the feature enabled and configured, known before the
-    // first render) and the toggle is on, the question goes to the
-    // RAG endpoint instead of the classic solr search
+    // first render) and the toggle is on, the question additionally
+    // goes to the RAG endpoint: the AI answer renders above the
+    // classic result list, it does not replace it
     if (this.props.ragAvailable && this.state.useAI && params.SearchableText) {
       this.props.ragSearch('', params.SearchableText);
-      return;
     }
     this.props.searchContent('', {
       ...params,
