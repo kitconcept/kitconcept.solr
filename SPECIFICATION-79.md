@@ -253,9 +253,19 @@ modal (command-palette pattern) is being designed and implemented separately
 in the kitconcept.intranet project; the RAG feature integrates into it before
 the MVP ships. Decisions that affect this repository:
 
-- There will be an **"AI search" toggle in the search UI** — RAG does not
-  unconditionally replace the normal search; the classic `@solr` search
-  remains fully functional and unchanged.
+- ~~There will be an **"AI search" toggle in the search UI**~~ **Revised
+  (team discussion, 2026-07-23): no user-facing AI toggle.** The
+  presentation follows the Google pattern instead: an **"AI" tab** shows
+  the AI result alone, and the **"All" tab** shows the AI answer on top
+  of the classic results. Planned as kitconcept.solr **tabs
+  configuration**: two per-tab flags — "AI results" (the tab shows only
+  the AI answer) and "AI on top" (the tab prepends the AI answer to its
+  result list) — so any consumer (including kitconcept.intranet)
+  composes the presentation freely. To be finalized and implemented
+  after the UX has been seen live in kitconcept.intranet; until then the
+  interim UI always shows the AI answer above the classic results.
+  Unchanged: RAG does not replace the normal search; the classic `@solr`
+  search remains fully functional.
 - During backend development, testing happens over REST (optionally a
   throwaway input box); no acceptance tests are written against interim UI.
 - The answer panel must carry a visible "AI-generated — verify against the

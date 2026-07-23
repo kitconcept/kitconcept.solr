@@ -317,6 +317,21 @@ repository's estimates).
       integration test against the docker-compose stack with deterministic
       mock endpoints (CI needs no GPU/model).
 
+**AI presentation via tabs configuration** (decided with the team
+2026-07-23, replaces the earlier "AI search" toggle; to be elaborated
+and implemented after the UX has been seen live in kitconcept.intranet):
+
+- [ ] Google-style presentation, driven by the kitconcept.solr **tabs
+      configuration** with two per-tab flags:
+      - **"AI results"**: the tab shows only the AI answer (a dedicated
+        "AI" tab);
+      - **"AI on top"**: the tab prepends the AI answer to its classic
+        result list (used on the "All" tab).
+      Any consumer (including kitconcept.intranet) composes the
+      presentation freely from these flags. Until this lands, the
+      interim UI always shows the AI answer above the classic results
+      (no toggle).
+
 **Step P2 — Overflow tasks** (first candidates after that, or if time
 remains):
 
