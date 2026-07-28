@@ -331,6 +331,31 @@ Resolved open point:
    yet be produced manually, e2e tests follow when the editor
    settles.
 
+Remaining open point:
+
+1. **Facet/tab conditions and the AI search** — requirements question,
+   **to be discussed with Dante and Timo in the review**. The classic
+   search presents tabbed results per content type with facet conditions
+   in selected tabs (e.g. the person search). Two distinct readings for
+   the AI search:
+   - *Facets as navigation over the results:* does **not** transfer — the
+     source list is a small top-K evidence set justifying the answer, not
+     an exhaustive listing to narrow down; filtering the evidence away
+     would undermine the fact-checking contract.
+   - *Facets/tabs as scope constraints on the question* (ask within a
+     tab or facet selection, e.g. a department in the person search):
+     transfers well and the architecture already supports it — the knn
+     query composes any filter query as a pre-filter (as security, path
+     and language do today). Adding tab/facet parameters to
+     `@rag-search` is a bounded, additive change reusing the classic
+     search's condition builders. Caveat: chunks do not denormalize
+     `portal_type` or the facet fields, so scoped retrieval needs either
+     those fields on the chunks (schema addition + reindex) or filtering
+     at the parent-collapse step — a real design decision.
+   Proposed MVP stance: whole-intranet scope (matches the single search
+   box); scoped RAG as a follow-up once the modal UX (external search
+   modal project) defines what scoping looks like.
+
 ## 9. References
 
 Research summaries behind the recommendations (full reports in the planning

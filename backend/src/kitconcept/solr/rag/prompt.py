@@ -19,7 +19,8 @@ SYSTEM_PROMPT = (
     " find the answer in the documentation - never invent information."
     " Answer in the language of the question. Be concise: one or two"
     " short paragraphs, no headings and no lists unless the question"
-    " asks for an enumeration."
+    " asks for an enumeration. When you refer to a document, use its"
+    " title."
 )
 
 PROMPT_TEMPLATE = (
@@ -33,12 +34,18 @@ THINK_RE = re.compile(r"<think>.*?</think>\s*", re.DOTALL)
 
 
 def build_prompt(question: str, chunks: list[dict]) -> str:
-    """One prompt containing the question and the retrieved context."""
+    """One prompt containing the question and the retrieved context.
+
+    Context chunks are labeled with their document title, NOT numbered:
+    models reliably leak "[1]"-style context numbers into the answer
+    (instructions against it proved insufficient), and the numbering
+    is invisible to the user. Titles are safe to reference.
+    """
     parts = []
-    for index, chunk in enumerate(chunks[:TOP_K], start=1):
+    for chunk in chunks[:TOP_K]:
         title = chunk.get("parent_title", "")
         text = chunk.get("chunk_text", "")
-        parts.append(f"[{index}] {title}\n{text}")
+        parts.append(f'Document "{title}":\n{text}')
     return PROMPT_TEMPLATE.format(context="\n\n".join(parts), question=question)
 
 

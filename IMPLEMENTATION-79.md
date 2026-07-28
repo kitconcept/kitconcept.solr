@@ -306,16 +306,61 @@ repository's estimates).
 
 **Step P1 — Hybrid RRF + tests (2d), first follow-up:**
 
-- [ ] **P1.1 Hybrid retrieval (1d)**: BM25 (reusing the existing
+- [x] **P1.1 Hybrid retrieval (1d)**: BM25 (reusing the existing
       `SolrSearch` query building) + knn as two Solr requests, client-side
       Reciprocal Rank Fusion (k=60) in `@rag-search`; designed to be swapped
       for Solr's native RRF combiner when 9.11/10.1 ships. Hybrid was
       originally MVP scope (empirical signal that pure vector is not enough
       on intranet content); the pure-knn MVP results should confirm the
       deferral was acceptable — if not, this item moves up.
-- [ ] **P1.2 Test pass (1d)**: unit tests (chunker, LLM client mocked) + one
+- [x] **P1.2 Test pass (1d)**: unit tests (chunker, LLM client mocked) + one
       integration test against the docker-compose stack with deterministic
       mock endpoints (CI needs no GPU/model).
+
+### Implementation notes — Step P1 (design decisions made on the way)
+
+- **Fusion happens at the parent-document level.** Chunks are invisible
+  to keyword search by design (stored, not indexed), so BM25 ranks
+  parent documents, while the knn chunk hits are collapsed to their
+  parents. Client-side RRF (`k=60`) fuses the two rankings; ties
+  resolve toward the vector ranking.
+- **The keyword scoring expression is an exact copy of the `@solr`
+  main query** — same fields, same boosts (decision after review):
+  - we DO want the same fields with the same weighting, including
+    `Subject`;
+  - we DO want `searchwords^1000` (the editorial keyword-pinning
+    mechanism) and the `-showinsearch:False` exclusion — both must
+    behave identically in the AI search (important);
+  - `id^0.75` is included; whether id matching is useful for natural
+    language questions may be revisited later (note);
+  - `text_prefix`/`text_suffix^0.75` are likely unneeded for full NL
+    questions (they serve terse/partial-word queries) but are included
+    for exact parity since their low boosts don't disturb the ranking;
+    may be revisited (note).
+  A pinning unit test spells out every clause, so the copy cannot
+  drift silently. NOT inherited (deliberately): facet/search-tab
+  conditions, highlighting, spellcheck, pagination — request-driven
+  UI machinery without meaning for the RAG query.
+- **Shared query builder refactoring deferred** (overflow list): for
+  now the expression is copied and the production `@solr` service is
+  left untouched; the later refactoring extracts the common core with
+  the acceptance criteria: (a) new unit tests for the factored-out
+  parts, (b) the pre-existing solr service tests pass unchanged after
+  the refactoring, (c) the RAG route gets its own tests modeled on the
+  solr service test examples.
+- **Keyword-only parents contribute context.** For a parent that only
+  the keyword ranking surfaced, the leading chunks are fetched from
+  Solr so its text reaches the model — otherwise a document found by
+  keyword search could appear as a source without being able to
+  influence the answer.
+- **Retrieval mode override** `KITCONCEPT_SOLR_RAG_RETRIEVAL=knn`
+  (default `hybrid`) exists solely for the pure-vector vs. hybrid
+  comparison in the evaluation on the real corpus; not a supported
+  setting.
+- The unit-test part of P1.2 had already been delivered inline with
+  Steps 1 and 3; the new piece is the integration test with a
+  deterministic mock LLM (topic-axis unit vectors, canned answer)
+  against the real docker Solr — CI-runnable with no network/model.
 
 **AI presentation via tabs configuration** (decided with the team
 2026-07-23, replaces the earlier "AI search" toggle; to be elaborated
@@ -343,6 +388,7 @@ remains):
 | Full configuration surface: registry records for model names, topK, chunk size, prompt override | 0.5d |
 | Acceptance test flow + full CI wiring (after the search-UI integration, so acceptance tests target the real UI) | 1d |
 | Separate Solr core/ports for tests vs. local dev site (see known issue 1) | 0.5d |
+| Extract a shared keyword-query builder used by both `@solr` and the RAG pipeline (criteria: unit tests for the shared part, old solr tests green, RAG route tests modeled on the solr test examples) | 0.5d |
 
 **Later roadmap** (tracked, not scheduled): full evaluation harness
 (Recall@k/MRR/nDCG as CI regression gate, RAGAS faithfulness/relevancy with
