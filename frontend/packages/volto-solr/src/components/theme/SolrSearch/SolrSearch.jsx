@@ -355,186 +355,192 @@ class SolrSearch extends Component {
       this.props.contentTypeSearchResultViews[contentType] ||
       this.props.contentTypeSearchResultDefaultView;
     return (
-      <Segment basic id="page-search" className="header-wrapper">
-        <Helmet title="Search" />
-        <Container>
-          {this.props.showSearchInput ? (
-            <div className="search-input">
-              <form className="ui form" onSubmit={this.onSubmit}>
-                <div className="field searchbox">
-                  <TranslatedInput
-                    ref={this.inputRef}
-                    placeholder={messages.TypeSearchWords}
-                    className="searchinput"
-                    value={this.state.searchword}
-                    onChange={(e) =>
-                      this.setState({ searchword: e.target.value })
-                    }
-                    onSubmit={this.onSubmit}
-                  />
-                  <Button onClick={this.onSubmit}>
-                    <FormattedMessage id="Search" defaultMessage="Search" />{' '}
-                  </Button>
-                </div>
-              </form>
-            </div>
-          ) : null}
-          {/* RAG: TESTING - debug toggle + answer area (real UX comes
+      <>
+        <Segment basic id="page-search" className="header-wrapper">
+          <Helmet title="Search" />
+          <Container>
+            {this.props.showSearchInput ? (
+              <div className="search-input">
+                <form className="ui form" onSubmit={this.onSubmit}>
+                  <div className="field searchbox">
+                    <TranslatedInput
+                      ref={this.inputRef}
+                      placeholder={messages.TypeSearchWords}
+                      className="searchinput"
+                      value={this.state.searchword}
+                      onChange={(e) =>
+                        this.setState({ searchword: e.target.value })
+                      }
+                      onSubmit={this.onSubmit}
+                    />
+                    <Button onClick={this.onSubmit}>
+                      <FormattedMessage id="Search" defaultMessage="Search" />{' '}
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            ) : null}
+            {/* RAG: TESTING - debug toggle + answer area (real UX comes
               from the search modal ticket, styling intentionally raw).
               Rendered only when the backend reports the feature
               available - an unconfigured site shows the classic
               search, untouched. */}
-          {this.props.ragAvailable ? (
-            <div className="rag-debug" style={{ margin: '1em 0' }}>
-              <Checkbox
-                toggle
-                label="Use AI"
-                checked={this.state.useAI}
-                onChange={(e, { checked }) => this.setUseAI(checked)}
-              />
-              {this.state.useAI &&
-              (this.props.rag.loading || this.props.rag.loaded) ? (
-                <div
-                  style={{
-                    border: '1px solid #ccc',
-                    background: '#f8f8f8',
-                    padding: '1em',
-                    marginTop: '0.5em',
-                  }}
-                >
-                  {this.props.rag.loading ? <p>Thinking…</p> : null}
-                  {this.props.rag.error ? (
-                    <p style={{ color: 'red' }}>{this.props.rag.error}</p>
-                  ) : null}
-                  {this.props.rag.answer ? (
-                    <p style={{ whiteSpace: 'pre-wrap' }}>
-                      {this.props.rag.answer}
-                    </p>
-                  ) : null}
-                  {this.props.rag.loaded &&
-                  !this.props.rag.answer &&
-                  !this.props.rag.error ? (
-                    <p>No answer — no matching documents found.</p>
-                  ) : null}
-                  {(this.props.rag.sources || []).length > 0 ? (
-                    <ul>
-                      {this.props.rag.sources.map((source) => (
-                        <li key={source.UID}>
-                          <a href={flattenToAppURL(source['@id'])}>
-                            {source.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
-          {this.state.allowLocal &&
-          getPathPrefix(this.props.history.location) !== undefined ? (
-            <LocalCheckbox
-              onChange={(checked) => this.setLocal(checked)}
-              checked={this.state.local}
-            />
-          ) : null}
-          <SearchResultInfo
-            searchableText={this.state.searchwordInStatus}
-            total={this.props.total}
-          />
-          <SearchTabs
-            groupSelect={this.state.groupSelect}
-            setGroupSelect={(groupSelect) => this.setGroupSelect(groupSelect)}
-            facetGroups={this.props.facetGroups}
-          />
-          <VocabProvider>
-            <article id="content">
-              <header>
-                {this.props.total > 0 ? (
-                  <div className="sorting-bar">
-                    <SelectLayout
-                      layouts={this.props.layouts}
-                      value={this.state.layout}
-                      onChange={(value) => {
-                        this.setState({ layout: value });
-                      }}
-                    />
-                    <SelectSorting
-                      value={this.state.sortOn}
-                      onChange={(selectedOption, order) => {
-                        this.onSortChange(selectedOption, order);
-                      }}
-                    />
+            {this.props.ragAvailable ? (
+              <div className="rag-debug" style={{ margin: '1em 0' }}>
+                <Checkbox
+                  toggle
+                  label="Use AI"
+                  checked={this.state.useAI}
+                  onChange={(e, { checked }) => this.setUseAI(checked)}
+                />
+                {this.state.useAI &&
+                (this.props.rag.loading || this.props.rag.loaded) ? (
+                  <div
+                    style={{
+                      border: '1px solid #ccc',
+                      background: '#f8f8f8',
+                      padding: '1em',
+                      marginTop: '0.5em',
+                    }}
+                  >
+                    {this.props.rag.loading ? <p>Thinking…</p> : null}
+                    {this.props.rag.error ? (
+                      <p style={{ color: 'red' }}>{this.props.rag.error}</p>
+                    ) : null}
+                    {this.props.rag.answer ? (
+                      <p style={{ whiteSpace: 'pre-wrap' }}>
+                        {this.props.rag.answer}
+                      </p>
+                    ) : null}
+                    {this.props.rag.loaded &&
+                    !this.props.rag.answer &&
+                    !this.props.rag.error ? (
+                      <p>No answer — no matching documents found.</p>
+                    ) : null}
+                    {(this.props.rag.sources || []).length > 0 ? (
+                      <ul>
+                        {this.props.rag.sources.map((source) => (
+                          <li key={source.UID}>
+                            <a href={flattenToAppURL(source['@id'])}>
+                              {source.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
                 ) : null}
-              </header>
-              <div className="searchContentWrapper">
-                <SearchConditions
-                  groupSelect={this.state.groupSelect}
-                  facetFields={this.props.facetFields}
-                  vocabularies={this.props.vocabularies}
-                  conditionTree={this.state.facetConditions}
-                  setConditionTree={this.setConditionTree}
-                />
-                <Dimmer active={this.props.loading} inverted>
-                  <Loader indeterminate size="small">
-                    <FormattedMessage id="loading" defaultMessage="Loading" />
-                  </Loader>
-                </Dimmer>
-                <section
-                  id="content-core"
-                  className={`layout-${this.state.layout}`}
-                >
-                  <div className="search-items">
-                    {this.props.items?.map((item, index) => (
-                      <div key={'' + index + '-' + item['@id']}>
-                        {createElement(resultTypeMapper(item['@type']), {
-                          key: item['@id'],
-                          item,
-                          layout: this.state.layout,
-                        })}
-                      </div>
-                    ))}
-                  </div>
-                  {this.props.batching &&
-                    this.props.total / settings.defaultPageSize > 1 && (
-                      <div className="search-footer">
-                        <Pagination
-                          activePage={this.state.currentPage}
-                          totalPages={Math.ceil(
-                            this.props.total / settings.defaultPageSize,
-                          )}
-                          onPageChange={this.handleQueryPaginationChange}
-                          firstItem={null}
-                          lastItem={null}
-                          prevItem={{
-                            content: (
-                              <Icon name={paginationLeftSVG} size="18px" />
-                            ),
-                            icon: true,
-                            'aria-disabled': !this.props.batching.prev,
-                            className: !this.props.batching.prev
-                              ? 'disabled'
-                              : null,
-                          }}
-                          nextItem={{
-                            content: (
-                              <Icon name={paginationRightSVG} size="18px" />
-                            ),
-                            icon: true,
-                            'aria-disabled': !this.props.batching.next,
-                            className: !this.props.batching.next
-                              ? 'disabled'
-                              : null,
-                          }}
-                        />
-                      </div>
-                    )}
-                </section>
               </div>
-            </article>
-          </VocabProvider>
-        </Container>
+            ) : null}
+            {this.state.allowLocal &&
+            getPathPrefix(this.props.history.location) !== undefined ? (
+              <LocalCheckbox
+                onChange={(checked) => this.setLocal(checked)}
+                checked={this.state.local}
+              />
+            ) : null}
+            <SearchResultInfo
+              searchableText={this.state.searchwordInStatus}
+              total={this.props.total}
+            />
+            <SearchTabs
+              groupSelect={this.state.groupSelect}
+              setGroupSelect={(groupSelect) => this.setGroupSelect(groupSelect)}
+              facetGroups={this.props.facetGroups}
+            />
+            <VocabProvider>
+              <article id="content">
+                <header>
+                  {this.props.total > 0 ? (
+                    <div className="sorting-bar">
+                      <SelectLayout
+                        layouts={this.props.layouts}
+                        value={this.state.layout}
+                        onChange={(value) => {
+                          this.setState({ layout: value });
+                        }}
+                      />
+                      <SelectSorting
+                        value={this.state.sortOn}
+                        onChange={(selectedOption, order) => {
+                          this.onSortChange(selectedOption, order);
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                </header>
+                <div className="searchContentWrapper">
+                  <SearchConditions
+                    groupSelect={this.state.groupSelect}
+                    facetFields={this.props.facetFields}
+                    vocabularies={this.props.vocabularies}
+                    conditionTree={this.state.facetConditions}
+                    setConditionTree={this.setConditionTree}
+                  />
+                  <Dimmer active={this.props.loading} inverted>
+                    <Loader indeterminate size="small">
+                      <FormattedMessage id="loading" defaultMessage="Loading" />
+                    </Loader>
+                  </Dimmer>
+                  <section
+                    id="content-core"
+                    className={`layout-${this.state.layout}`}
+                  >
+                    <div className="search-items">
+                      {this.props.items?.map((item, index) => (
+                        <div key={'' + index + '-' + item['@id']}>
+                          {createElement(resultTypeMapper(item['@type']), {
+                            key: item['@id'],
+                            item,
+                            layout: this.state.layout,
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                    {this.props.batching &&
+                      this.props.total / settings.defaultPageSize > 1 && (
+                        <div className="search-footer">
+                          <Pagination
+                            activePage={this.state.currentPage}
+                            totalPages={Math.ceil(
+                              this.props.total / settings.defaultPageSize,
+                            )}
+                            onPageChange={this.handleQueryPaginationChange}
+                            firstItem={null}
+                            lastItem={null}
+                            prevItem={{
+                              content: (
+                                <Icon name={paginationLeftSVG} size="18px" />
+                              ),
+                              icon: true,
+                              'aria-disabled': !this.props.batching.prev,
+                              className: !this.props.batching.prev
+                                ? 'disabled'
+                                : null,
+                            }}
+                            nextItem={{
+                              content: (
+                                <Icon name={paginationRightSVG} size="18px" />
+                              ),
+                              icon: true,
+                              'aria-disabled': !this.props.batching.next,
+                              className: !this.props.batching.next
+                                ? 'disabled'
+                                : null,
+                            }}
+                          />
+                        </div>
+                      )}
+                  </section>
+                </div>
+              </article>
+            </VocabProvider>
+          </Container>
+        </Segment>
+        {/* The Toolbar portal is a sibling of the Segment, not a child:
+            createPortal returns a ReactPortal, which renders fine but is
+            not recognized by the prop-types `node` checker, so Segment's
+            propTypes would warn about invalid children (#97). */}
         {this.state.isClient &&
           createPortal(
             <Toolbar
@@ -544,7 +550,7 @@ class SolrSearch extends Component {
             />,
             document.getElementById('toolbar'),
           )}
-      </Segment>
+      </>
     );
   }
 }
