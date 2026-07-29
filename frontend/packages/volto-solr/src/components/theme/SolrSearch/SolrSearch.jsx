@@ -278,16 +278,29 @@ class SolrSearch extends Component {
     // goes to the RAG endpoint: the AI answer renders above the
     // classic result list, it does not replace it
     if (this.props.ragAvailable && this.state.useAI && params.SearchableText) {
-      this.props.ragSearch('', params.SearchableText);
+      // Local search also scopes the AI retrieval, so the answer's
+      // grounding matches the classic result list.
+      const ragPathPrefix =
+        (params.local || '').toLowerCase() === 'true'
+          ? this.searchPathPrefix(params)
+          : undefined;
+      this.props.ragSearch('', params.SearchableText, ragPathPrefix);
     }
     this.props.searchContent('', {
       ...params,
       sort_on: params.sort_on !== 'relevance' ? params.sort_on : '',
       b_start: (this.state.currentPage - 1) * config.settings.defaultPageSize,
-      path_prefix: getPathPrefix(window.location),
+      path_prefix: this.searchPathPrefix(params),
       doEmptySearch: this.props.doEmptySearch,
     });
   };
+
+  // An explicit path_prefix URL param wins over the URL heuristic:
+  // getPathPrefix treats every single-segment path as a language root
+  // (/de, /en), so a top-level subsite or workspace (/my-workspace)
+  // would silently lose its prefix.
+  searchPathPrefix = (params) =>
+    params.path_prefix || getPathPrefix(window.location);
 
   // RAG: TESTING
   setUseAI = (checked) => {
