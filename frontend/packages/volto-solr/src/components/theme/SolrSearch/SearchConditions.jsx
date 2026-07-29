@@ -147,8 +147,12 @@ export const SearchConditions = ({
           })}
         </div>
       ) : null,
-    // Use spread operator to perform a shallow equality check on the vocabData object
+    // vocabData comes from useSelector(..., shallowEqual) in useVocabs,
+    // so its identity only changes when some vocabulary's items change:
+    // it works as a single dependency. (Spreading its values here made
+    // the deps array grow as vocabularies loaded, which React warns
+    // about: the deps array size must stay constant between renders.)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(facetFields), conditionTree, ...Object.values(vocabData)],
+    [JSON.stringify(facetFields), conditionTree, vocabData],
   );
 };
