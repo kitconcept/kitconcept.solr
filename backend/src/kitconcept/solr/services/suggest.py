@@ -58,6 +58,13 @@ class SolrSuggest(Service):
         if lang:
             d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
 
+        # Optional path scoping (same pattern as the RAG retrieval):
+        # restricts suggestions to a subtree, e.g. the current workspace.
+        if path_prefix := self.request.form.get("path_prefix", "").strip():
+            portal_path = "/".join(api.portal.get().getPhysicalPath())
+            prefix = portal_path + path_prefix.rstrip("/")
+            d["fq"] = d["fq"] + [f'path_parents:"{prefix}"']
+
         d["fq"] = " AND ".join(d["fq"])
         querystring = urllib.parse.urlencode(d)
         url = "{}/{}".format(connection.solrBase, f"suggest?{querystring}")
