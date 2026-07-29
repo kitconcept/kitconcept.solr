@@ -269,10 +269,17 @@ class SolrSearch extends Component {
       ...params,
       sort_on: params.sort_on !== 'relevance' ? params.sort_on : '',
       b_start: (this.state.currentPage - 1) * config.settings.defaultPageSize,
-      path_prefix: getPathPrefix(window.location),
+      path_prefix: this.searchPathPrefix(params),
       doEmptySearch: this.props.doEmptySearch,
     });
   };
+
+  // An explicit path_prefix URL param wins over the URL heuristic:
+  // getPathPrefix treats every single-segment path as a language root
+  // (/de, /en), so a top-level subsite or workspace (/my-workspace)
+  // would silently lose its prefix.
+  searchPathPrefix = (params) =>
+    params.path_prefix || getPathPrefix(window.location);
 
   updateSearch = () => {
     this.props.history.replace({

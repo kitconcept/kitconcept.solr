@@ -91,3 +91,13 @@ class TestSuggestDefaultBaseSearch(TestSuggestDefault):
             get_suggest_result_props(expected_dict).items()
             <= get_suggest_result_props(get_suggest_item(self.data, index)).items()
         )
+
+
+class TestSuggestPathPrefix(TestSuggestDefault):
+    """path_prefix restricts suggestions to a subtree (e.g. a workspace)."""
+
+    url = "/@solr-suggest?query=chomsky&path_prefix=/mydocument"
+
+    def test_only_prefixed_results(self, get_suggest_result_path):
+        paths = [get_suggest_result_path(item) for item in self.data["suggestions"]]
+        assert paths == ["/plone/mydocument"]
