@@ -58,3 +58,14 @@ class TestStripThinking:
     def test_multiline_thinking(self):
         answer = "<think>line1\nline2</think>  \n\nAnswer\nwith lines."
         assert strip_thinking(answer) == "Answer\nwith lines."
+
+    def test_unopened_thinking_block(self):
+        # Some model templates consume the opening <think> tag, so the
+        # completion starts mid-reasoning and only the closing tag
+        # appears (observed with qwen3:4b via Ollama).
+        answer = "Okay, the user asks about X.\nLet me check.\n</think>\nThe answer."
+        assert strip_thinking(answer) == "The answer."
+
+    def test_closed_block_followed_by_stray_close_tag(self):
+        answer = "<think>a</think>more reasoning</think>\nThe answer."
+        assert strip_thinking(answer) == "The answer."

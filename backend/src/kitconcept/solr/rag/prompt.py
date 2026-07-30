@@ -31,6 +31,10 @@ PROMPT_TEMPLATE = (
 
 # Reasoning models may emit a thinking block; never show it to users.
 THINK_RE = re.compile(r"<think>.*?</think>\s*", re.DOTALL)
+# Some model templates consume the opening <think> tag and emit only
+# the closing one (observed with qwen3:4b via Ollama): everything up
+# to the last </think> is reasoning in that case.
+THINK_TAIL_RE = re.compile(r"^.*</think>\s*", re.DOTALL)
 
 
 def build_prompt(question: str, chunks: list[dict]) -> str:
@@ -50,4 +54,7 @@ def build_prompt(question: str, chunks: list[dict]) -> str:
 
 
 def strip_thinking(answer: str) -> str:
-    return THINK_RE.sub("", answer).strip()
+    answer = THINK_RE.sub("", answer)
+    if "</think>" in answer:
+        answer = THINK_TAIL_RE.sub("", answer)
+    return answer.strip()
