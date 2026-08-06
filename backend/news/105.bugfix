@@ -1,0 +1,1 @@
+Suggest: pass `include_items=False` when serializing a suggestion in full. For folderish portal types plone.restapi would otherwise run an extra catalog query per suggestion and embed the entire child listing into the type-ahead response. @reebalazs
