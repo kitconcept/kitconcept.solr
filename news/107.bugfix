@@ -1,0 +1,1 @@
+Remove config files from an existing Solr core when they are removed from the image. @reekitconcept

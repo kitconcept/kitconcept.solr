@@ -1,0 +1,1 @@
+Stop overriding the image `CMD` with `solr-precreate` in the compose files. @reekitconcept

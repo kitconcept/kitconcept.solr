@@ -5,8 +5,13 @@
 # Update conf files in existing solr core (if present).
 # Then run solr-precreate which creates the core (if not present)
 # and starts solr.
+#
+# conf is dropped first so that a config file removed from the image is
+# also removed from the core; cp alone would leave it behind forever.
+# Only conf is touched, the index in data is left alone.
 
 if [ -d /var/solr/data/plone ]; then
+  rm -rf /var/solr/data/plone/conf
   cp -r /plone-config/* /var/solr/data/plone
 fi
 
