@@ -68,17 +68,17 @@ solr_config_no_vocabs = {
 
 
 class TestVocabulariesEndpoint:
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content, manager_request):
-        self.portal = portal_with_content
-        response = manager_request.get(self.url)
-        self.data = response.json()
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content, manager_request):
+        request.cls.portal = portal_with_content
+        response = manager_request.get(request.cls.url)
+        request.cls.data = response.json()
 
 
 class TestVocabulariesInResponse(TestVocabulariesEndpoint):
     url = "/@solr?q=chomsky"
 
-    @pytest.fixture()
+    @pytest.fixture(scope="class")
     def registry_config(self) -> dict:
         return {
             "collective.solr.active": 1,
@@ -102,7 +102,7 @@ class TestVocabulariesInResponse(TestVocabulariesEndpoint):
 class TestVocabulariesEmptyInResponse(TestVocabulariesEndpoint):
     url = "/@solr?q=chomsky"
 
-    @pytest.fixture()
+    @pytest.fixture(scope="class")
     def registry_config(self) -> dict:
         return {
             "collective.solr.active": 1,

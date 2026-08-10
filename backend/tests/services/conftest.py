@@ -12,13 +12,13 @@ import pytest
 import transaction
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def users() -> list:
     """Additional users to be created."""
     return []
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def contents() -> list:
     """Content to be created."""
     return [
@@ -61,7 +61,7 @@ def all_path_string():
     return func
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def create_contents(contents):
     """Helper fixture to create initial content."""
 
@@ -96,23 +96,23 @@ def create_contents(contents):
     return func
 
 
-@pytest.fixture()
-def app(functional):
-    return functional["app"]
+@pytest.fixture(scope="class")
+def app(functional_class_bracket):
+    return functional_class_bracket["app"]
 
 
-@pytest.fixture()
-def http_request(functional):
-    return functional["request"]
+@pytest.fixture(scope="class")
+def http_request(functional_class_bracket):
+    return functional_class_bracket["request"]
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def registry_config() -> dict:
     """Fixture with plone.app.registry settings."""
     return {"collective.solr.active": 1}
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def portal(app, solr_service, http_request, users, registry_config):
     """Plone portal with additional users, and registry configuration set."""
     portal = app["plone"]
@@ -135,7 +135,7 @@ def portal(app, solr_service, http_request, users, registry_config):
     transaction.commit()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def portal_with_content(app, portal, create_contents):
     """Plone portal with initial content."""
     with api.env.adopt_roles(["Manager"]):
@@ -150,7 +150,7 @@ def portal_with_content(app, portal, create_contents):
     transaction.commit()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def maintenance(portal, http_request):
     """Return browser view for solr maintenance."""
     with api.env.adopt_roles(["Manager"]):
@@ -158,7 +158,7 @@ def maintenance(portal, http_request):
     return view
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def request_factory(portal):
     """Fixture returning a session to call the API."""
 
@@ -171,13 +171,13 @@ def request_factory(portal):
     return factory
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def anon_request(request_factory):
     """Anonymous API requests."""
     return request_factory()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def manager_request(request_factory):
     """Manager API requests."""
     request = request_factory()
