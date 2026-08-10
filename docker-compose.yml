@@ -114,9 +114,7 @@ services:
     depends_on:
       - tika
     command:
-      - solr-precreate
-      - plone
-      - /plone-config
+      - solr-update-core-and-start
     environment:
       SOLR_MODULES: extraction
       SOLR_OPTS: "-Dsolr.tika.url=http://tika:9998"
