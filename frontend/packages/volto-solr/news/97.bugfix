@@ -1,0 +1,1 @@
+Fix React prop-types warning on client-side navigation to the search page: the Toolbar portal is rendered as a sibling of the Segment instead of a child (prop-types does not recognize ReactPortal as a node). @reebalazs
