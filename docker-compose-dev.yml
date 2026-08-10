@@ -24,9 +24,7 @@ services:
       # site Solr on 8983; manual/acceptance use keeps the fixed port.
       - "${SOLR_ACCEPTANCE_PORT:-8983}:8983"
     command:
-      - solr-precreate
-      - plone
-      - /plone-config
+      - solr-update-core-and-start
     environment:
       SOLR_MODULES: extraction
       SOLR_OPTS: "-Dsolr.tika.url=http://tika-acceptance:9998"
