@@ -1,0 +1,1 @@
+Fix React warning in SearchConditions: the useMemo dependency array grew as vocabularies loaded (spread of vocabData values); use the vocabData object itself as a constant-size dependency. @reebalazs
