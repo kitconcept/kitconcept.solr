@@ -2,11 +2,11 @@ import pytest
 
 
 class TestEndpointDefault:
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content, manager_request):
-        self.portal = portal_with_content
-        response = manager_request.get(self.url)
-        self.data = response.json()
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content, manager_request):
+        request.cls.portal = portal_with_content
+        response = manager_request.get(request.cls.url)
+        request.cls.data = response.json()
 
     def func(data: dict) -> list[str]:
         return [item["path_string"] for item in data["response"]["docs"]]

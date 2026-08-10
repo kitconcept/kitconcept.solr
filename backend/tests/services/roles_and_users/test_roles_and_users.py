@@ -29,9 +29,9 @@ class TestEndpointRolesAndUsers:
 
         return func
 
-    @pytest.fixture(autouse=True)
-    def _init(self, portal_with_content):
-        self.portal = portal_with_content
+    @pytest.fixture(autouse=True, scope="class")
+    def _init(self, request, portal_with_content):
+        request.cls.portal = portal_with_content
 
 
 class TestEndpointRolesAndUsersNoPermission(TestEndpointRolesAndUsers):
