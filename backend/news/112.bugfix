@@ -1,0 +1,2 @@
+RAG: fix Plate chunking, by extracting text also from blocks that are not listed in
+``blocks_layout`` @reebalazs

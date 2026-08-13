@@ -120,8 +120,30 @@ def extract_segments(obj) -> list[str]:
         request = getRequest()
         blocks = getattr(obj, "blocks", None) or {}
         blocks_layout = getattr(obj, "blocks_layout", None) or {}
-        for block_id in blocks_layout.get("items", []):
-            block = blocks.get(block_id, {})
+        # Walk the layout first (it carries the document order), then
+        # any blocks not listed in it: the Plate editor registers its
+        # block in ``blocks`` without adding it to ``blocks_layout``,
+        # so a layout-only walk loses the whole page body (intranet
+        # ticket #580). Same coverage as plone.restapi's visit_blocks,
+        # which iterates blocks.values() for SearchableText.
+        # The layout list is the authoritative document order: blocks
+        # is a plain dict in creation order, and reordering a page
+        # only rewrites blocks_layout - so walking the layout first
+        # keeps segments in the order the reader sees them (the
+        # chunker merges *consecutive* segments, order matters).
+        # The "in blocks" filter guards against a dangling layout
+        # entry (a layout id whose block was deleted), which would
+        # otherwise KeyError below.
+        layout_ids = [
+            block_id
+            for block_id in blocks_layout.get("items", [])
+            if block_id in blocks
+        ]
+        unlisted_ids = [
+            block_id for block_id in blocks if block_id not in set(layout_ids)
+        ]
+        for block_id in layout_ids + unlisted_ids:
+            block = blocks[block_id]
             if is_plate_block(block):
                 segments.extend(extract_plate_segments(block, obj, request))
             else:
