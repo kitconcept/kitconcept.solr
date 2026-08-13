@@ -210,3 +210,48 @@ class TestExtractSegmentsCoexistence:
             layout_items=["new", "old"],
         )
         assert extract_segments(obj) == ["New style.", "Old style."]
+
+    def test_layout_order_wins_over_blocks_dict_order(self):
+        # blocks is a plain dict in creation order; reordering a page
+        # only rewrites blocks_layout. The layout must win: segments
+        # feed the chunker in reading order.
+        obj = make_obj(
+            blocks={
+                "second": {"@type": "slate", "plaintext": "Second on page."},
+                "first": {"@type": "slate", "plaintext": "First on page."},
+            },
+            layout_items=["first", "second"],
+        )
+        assert extract_segments(obj) == ["First on page.", "Second on page."]
+
+    def test_block_missing_from_layout_still_extracted(self):
+        # The Plate editor registers its block in ``blocks`` without
+        # adding it to ``blocks_layout`` - the page body must not be
+        # lost over that (intranet ticket #580). Layout-listed blocks
+        # come first (they carry the document order), unlisted ones
+        # after.
+        obj = make_obj(
+            blocks={
+                "classic-title": {"@type": "title"},
+                "__somersault__": plate_block(
+                    element("title", leaf("Page title")),
+                    element("p", leaf("Body paragraph.")),
+                ),
+                "classic-slate": {"@type": "slate", "plaintext": "Slate text."},
+            },
+            layout_items=["classic-title", "classic-slate"],
+        )
+        assert extract_segments(obj) == [
+            "Slate text.",
+            "Page title",
+            "Body paragraph.",
+        ]
+
+    def test_layout_id_without_block_ignored(self):
+        obj = make_obj(
+            blocks={
+                "b1": {"@type": "slate", "plaintext": "Kept."},
+            },
+            layout_items=["missing", "b1"],
+        )
+        assert extract_segments(obj) == ["Kept."]
