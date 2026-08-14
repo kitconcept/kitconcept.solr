@@ -1,1 +1,0 @@
-The test Solr/Tika containers use ephemeral host ports (docker-compose-dev.yml mappings are parameterized): the tests never touch a locally running site Solr on 8983, and a dev site and the test suite can run at the same time. @reebalazs

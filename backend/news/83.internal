@@ -1,1 +1,0 @@
-The test Solr/Tika containers use ephemeral host ports: the tests never touch (nor get blocked by) a locally running site Solr on 8983, and a dev site and the test suite can run at the same time. @reebalazs

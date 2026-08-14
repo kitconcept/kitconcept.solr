@@ -1,1 +1,0 @@
-@solr-suggest accepts an optional path_prefix (path_parents filter), so livesearch suggestions honor a subtree scope like the search results do. @reebalazs

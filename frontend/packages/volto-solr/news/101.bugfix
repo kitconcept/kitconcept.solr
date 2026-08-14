@@ -1,1 +1,0 @@
-Local search fixes: @solr-suggest accepts an optional path_prefix so suggestions honor a subtree scope, and an explicit path_prefix URL param wins over the getPathPrefix heuristic, which silently dropped top-level (single-segment) prefixes. @reebalazs
