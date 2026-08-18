@@ -83,6 +83,33 @@ class TestRagSearchService:
         assert runner.call_args.kwargs["path_prefix"] == "/documents"
         assert runner.call_args.kwargs["lang"] == "en"
 
+    def test_extra_conditions_become_filters(self, service):
+        import base64
+        import json
+
+        rows = [["portal_type", "string", {"in": ["Document"]}]]
+        encoded = base64.b64encode(json.dumps(rows).encode()).decode()
+        service.request.form.update({"q": "a question", "extra_conditions": encoded})
+        with (
+            mock.patch.object(service_module, "get_rag_config", return_value=CONFIG),
+            mock.patch.object(
+                service_module, "run_rag_search", return_value=RagResult()
+            ) as runner,
+        ):
+            service.reply()
+        assert runner.call_args.kwargs["extra_filters"] == ['portal_type:("Document")']
+
+    def test_no_extra_conditions_is_none(self, service):
+        service.request.form.update({"q": "a question"})
+        with (
+            mock.patch.object(service_module, "get_rag_config", return_value=CONFIG),
+            mock.patch.object(
+                service_module, "run_rag_search", return_value=RagResult()
+            ) as runner,
+        ):
+            service.reply()
+        assert runner.call_args.kwargs["extra_filters"] is None
+
     def test_empty_optional_params_are_none(self, service):
         service.request.form.update({"q": "a question", "path_prefix": " "})
         with (

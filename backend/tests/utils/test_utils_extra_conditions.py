@@ -141,13 +141,27 @@ class TestUtilsExtraConditionsString:
         config = [["keywords", "string", {"in": ["term1"]}]]
         obj = SolrExtraConditions(config)
         result = obj.query_list()
-        assert result == ["keywords:(term1)"]
+        assert result == ['keywords:("term1")']
 
     def test_query_list_string_in_multiple_terms(self):
         config = [["keywords", "string", {"in": ["term1", "term2"]}]]
         obj = SolrExtraConditions(config)
         result = obj.query_list()
-        assert result == ["keywords:(term1 OR term2)"]
+        assert result == ['keywords:("term1" OR "term2")']
+
+    def test_query_list_string_in_term_with_space(self):
+        # Exact values may contain spaces (e.g. portal_type
+        # "News Item") - quoting keeps them one term.
+        config = [["portal_type", "string", {"in": ["News Item"]}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ['portal_type:("News Item")']
+
+    def test_query_list_string_in_quote_escaped(self):
+        config = [["keywords", "string", {"in": ['ter"m']}]]
+        obj = SolrExtraConditions(config)
+        result = obj.query_list()
+        assert result == ['keywords:("ter\\"m")']
 
     def test_query_list_string_in_empty_term(self):
         config = [["keywords", "string", {"in": []}]]

@@ -18,12 +18,17 @@ export const RESET_RAG_SEARCH = 'RESET_RAG_SEARCH';
  * @param {string} question The natural language question.
  * @returns {Object} RAG search action.
  */
-export function ragSearch(url, question, pathPrefix) {
+export function ragSearch(url, question, pathPrefix, extraConditions) {
   const params = [`q=${encodeURIComponent(question)}`];
   if (pathPrefix) {
     // Restrict retrieval (and thus the answer's grounding) to a
     // subtree, e.g. the current workspace.
     params.push(`path_prefix=${encodeURIComponent(pathPrefix)}`);
+  }
+  if (extraConditions) {
+    // Encoded filter conditions (see encodeExtraConditions): the
+    // answer is grounded only on documents matching the criteria.
+    params.push(`extra_conditions=${encodeURIComponent(extraConditions)}`);
   }
   return {
     type: RAG_SEARCH,

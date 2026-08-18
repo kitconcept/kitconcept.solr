@@ -226,6 +226,15 @@ class TestSearchChunks:
         params = self.search_params(conn, lang="en")
         assert "Language:(en OR any)" in params["fq"]
 
+    def test_extra_filters_applied(self, conn):
+        # the search dialog's filter chips restrict the grounding
+        params = self.search_params(
+            conn,
+            extra_filters=['portal_type:("Document")', "modified:[NOW-7DAYS TO *]"],
+        )
+        assert 'portal_type:("Document")' in params["fq"]
+        assert "modified:[NOW-7DAYS TO *]" in params["fq"]
+
 
 class TestHybridRetrieval:
     def test_hybrid_fuses_keyword_ranking(self, environment):
@@ -250,6 +259,18 @@ class TestHybridRetrieval:
         with mock.patch.object(pipeline_module, "fetch_parents", return_value=parents):
             result = run_rag_search("q", CONFIG, SECURITY_FQ)
         assert "uid-c" in [s["UID"] for s in result.sources]
+
+    def test_extra_filters_reach_both_legs(self, environment):
+        run_rag_search(
+            "q",
+            CONFIG,
+            SECURITY_FQ,
+            extra_filters=['portal_type:("Document")'],
+        )
+        chunk_kwargs = environment["searcher"].call_args.args
+        keyword_args = environment["keyword"].call_args.args
+        assert ['portal_type:("Document")'] in chunk_kwargs
+        assert ['portal_type:("Document")'] in keyword_args
 
     def test_knn_mode_skips_keyword_search(self, environment):
         config = RagConfig(

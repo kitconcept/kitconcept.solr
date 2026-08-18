@@ -2,6 +2,7 @@ from .solr import security_filter
 from collective.solr.interfaces import ISolrConnectionManager
 from kitconcept.solr.services.solr_utils import escape
 from kitconcept.solr.services.solr_utils import replace_reserved
+from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
 from plone import api
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.interfaces import ISerializeToJsonSummary
@@ -43,6 +44,36 @@ class SolrSuggest(Service):
         data = {"error": "no response"}
         _, lang = self._language_settings()
         term = f"({escape(replace_reserved(query))})" if query else "*"
+
+        # Optional filters, same mechanism and encoding as the @solr
+        # endpoint's extra_conditions parameter (search dialog filter
+        # chips, ticket 585): a base64 encoded JSON list of
+        # [fieldname, kind, condition] rows.
+        extra_conditions = SolrExtraConditions.from_encoded(
+            self.request.form.get("extra_conditions")
+        )
+        extra_fq = extra_conditions.query_list()
+        # An explicit type filter wins over the built-in exclusions:
+        # the exclusion list keeps noise (e.g. images) out of the
+        # default suggestions, but a user who filters for exactly such
+        # a type must see it.
+        has_type_filter = any(
+            row and row[0] in ("portal_type", "Type")
+            for row in extra_conditions.config
+            if isinstance(row, (list, tuple))
+        )
+        type_exclusions = (
+            []
+            if has_type_filter
+            else [
+                (
+                    "-portal_type:Image -portal_type:Glossary -portal_type:FAQ "
+                    "-portal_type:(FAQ Item) -portal_type:(FAQ Category) "
+                    "-portal_type:Link"
+                )
+            ]
+        )
+
         d = {
             "q": (
                 f"+suggest:{term}^10 OR +suggest_ngram:{term} "
@@ -51,11 +82,8 @@ class SolrSuggest(Service):
             "fq": [
                 security_filter(),
                 "-showinsearch:False",
-                (
-                    "-portal_type:Image -portal_type:Glossary -portal_type:FAQ "
-                    "-portal_type:(FAQ Item) -portal_type:(FAQ Category) "
-                    "-portal_type:Link"
-                ),
+                *type_exclusions,
+                *extra_fq,
             ],
             "defType": "lucene",
         }
