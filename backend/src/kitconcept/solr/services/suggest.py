@@ -89,8 +89,11 @@ class SolrSuggest(Service):
             # catalog query per suggestion and embed the whole child listing in
             # the response. The plain SerializeToJson accepts and ignores the
             # keyword, so no type check is needed here.
+            # `include_expansion=False` drops the `@components` expansion
+            # links (breadcrumbs, navigation, actions...), which the suggest
+            # dropdown never follows.
             data = getMultiAdapter((obj, self.request), ISerializeToJson)(
-                include_items=False
+                include_items=False, include_expansion=False
             )
             data["@id"] = obj.absolute_url()
             return data

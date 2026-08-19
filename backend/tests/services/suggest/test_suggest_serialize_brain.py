@@ -65,6 +65,15 @@ class TestSerializeBrain:
         assert "items_total" not in data
         assert "batching" not in data
 
+    def test_full_serialization_omits_the_expansion_components(
+        self, service, folderish_brain, serialize_document_in_full
+    ):
+        data = service.serialize_brain(folderish_brain)
+
+        # `include_expansion=False`: no `@components` expansion links
+        # (breadcrumbs, navigation, actions...) in the suggest payload.
+        assert "@components" not in data
+
     def test_full_serialization_still_returns_the_object(
         self, service, folderish_brain, serialize_document_in_full
     ):
