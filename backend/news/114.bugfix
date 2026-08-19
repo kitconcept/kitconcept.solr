@@ -1,0 +1,1 @@
+Suggest: pass `include_expansion=False` when serializing a suggestion in full, so the `@components` expansion links are not embedded into the type-ahead response. @reebalazs
