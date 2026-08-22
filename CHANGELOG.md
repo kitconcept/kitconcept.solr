@@ -7,6 +7,29 @@
 -->
 
 <!-- towncrier release notes start -->
+## 2.0.0 (2026-08-22)
+
+### Backend
+
+
+#### Bug fixes:
+
+- Suggest: pass `include_expansion=False` when serializing a suggestion in full, so the `@components` expansion links are not embedded into the type-ahead response. @reebalazs [#114](https://github.com/kitconcept/kitconcept-solr/issues/114)
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+No significant changes.
+
+
+
+
 ## 2.0.0rc0 (2026-08-14)
 
 ### Backend

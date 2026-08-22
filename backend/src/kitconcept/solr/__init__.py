@@ -5,7 +5,7 @@ from zope.i18nmessageid import MessageFactory
 import logging
 
 
-__version__ = "2.0.0rc0"
+__version__ = "2.0.0"
 
 PACKAGE_NAME = "kitconcept.solr"
 _ = MessageFactory(PACKAGE_NAME)
