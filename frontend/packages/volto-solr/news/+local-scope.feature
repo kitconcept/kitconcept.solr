@@ -1,1 +1,1 @@
-Local (subtree) scoping across the search stack: @solr-suggest accepts path_prefix (same path_parents pattern as the RAG retrieval), the ragSearch and solrSearchSuggestions actions take an optional pathPrefix, and a local search on the search page also scopes the AI retrieval so the answer's grounding matches the classic results. @reebalazs
+A local (subtree) search on the search page also scopes the AI retrieval, so the answer's grounding matches the classic results: the ragSearch action takes an optional pathPrefix. @reebalazs

@@ -1,1 +1,0 @@
-The backend test suite runs ~8.5x faster (7:27 -> 0:53): the Plone test layers stay alive for the whole pytest session instead of being rebuilt per test class, and content creation plus the Solr query of a parametrized test class run once per class instead of once per assertion. @reebalazs
