@@ -8,6 +8,16 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0 (2026-08-22)
+
+## 2.0.0-rc.0 (2026-08-14)
+
+### Bugfix
+
+- Fix React warning in SearchConditions: the useMemo dependency array grew as vocabularies loaded (spread of vocabData values); use the vocabData object itself as a constant-size dependency. @reebalazs [#94](https://github.com/kitconcept/kitconcept-solr/issue/94)
+- Fix React prop-types warning on client-side navigation to the search page: the Toolbar portal is rendered as a sibling of the Segment instead of a child (prop-types does not recognize ReactPortal as a node). @reebalazs [#97](https://github.com/kitconcept/kitconcept-solr/issue/97)
+- Local search fixes: @solr-suggest accepts an optional path_prefix so suggestions honor a subtree scope, and an explicit path_prefix URL param wins over the getPathPrefix heuristic, which silently dropped top-level (single-segment) prefixes. @reebalazs [#101](https://github.com/kitconcept/kitconcept-solr/issue/101)
+
 ## 2.0.0-alpha.14 (2026-06-10)
 
 ### Bugfix

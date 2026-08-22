@@ -9,6 +9,28 @@
 
 <!-- towncrier release notes start -->
 
+## 2.0.0 (2026-08-22)
+
+
+### Bug fixes:
+
+- Suggest: pass `include_expansion=False` when serializing a suggestion in full, so the `@components` expansion links are not embedded into the type-ahead response. @reebalazs [#114](https://github.com/kitconcept/kitconcept-solr/issues/114)
+
+## 2.0.0rc0 (2026-08-14)
+
+
+### Bug fixes:
+
+- @solr-suggest accepts an optional path_prefix (path_parents filter), so livesearch suggestions honor a subtree scope like the search results do. @reebalazs [#101](https://github.com/kitconcept/kitconcept-solr/issues/101)
+- Suggest: pass `include_items=False` when serializing a suggestion in full. For folderish portal types plone.restapi would otherwise run an extra catalog query per suggestion and embed the entire child listing into the type-ahead response. @reebalazs [#105](https://github.com/kitconcept/kitconcept-solr/issues/105)
+
+
+### Internal:
+
+- The backend test suite runs ~8.5x faster (7:27 -> 0:53): the Plone test layers stay alive for the whole pytest session instead of being rebuilt per test class, and content creation plus the Solr query of a parametrized test class run once per class instead of once per assertion. @reebalazs [#81](https://github.com/kitconcept/kitconcept-solr/issues/81)
+- The test Solr/Tika containers use ephemeral host ports: the tests never touch (nor get blocked by) a locally running site Solr on 8983, and a dev site and the test suite can run at the same time. @reebalazs [#83](https://github.com/kitconcept/kitconcept-solr/issues/83)
+- Fix three RUF005 lint violations in the navigation tests that were invisible to CI (the shared lint workflow's `ruff check --diff` only reports violations with a safe autofix). @reebalazs 
+
 ## 2.0.0a14 (2026-06-10)
 
 No significant changes.
