@@ -1,1 +1,0 @@
-Fix three RUF005 lint violations in the navigation tests that were invisible to CI (the shared lint workflow's `ruff check --diff` only reports violations with a safe autofix). @reebalazs

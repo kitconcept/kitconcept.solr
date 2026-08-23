@@ -44,10 +44,14 @@ def solr_select(solr_service) -> str:
 
 
 @pytest.fixture()
-def portal(functional, solr_service):
+def portal(functional, solr_service, solr_port):
     portal = functional["app"]["plone"]
     setSite(portal)
     with api.env.adopt_roles(["Manager", "Member"]):
+        # The test Solr runs on an ephemeral host port (never the fixed
+        # 8983 of a locally running site Solr) - point collective.solr
+        # at it before activating.
+        api.portal.set_registry_record("collective.solr.port", solr_port)
         api.portal.set_registry_record("collective.solr.active", True)
         api.portal.set_registry_record("kitconcept.solr.rag_enabled", True)
         maintenance = api.content.get_view(

@@ -4,7 +4,7 @@ export const GET_SOLR_SEARCH_SUGGESTIONS = 'GET_SOLR_SEARCH_SUGGESTIONS';
  * Fetch live search suggestions.
  * @param {string} term The (url-encoded) search term.
  * @param {string=} pathPrefix Optional path to restrict the suggestions
- * to a subtree (e.g. the current workspace).
+ * to a subtree (e.g. a subsite or workspace).
  */
 export function solrSearchSuggestions(term, pathPrefix) {
   const params = [`query=${term}`];

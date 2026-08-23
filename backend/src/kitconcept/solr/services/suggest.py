@@ -63,8 +63,8 @@ class SolrSuggest(Service):
         if lang:
             d["fq"] = d["fq"] + ["Language:(" + escape(lang) + ")"]
 
-        # Optional path scoping (same pattern as the RAG retrieval):
-        # restricts suggestions to a subtree, e.g. the current workspace.
+        # Optional path scoping: restricts suggestions to a subtree,
+        # e.g. a subsite or workspace, matching the local search.
         if path_prefix := self.request.form.get("path_prefix", "").strip():
             portal_path = "/".join(api.portal.get().getPhysicalPath())
             prefix = portal_path + path_prefix.rstrip("/")

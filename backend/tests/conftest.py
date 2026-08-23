@@ -4,6 +4,7 @@ from pathlib import Path
 from pytest_plone import fixtures_factory
 from requests import exceptions as exc
 
+import os
 import pytest
 import requests
 
@@ -77,6 +78,12 @@ def docker_compose_project_name() -> str:
 @pytest.fixture(scope="session")
 def docker_setup():
     """Return the Docker Compose commands to set up the stack."""
+    # Ephemeral host ports for the test containers: the tests must
+    # never coincide with a locally running site Solr on 8983 - with
+    # fixed ports they would either clobber its index or fail to bind.
+    # The actual port is read back via docker_services.port_for.
+    os.environ.setdefault("SOLR_ACCEPTANCE_PORT", "0")
+    os.environ.setdefault("TIKA_ACCEPTANCE_PORT", "0")
     # Stop the stack before starting a new one, only start the Solr service
     profile = "solr"
     return [f"--profile {profile} down -v", f"--profile {profile} up --build -d"]
@@ -91,10 +98,15 @@ def docker_compose_file(pytestconfig):
 
 
 @pytest.fixture(scope="session")
-def solr_service(docker_ip, docker_services):
+def solr_port(docker_services) -> int:
+    """The (ephemeral) host port of the test Solr container."""
+    return docker_services.port_for("solr-acceptance", 8983)
+
+
+@pytest.fixture(scope="session")
+def solr_service(docker_ip, docker_services, solr_port):
     """Ensure that Solr service is up and responsive."""
-    port = docker_services.port_for("solr-acceptance", 8983)
-    url = f"http://{docker_ip}:{port}/solr/plone/admin/ping?wt=xml"
+    url = f"http://{docker_ip}:{solr_port}/solr/plone/admin/ping?wt=xml"
     docker_services.wait_until_responsive(
         timeout=90.0, pause=0.1, check=lambda: is_responsive(url)
     )

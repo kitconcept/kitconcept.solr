@@ -113,13 +113,20 @@ def registry_config() -> dict:
 
 
 @pytest.fixture(scope="class")
-def portal(app, solr_service, http_request, users, registry_config):
+def portal(app, solr_service, solr_port, http_request, users, registry_config):
     """Plone portal with additional users, and registry configuration set."""
     portal = app["plone"]
     setSite(portal)
     current_values = {}
     with api.env.adopt_roles(["Manager", "Member"]):
-        for key, value in registry_config.items():
+        # The test Solr runs on an ephemeral host port (never the fixed
+        # 8983 of a locally running site Solr) - point collective.solr
+        # at it. Applied outside registry_config so that module-level
+        # registry_config overrides cannot lose it.
+        for key, value in {
+            "collective.solr.port": solr_port,
+            **registry_config,
+        }.items():
             current_values[key] = api.portal.get_registry_record(key)
             api.portal.set_registry_record(key, value)
         maintenance = api.content.get_view("solr-maintenance", portal, http_request)
