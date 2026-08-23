@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/resource-database-jbrejszdec8-unsplash.jpg",
+  "@type": "Image",
+  "UID": "41efe55cb846456b9c4de24b25b472ad",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:45+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Wei\u00dfe 3D-Visualisierung Auto neben Roboterstruktur in futuristischer Fabrik, symbolisiert Automotive-Automatisierung.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "resource-database-jbrejszdec8-unsplash.jpg",
+  "image": {
+    "blob_path": "41efe55cb846456b9c4de24b25b472ad/image/resource-database-JBrejszDec8-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "resource-database-JBrejszDec8-unsplash.jpg",
+    "height": 960,
+    "size": 154771,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:21:56+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Industrie",
+    "Innovation",
+    "Technologieforschung"
+  ],
+  "title": "Automotive Robotik Fertigung",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

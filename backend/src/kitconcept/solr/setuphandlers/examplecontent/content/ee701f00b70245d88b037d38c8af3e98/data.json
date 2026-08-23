@@ -1,0 +1,46 @@
+{
+  "@id": "/bilder/jo-szczepanska-bjemwzcnf34-unsplash.jpg",
+  "@type": "Image",
+  "UID": "ee701f00b70245d88b037d38c8af3e98",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:25+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Projektplanungswand mit bunten Post-its und Forschungsnotizen",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "jo-szczepanska-bjemwzcnf34-unsplash.jpg",
+  "image": {
+    "blob_path": "ee701f00b70245d88b037d38c8af3e98/image/jo-szczepanska-bjemWZcNF34-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "jo-szczepanska-bjemWZcNF34-unsplash.jpg",
+    "height": 801,
+    "size": 220265,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:35+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Innovation",
+    "Management",
+    "Zusammenarbeit",
+    "Kommunikation"
+  ],
+  "title": "Kreative Projektplanung",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

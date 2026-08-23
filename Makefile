@@ -231,6 +231,18 @@ solr-activate-and-reindex: ## Activate solr and reindex content
 solr-activate-and-reindex-clear: ## Activate solr and reindex content with clear
 	$(MAKE) -C "./backend/" solr-activate-and-reindex-clear
 
+.PHONY: solr-activate-and-reindex-with-rag
+solr-activate-and-reindex-with-rag: ## Activate solr and RAG (AI search) and reindex content
+	$(MAKE) -C "./backend/" solr-activate-and-reindex-with-rag
+
+.PHONY: solr-activate-and-reindex-with-rag-clear
+solr-activate-and-reindex-with-rag-clear: ## Activate solr and RAG (AI search) and reindex content with clear
+	$(MAKE) -C "./backend/" solr-activate-and-reindex-with-rag-clear
+
+.PHONY: import-example-content
+import-example-content: ## Import example content from package into the site
+	$(MAKE) -C "./backend/" import-example-content
+
 ###########################################
 # Acceptance
 ###########################################

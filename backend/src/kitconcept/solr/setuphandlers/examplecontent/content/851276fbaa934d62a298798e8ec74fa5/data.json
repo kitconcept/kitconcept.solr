@@ -1,0 +1,45 @@
+{
+  "@id": "/bilder/planet-volumes-uaoshxkh7m8-unsplash.jpg",
+  "@type": "Image",
+  "UID": "851276fbaa934d62a298798e8ec74fa5",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:05:44+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Kupfer-goldene Quantencomputer-Hardware mit Spiralspulen und gewundenen Leitungen, warme Beleuchtung.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "planet-volumes-uaoshxkh7m8-unsplash.jpg",
+  "image": {
+    "blob_path": "851276fbaa934d62a298798e8ec74fa5/image/planet-volumes-UaosHXkh7m8-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "planet-volumes-UaosHXkh7m8-unsplash.jpg",
+    "height": 711,
+    "size": 184597,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:21:56+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Technologieforschung",
+    "Innovation",
+    "Materialforschung"
+  ],
+  "title": "Quantencomputer-Technologie",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

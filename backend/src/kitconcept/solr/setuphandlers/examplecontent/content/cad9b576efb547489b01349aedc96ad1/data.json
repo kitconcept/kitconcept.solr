@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/getty-images-pdaedca8ujw-unsplash.jpg",
+  "@type": "Image",
+  "UID": "cad9b576efb547489b01349aedc96ad1",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:16+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Berliner Stra\u00dfe mit Stra\u00dfenbahn in der Abendd\u00e4mmerung",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-pdaedca8ujw-unsplash.jpg",
+  "image": {
+    "blob_path": "cad9b576efb547489b01349aedc96ad1/image/getty-images-PdaEDCA8uJw-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-PdaEDCA8uJw-unsplash.jpg",
+    "height": 800,
+    "size": 246441,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:19+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Standorte",
+    "Mobilit\u00e4t"
+  ],
+  "title": "Urbane Mobilit\u00e4t in Berlin",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

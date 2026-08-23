@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/hans-reniers-lqgjcmy5qcm-unsplash.jpg",
+  "@type": "Image",
+  "UID": "885aca9dbae545428cdd981d37fa5c0a",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:03:21+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Laborglasger\u00e4te mit Pipette in steriler Forschungsumgebung",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "hans-reniers-lqgjcmy5qcm-unsplash.jpg",
+  "image": {
+    "blob_path": "885aca9dbae545428cdd981d37fa5c0a/image/hans-reniers-lQGJCMY5qcM-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "hans-reniers-lQGJCMY5qcM-unsplash.jpg",
+    "height": 800,
+    "size": 117240,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:29+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Laborforschung",
+    "Chemie"
+  ],
+  "title": "Pr\u00e4zise Laborarbeit",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

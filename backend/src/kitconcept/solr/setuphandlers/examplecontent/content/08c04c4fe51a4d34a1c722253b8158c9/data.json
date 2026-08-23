@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/linkedin-sales-solutions-pata8xe_ivm-unsplash.jpg",
+  "@type": "Image",
+  "UID": "08c04c4fe51a4d34a1c722253b8158c9",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:04:13+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Professionelles Portrait eines Mannes mit Brille und Blazer vor modernen Glasfenstern",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "linkedin-sales-solutions-pata8xe_ivm-unsplash.jpg",
+  "image": {
+    "blob_path": "08c04c4fe51a4d34a1c722253b8158c9/image/linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "linkedin-sales-solutions-pAtA8xe_iVM-unsplash.jpg",
+    "height": 1800,
+    "size": 218164,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:20:55+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Mitarbeitende",
+    "Management"
+  ],
+  "title": "Mitarbeiterportrait",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

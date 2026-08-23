@@ -21,6 +21,14 @@
       name="@solr-suggest"
       />
 
+  <plone:service
+      method="GET"
+      factory=".rag_search.RagSearch"
+      for="zope.interface.Interface"
+      permission="zope2.View"
+      name="@rag-search"
+      />
+
   <adapter factory=".site.CollectiveSolrExpander" />
 
   <adapter

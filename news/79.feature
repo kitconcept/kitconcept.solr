@@ -1,0 +1,3 @@
+Add the foundations of the RAG AI search: LLM client (embeddings + chat), the AI search toggle with LLM endpoint configuration, structure-aware chunking, index-time chunk embedding into Solr, and full-reindex support. The feature is off unless configured. @reebalazs
+Add the @rag-search endpoint: single-turn RAG search returning a generated answer with the source documents, permission-trimmed vector retrieval, structured errors. @reebalazs
+Hybrid retrieval for the RAG search: keyword (BM25) and vector rankings fused with Reciprocal Rank Fusion. @reebalazs

@@ -1,0 +1,68 @@
+{
+  "@id": "/ueber-uns/gremien-kommissionen/ethikkommission",
+  "@type": "Document",
+  "UID": "2c81d87d2b974f0ca826785897f26b59",
+  "allow_discussion": false,
+  "blocks": {
+    "a0ef57ec-f188-4103-9838-fb9e6249e0ac": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "a0ef57ec-f188-4103-9838-fb9e6249e0ac"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:29:19+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Verfahren, Antragsunterlagen und Kontakt f\u00fcr forschungsethische Pr\u00fcfungen: Zust\u00e4ndigkeiten, Antragsprozess und Entscheidungsfristen.",
+  "effective": "2026-03-05T16:29:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "ethikkommission",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-06T10:12:26+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Ethikkommission",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:34+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:34+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

@@ -1,0 +1,44 @@
+{
+  "@id": "/bilder/xxww-6zutwbf_20-unsplash.jpg",
+  "@type": "Image",
+  "UID": "b1820b1b32f84601b05306e6d3bd32c0",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-02-20T15:07:02+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Modernes Universit\u00e4tsgeb\u00e4ude mit Betonkonstruktion und gro\u00dfz\u00fcgigen Verglasungen, umgeben von gr\u00fcnen Rasenfl\u00e4chen.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "xxww-6zutwbf_20-unsplash.jpg",
+  "image": {
+    "blob_path": "b1820b1b32f84601b05306e6d3bd32c0/image/xxww--6zUtwBF_20-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "xxww--6zUtwBF_20-unsplash.jpg",
+    "height": 800,
+    "size": 173385,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T11:23:32+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Forschungsinfrastruktur",
+    "Standorte"
+  ],
+  "title": "Moderne Universit\u00e4tsarchitektur",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

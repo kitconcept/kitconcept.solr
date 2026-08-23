@@ -1,0 +1,46 @@
+{
+  "@id": "/bilder/getty-images-7tytwos8kfm-unsplash.jpg",
+  "@type": "Image",
+  "UID": "faff8f4afd8542e58ee31bb9239a240f",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2026-03-05T15:12:19+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Eine abstrakte 3D-Visualisierung zeigt einen perspektivisch zulaufenden digitalen Tunnel oder Datenkorridor, der aus leuchtenden Punkten und Rasterstrukturen in Blau-, Lila- und Rott\u00f6nen aufgebaut ist. Die Zentralperspektive erzeugt einen Sog in die Tiefe und vermittelt ein Gef\u00fchl von Geschwindigkeit und Unendlichkeit. Das Bild steht symbolisch f\u00fcr Big Data, digitale Infrastruktur, Hochleistungsrechnen und die Verarbeitung gro\u00dfer Datenmengen.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "getty-images-7tytwos8kfm-unsplash.jpg",
+  "image": {
+    "blob_path": "faff8f4afd8542e58ee31bb9239a240f/image/getty-images-7tYTWoS8kfM-unsplash.jpg",
+    "content-type": "image/jpeg",
+    "filename": "getty-images-7tYTWoS8kfM-unsplash.jpg",
+    "height": 800,
+    "size": 176102,
+    "width": 1200
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-05T15:13:15+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [
+    "Digitalisierung",
+    "Technologieforschung",
+    "KI",
+    "Datensicherheit"
+  ],
+  "title": "Big Data und digitale Infrastruktur",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

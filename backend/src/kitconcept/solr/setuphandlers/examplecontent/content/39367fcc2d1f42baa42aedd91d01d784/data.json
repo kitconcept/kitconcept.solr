@@ -1,0 +1,72 @@
+{
+  "@id": "/ansprechpartner-intranet",
+  "@type": "Document",
+  "UID": "39367fcc2d1f42baa42aedd91d01d784",
+  "allow_discussion": false,
+  "blocks": {
+    "4d00ead9-44a7-4221-a5e6-ae54689878fc": {
+      "@type": "title"
+    },
+    "9060b3e1-ee88-4e9d-9d70-84329d6797dd": {
+      "@type": "slate"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "4d00ead9-44a7-4221-a5e6-ae54689878fc",
+      "9060b3e1-ee88-4e9d-9d70-84329d6797dd"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2025-08-13T08:39:42+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": "2025-08-13T08:40:00+00:00",
+  "exclude_from_nav": true,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "ansprechpartner-intranet",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2025-08-13T08:40:20+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Ansprechpartner Intranet",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:29+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:29+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

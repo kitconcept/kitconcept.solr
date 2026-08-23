@@ -1,0 +1,68 @@
+{
+  "@id": "/forschung/meine-projekte/projektkommunikation",
+  "@type": "Document",
+  "UID": "b4dc0e3e0f1c4f0aa2dd4a329efb507b",
+  "allow_discussion": false,
+  "blocks": {
+    "9b6cfd7c-7172-4f95-a935-a1588836a673": {
+      "@type": "title"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "9b6cfd7c-7172-4f95-a935-a1588836a673"
+    ]
+  },
+  "changeNote": "",
+  "contributors": [],
+  "created": "2026-03-05T16:28:22+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "Diskussionen, Notizen und Protokolle innerhalb von Projektr\u00e4umen: Kommunikationstools und Abstimmungsmechanismen f\u00fcr verteilte Forschungsteams.",
+  "effective": "2026-03-05T16:28:00+00:00",
+  "exclude_from_nav": false,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "projektkommunikation",
+  "is_folderish": true,
+  "language": "##DEFAULT##",
+  "layout": "document_view",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "modified": "2026-03-05T16:28:30+00:00",
+  "nav_title": null,
+  "preview_caption_link": null,
+  "review_state": "published",
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Projektkommunikation",
+  "type_title": "Page",
+  "version": "current",
+  "versioning_enabled": true,
+  "workflow_history": {
+    "simple_publication_workflow": [
+      {
+        "action": null,
+        "actor": "admin",
+        "comments": "",
+        "review_state": "private",
+        "time": "2026-07-22T10:29:32+00:00"
+      },
+      {
+        "action": "publish",
+        "actor": "admin",
+        "comments": "",
+        "review_state": "published",
+        "time": "2026-07-22T10:29:32+00:00"
+      }
+    ]
+  },
+  "working_copy": null,
+  "working_copy_of": null
+}

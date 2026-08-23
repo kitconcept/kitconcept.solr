@@ -102,12 +102,35 @@ solr-activate-and-reindex: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr
 solr-activate-and-reindex-clear: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and reindex content with clear
 	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --clear
 
+.PHONY: solr-activate-and-reindex-with-rag
+solr-activate-and-reindex-with-rag: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and RAG (AI search) and reindex content
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --rag-enable
+
+.PHONY: solr-activate-and-reindex-with-rag-clear
+solr-activate-and-reindex-with-rag-clear: $(VENV_FOLDER) instance/etc/zope.ini ## Activate solr and RAG (AI search) and reindex content with clear
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/solr_activate_and_reindex.py --rag-enable --clear
+
 # Example Content
 .PHONY: update-example-content
 update-example-content: $(VENV_FOLDER) ## Export example content inside package
 	@echo "$(GREEN)==> Export example content into $(EXAMPLE_CONTENT_FOLDER) $(RESET)"
-	if [ -d $(EXAMPLE_CONTENT_FOLDER)/content ]; then rm -r $(EXAMPLE_CONTENT_FOLDER)/* ;fi
+	if [ -d $(EXAMPLE_CONTENT_FOLDER)/content ]; then rm -r $(EXAMPLE_CONTENT_FOLDER)/content $(EXAMPLE_CONTENT_FOLDER)/*.json ;fi
 	@$(BIN_FOLDER)/plone-exporter instance/etc/zope.conf $(PLONE_SITE_ID) $(EXAMPLE_CONTENT_FOLDER)
+
+.PHONY: import-example-content
+import-example-content: $(VENV_FOLDER) instance/etc/zope.ini ## Import example content from package into the site
+	@echo "$(GREEN)==> Import example content from $(EXAMPLE_CONTENT_FOLDER) $(RESET)"
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/plone-importer instance/etc/zope.conf $(PLONE_SITE_ID) $(EXAMPLE_CONTENT_FOLDER)
+
+# One-time operations: unlike the stock plone-importer above, the robust
+# script skips content of uninstalled portal types instead of crashing.
+# Override IMPORT_CONTENT_FOLDER to import a different dump (e.g. the
+# original intranet source tree).
+IMPORT_CONTENT_FOLDER?=$(EXAMPLE_CONTENT_FOLDER)
+.PHONY: import-content-robust
+import-content-robust: $(VENV_FOLDER) instance/etc/zope.ini ## Import a dump, skipping uninstalled portal types (one-time operations)
+	@echo "$(GREEN)==> Robust import from $(IMPORT_CONTENT_FOLDER) $(RESET)"
+	@PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/import_content_robust.py $(IMPORT_CONTENT_FOLDER)
 
 # QA
 .PHONY: lint

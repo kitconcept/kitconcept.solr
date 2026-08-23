@@ -1,0 +1,287 @@
+{
+  "@id": "/Plone",
+  "@type": "Plone Site",
+  "UID": "plone_site_root",
+  "allow_discussion": null,
+  "blocks": {
+    "223fb3b3-95e7-4273-b116-4ce2dcb2dabc": {
+      "@type": "listing",
+      "headline": "Termine, die Sie interessieren k\u00f6nnten",
+      "headlineTag": "h2",
+      "querystring": {
+        "limit": "4",
+        "query": [
+          {
+            "i": "portal_type",
+            "o": "plone.app.querystring.operation.selection.any",
+            "v": [
+              "Event"
+            ]
+          }
+        ],
+        "sort_on": "userRelevance",
+        "sort_order": "descending",
+        "sort_order_boolean": true
+      },
+      "styles": {},
+      "theme": "default",
+      "variation": "listDate"
+    },
+    "2b7e4ef9-7010-4ce9-85c3-b91da57f16b4": {
+      "@type": "slate",
+      "plaintext": "Weitere Termine",
+      "value": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "text": "Weitere Termine"
+                }
+              ],
+              "data": {
+                "url": "../resolveuid/48f89cfd95894eda8394ae0c2c754787"
+              },
+              "type": "link"
+            }
+          ],
+          "type": "p"
+        }
+      ]
+    },
+    "72d64f8a-cca6-444d-a497-482daba7e970": {
+      "@type": "listing",
+      "headline": "Aktuelle Nachrichten, f\u00fcr Sie zusammengestellt",
+      "headlineTag": "h2",
+      "querystring": {
+        "limit": "4",
+        "query": [
+          {
+            "i": "portal_type",
+            "o": "plone.app.querystring.operation.selection.any",
+            "v": [
+              "News Item"
+            ]
+          }
+        ],
+        "sort_on": "userRelevance",
+        "sort_order": "descending",
+        "sort_order_boolean": true
+      },
+      "styles": {},
+      "theme": "grey",
+      "variation": "grid"
+    },
+    "868556d1-15e1-4a30-83d8-46eeb3794bfe": {
+      "@type": "slate",
+      "plaintext": "Weitere Nachrichten",
+      "value": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "text": "Weitere Nachrichten"
+                }
+              ],
+              "data": {
+                "url": "../resolveuid/7fce8b9becbb43d091604ae5b3e84ac0"
+              },
+              "type": "link"
+            }
+          ],
+          "type": "p"
+        }
+      ]
+    },
+    "e5fb316f-f3af-4df1-b3d8-fb46ac07cc11": {
+      "@type": "gridBlock",
+      "blocks": {
+        "1d5a9d63-5641-5912-a732-7277339b4e85": {
+          "@type": "teaser",
+          "description": "Endlich hat das Suchen ein Ende. Finden Sie hier alle Informationen zu wichtigen Themen und behalten den \u00dcberblick \u00fcber aktuelle \u00c4nderungen.",
+          "href": [
+            {
+              "@id": "../resolveuid/327e9ff7b27e4b6795fca847a2732b85",
+              "title": "Das neue Intranet"
+            }
+          ],
+          "title": "Das neue Intranet"
+        },
+        "73db67db-4c7b-5b13-ab10-bc58cbecc2b2": {
+          "@type": "teaser",
+          "description": "Die Personalabteilung des IAZ informiert \u00fcber die aktualisierte Dienstvereinbarung zum mobilen Arbeiten. Ab 1. Juli gelten neue Regelungen zur Homeoffice-Nutzung und technischen Ausstattung.",
+          "href": [
+            {
+              "@id": "../resolveuid/ed622e194da44a319d9caa501a5d4684",
+              "title": "Neue Dienstvereinbarung zum mobilen Arbeiten"
+            }
+          ],
+          "title": "Neue Dienstvereinbarung zum mobilen Arbeiten"
+        },
+        "83bd61c4-8d3a-5d25-a050-5c916a98531b": {
+          "@type": "teaser",
+          "description": "Am 18. Juni findet ein interner Workshop zur \u201eNationalen Forschungsdateninfrastruktur (NFDI)\u201c statt. Interessierte Kolleginnen und Kollegen aus dem Zentrum f\u00fcr Technologische Systeme (ZTS) k\u00f6nnen sich bis zum 14. Juni anmelden.",
+          "href": [
+            {
+              "@id": "../resolveuid/ad6b8c2a3bce424fbf017b5b42d2bfd3",
+              "title": "Interner Workshop zur Forschungsdatenstrategie"
+            }
+          ],
+          "title": "Interner Workshop zur Forschungsdatenstrategie"
+        },
+        "a57d83e8-344f-50e6-94b1-478a94012193": {
+          "@type": "teaser",
+          "description": "Das Institut f\u00fcr KI und Datenwissenschaften hat gemeinsam mit der Berliner Charit\u00e9 ein Pilotprojekt abgeschlossen, in dem ein KI-Modell zur automatischen Auswertung radiologischer Aufnahmen erprobt wurde. Das System erkennt Anomalien mit einer Genauigkeit von 94,7 Prozent und reduziert die Befundungszeit signifikant.",
+          "href": [
+            {
+              "@id": "../resolveuid/d2fd60d5d0ee4044a1984202bc7a6da0",
+              "title": "KI-gest\u00fctzte Bildanalyse beschleunigt medizinische Diagnostik in Pilotprojekt"
+            }
+          ],
+          "title": "KI-gest\u00fctzte Bildanalyse beschleunigt medizinische Diagnostik in Pilotprojekt"
+        }
+      },
+      "blocks_layout": {
+        "items": [
+          "a57d83e8-344f-50e6-94b1-478a94012193",
+          "1d5a9d63-5641-5912-a732-7277339b4e85",
+          "73db67db-4c7b-5b13-ab10-bc58cbecc2b2",
+          "83bd61c4-8d3a-5d25-a050-5c916a98531b"
+        ]
+      }
+    },
+    "e67f8513-501b-4f56-91c9-5f512f3e1ac6": {
+      "@type": "gridBlock",
+      "blocks": {
+        "33643fa2-354a-485a-8500-fb511ab51fcb": {
+          "@type": "teaser",
+          "description": "",
+          "head_title": null,
+          "href": [
+            {
+              "@id": "../resolveuid/8a8650d2c0294e22b7f361986772a57a",
+              "@type": "Document",
+              "Description": "",
+              "Subject": [],
+              "Title": "Arbeitsthemen",
+              "contact_building": null,
+              "contact_email": null,
+              "contact_phone": null,
+              "contact_room": null,
+              "description": "",
+              "effective": "2026-03-05T10:18:24+00:00",
+              "end": null,
+              "getObjSize": "0 KB",
+              "getRemoteUrl": null,
+              "hasPreviewImage": null,
+              "head_title": null,
+              "image_field": "preview_image_link",
+              "job_title": null,
+              "mime_type": "text/plain",
+              "nav_title": null,
+              "review_state": "published",
+              "start": null,
+              "title": "Arbeitsthemen",
+              "type_title": "Seite"
+            }
+          ],
+          "overwrite": false,
+          "styles": {
+            "align": "left"
+          },
+          "title": "Arbeitsthemen"
+        },
+        "c63a4ad1-ae04-490c-b609-1508f373d886": {
+          "@type": "teaser",
+          "description": "",
+          "head_title": null,
+          "href": [
+            {
+              "@id": "../resolveuid/5851c530ebfd428c9a75a78ada0f6519",
+              "@type": "Document",
+              "Description": "",
+              "Subject": [],
+              "Title": "Veranstaltungen",
+              "contact_building": null,
+              "contact_email": null,
+              "contact_phone": null,
+              "contact_room": null,
+              "description": "",
+              "effective": "2026-03-05T10:18:29+00:00",
+              "end": null,
+              "getObjSize": "0 KB",
+              "getRemoteUrl": null,
+              "hasPreviewImage": null,
+              "head_title": null,
+              "image_field": "preview_image_link",
+              "job_title": null,
+              "mime_type": "text/plain",
+              "nav_title": null,
+              "review_state": "published",
+              "start": null,
+              "title": "Veranstaltungen",
+              "type_title": "Seite"
+            }
+          ],
+          "overwrite": true,
+          "preview_image": [
+            {
+              "@id": "../resolveuid/0863cbe5f3c64cdf8b6a88af48639591",
+              "image_field": "image",
+              "title": "Terminplanung und Projektfristen"
+            }
+          ],
+          "styles": {
+            "align": "left"
+          },
+          "title": "Termine"
+        }
+      },
+      "blocks_layout": {
+        "items": [
+          "33643fa2-354a-485a-8500-fb511ab51fcb",
+          "c63a4ad1-ae04-490c-b609-1508f373d886"
+        ]
+      },
+      "headline": "Meine Arbeitsbereiche",
+      "styles": {},
+      "theme": "grey"
+    }
+  },
+  "blocks_layout": {
+    "items": [
+      "e5fb316f-f3af-4df1-b3d8-fb46ac07cc11",
+      "72d64f8a-cca6-444d-a497-482daba7e970",
+      "868556d1-15e1-4a30-83d8-46eeb3794bfe",
+      "223fb3b3-95e7-4273-b116-4ce2dcb2dabc",
+      "2b7e4ef9-7010-4ce9-85c3-b91da57f16b4",
+      "e67f8513-501b-4f56-91c9-5f512f3e1ac6"
+    ]
+  },
+  "contributors": [],
+  "creators": [
+    "admin"
+  ],
+  "description": "Hier finden Sie alles, was Sie f\u00fcr Ihre t\u00e4gliche Arbeit ben\u00f6tigen: aktuelle Nachrichten, wichtige Termine, zentrale Dokumente und hilfreiche Werkzeuge. Das Intranet unterst\u00fctzt Sie dabei, den \u00dcberblick zu behalten, sich schnell zu orientieren und einfach mit Kolleginnen und Kollegen in Verbindung zu treten. Ob Neuigkeiten aus den Fachbereichen, \u00c4nderungen in Prozessen oder Zugriff auf wichtige Ressourcen \u2013 hier sind Sie immer auf dem neuesten Stand.",
+  "effective": null,
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "Plone",
+  "is_folderish": true,
+  "items_total": 13,
+  "language": "##DEFAULT##",
+  "lock": {
+    "locked": false,
+    "stealable": true
+  },
+  "review_state": null,
+  "rights": "",
+  "subjects": [],
+  "title": "Deutsches Forschungszentrum f\u00fcr Nachhaltige Technologien",
+  "type_title": "Plone Site",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}

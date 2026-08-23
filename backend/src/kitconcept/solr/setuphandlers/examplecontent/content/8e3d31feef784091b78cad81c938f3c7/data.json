@@ -1,0 +1,41 @@
+{
+  "@id": "/icons/group.svg",
+  "@type": "Image",
+  "UID": "8e3d31feef784091b78cad81c938f3c7",
+  "allow_discussion": null,
+  "contributors": [],
+  "created": "2025-06-04T10:26:14+00:00",
+  "creators": [
+    "admin"
+  ],
+  "description": "",
+  "effective": "2026-02-20T14:50:00+00:00",
+  "expires": null,
+  "exportimport.constrains": {},
+  "exportimport.conversation": [],
+  "id": "group.svg",
+  "image": {
+    "blob_path": "8e3d31feef784091b78cad81c938f3c7/image/icons_intranet_icn_adressen 1.svg",
+    "content-type": "image/svg+xml",
+    "filename": "icons_intranet_icn_adressen 1.svg",
+    "height": 125,
+    "size": 4360,
+    "width": 125
+  },
+  "is_folderish": false,
+  "language": "##DEFAULT##",
+  "layout": "image_view",
+  "lock": {},
+  "modified": "2026-03-16T15:31:13+00:00",
+  "review_state": null,
+  "rights": "",
+  "searchwords": [],
+  "showinsearch": true,
+  "subjects": [],
+  "title": "Telefonverzeichnis icon",
+  "type_title": "Image",
+  "version": "current",
+  "workflow_history": {},
+  "working_copy": null,
+  "working_copy_of": null
+}
