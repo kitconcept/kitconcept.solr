@@ -21,9 +21,9 @@ from zope.interface import Interface
 class NavigationWithExcluded(Navigation):
     """Navigation expander that includes all items, even those excluded from navigation.
 
-    This is specifically used for breadcrumbs in global search results where we need
-    to show the breadcrumb titles for an item, regardless of whether intermediate items are
-    marked as 'exclude_from_nav'.
+    This is specifically used for breadcrumbs in global search results
+    where we need to show the breadcrumb titles for an item, regardless
+    of whether intermediate items are marked as 'exclude_from_nav'.
 
     It inherits from the standard Navigation expander but overrides the settings
     to ensure show_excluded_items is always True.
