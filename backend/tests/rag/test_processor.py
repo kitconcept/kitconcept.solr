@@ -25,6 +25,10 @@ PARENT_DATA = {
     "path_string": "/plone/a-document",
     "path_parents": ["/plone", "/plone/a-document"],
     "path_depth": 2,
+    "portal_type": "Document",
+    "Creator": "editor-user",
+    "modified": "2026-08-01T12:00:00.000Z",
+    "review_state": "published",
 }
 
 
@@ -136,6 +140,16 @@ class TestIndexRebuild:
         assert doc["path_string"] == "/plone/a-document"
         assert doc["path_parents"] == ["/plone", "/plone/a-document"]
         assert doc["path_depth"] == 2
+
+    def test_denormalizes_filter_metadata(self, proc, conn, obj):
+        # type/creator/date/state let the retrieval prefilters apply
+        # the same extra_conditions the classic search consumes
+        proc.index(obj)
+        doc = conn.added[0]
+        assert doc["portal_type"] == "Document"
+        assert doc["Creator"] == "editor-user"
+        assert doc["modified"] == "2026-08-01T12:00:00.000Z"
+        assert doc["review_state"] == "published"
 
     def test_commit_within_is_propagated(self, conn, obj):
         proc = FakeContextProcessor(conn, commit_within=10000)

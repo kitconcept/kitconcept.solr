@@ -14,6 +14,10 @@ export const queryStateFromParams = (params) => ({
   facetConditions: decodeConditionTree(params.facet_conditions, {
     catchError: true,
   }),
+  // Passed through opaquely: consumed by the backend (the dialog's
+  // filter chips arrive with it), but kept in the query state so
+  // in-page interactions (sort, paging) do not drop it from the URL.
+  extraConditions: params.extra_conditions || '',
 });
 
 export const queryStateToParams = (queryState) => ({
@@ -26,4 +30,5 @@ export const queryStateToParams = (queryState) => ({
   facet_conditions: encodeConditionTree(
     pruneConditionTree(queryState.facetConditions),
   ),
+  extra_conditions: queryState.extraConditions || '',
 });

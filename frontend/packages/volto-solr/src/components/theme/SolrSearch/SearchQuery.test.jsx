@@ -27,6 +27,7 @@ describe('SOLR SearchQuery', () => {
         }),
       ).toEqual({
         allowLocal: true,
+        extraConditions: '',
         facetConditions: { foo: { m: true } },
         groupSelect: 2,
         local: true,
@@ -35,9 +36,19 @@ describe('SOLR SearchQuery', () => {
         sortOrder: 'reverse',
       });
     });
+    it('passes extra_conditions through', () => {
+      expect(
+        queryStateFromParams({ extra_conditions: 'QUJD' }).extraConditions,
+      ).toEqual('QUJD');
+      expect(
+        queryStateToParams({ facetConditions: {}, extraConditions: 'QUJD' })
+          .extra_conditions,
+      ).toEqual('QUJD');
+    });
     it('initial', () => {
       expect(queryStateFromParams({})).toEqual({
         allowLocal: false,
+        extraConditions: '',
         facetConditions: {},
         groupSelect: 0,
         local: false,
@@ -52,6 +63,7 @@ describe('SOLR SearchQuery', () => {
       expect(
         queryStateToParams({
           allowLocal: true,
+          extraConditions: 'QUJD',
           facetConditions: { foo: { m: true } },
           groupSelect: 2,
           local: true,
@@ -61,6 +73,7 @@ describe('SOLR SearchQuery', () => {
         }),
       ).toEqual({
         allow_local: 'true',
+        extra_conditions: 'QUJD',
         facet_conditions: bToA('{"foo":{"m":true}}'),
         group_select: '2',
         local: 'true',
@@ -82,6 +95,7 @@ describe('SOLR SearchQuery', () => {
         }),
       ).toEqual({
         allow_local: 'false',
+        extra_conditions: '',
         facet_conditions: '',
         group_select: '0',
         local: 'false',
@@ -103,6 +117,7 @@ describe('SOLR SearchQuery', () => {
         }),
       ).toEqual({
         allow_local: 'true',
+        extra_conditions: '',
         facet_conditions: bToA('{"foo":{"p":"prefix"}}'),
         group_select: '2',
         local: 'true',

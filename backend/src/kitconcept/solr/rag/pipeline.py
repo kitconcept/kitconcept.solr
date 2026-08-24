@@ -83,6 +83,7 @@ def run_rag_search(
     security_filter: str,
     path_prefix: str | None = None,
     lang: str | None = None,
+    extra_filters: list[str] | None = None,
 ) -> RagResult:
     """Run the single-turn RAG search pipeline.
 
@@ -92,6 +93,12 @@ def run_rag_search(
         the current user (from ``services.solr.security_filter``).
     :param path_prefix: Optional path to restrict the search to.
     :param lang: Optional language to restrict the search to.
+    :param extra_filters: Optional pre-built filter queries (from the
+        extra_conditions request parameter - the search dialog's
+        filter chips). Applied to both retrieval legs: the chunk
+        documents carry the denormalized type/creator/date/state of
+        their parent, the keyword leg matches parent documents
+        directly.
     """
     client = LLMClient(config)
     try:
@@ -106,11 +113,13 @@ def run_rag_search(
             ERROR_SOLR_UNAVAILABLE, "no Solr connection (solr inactive?)"
         )
     try:
-        chunks = search_chunks(conn, vector, security_filter, path_prefix, lang)
+        chunks = search_chunks(
+            conn, vector, security_filter, path_prefix, lang, extra_filters
+        )
         knn_parents = parent_ranking(chunks)
         if config.retrieval == RETRIEVAL_HYBRID:
             keyword_parents = search_keyword(
-                conn, question, security_filter, path_prefix, lang
+                conn, question, security_filter, path_prefix, lang, extra_filters
             )
             fused_parents = rrf_fuse([knn_parents, keyword_parents])
         else:
@@ -154,9 +163,12 @@ def search_chunks(
     security_filter: str,
     path_prefix: str | None = None,
     lang: str | None = None,
+    extra_filters: list[str] | None = None,
 ) -> list[dict]:
     """Top-K chunk hits for the query vector, permission trimmed."""
     filter_queries = [security_filter, "is_rag_chunk:true"]
+    if extra_filters:
+        filter_queries.extend(extra_filters)
     if path_prefix:
         portal_path = "/".join(api.portal.get().getPhysicalPath())
         prefix = portal_path + path_prefix.rstrip("/")
@@ -181,6 +193,7 @@ def search_keyword(
     security_filter: str,
     path_prefix: str | None = None,
     lang: str | None = None,
+    extra_filters: list[str] | None = None,
 ) -> list[str]:
     """Top-K parent documents for the classic keyword (BM25) query.
 
@@ -213,6 +226,8 @@ def search_keyword(
         f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
     )
     filter_queries = [security_filter, "-is_rag_chunk:true"]
+    if extra_filters:
+        filter_queries.extend(extra_filters)
     if path_prefix:
         portal_path = "/".join(api.portal.get().getPhysicalPath())
         prefix = portal_path + path_prefix.rstrip("/")

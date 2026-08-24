@@ -95,11 +95,17 @@ class SolrExtraConditions:
                     if len(condition["in"]) == 0:
                         # Empty list, ignore
                         continue
+                    # Terms are exact values (e.g. a portal_type like
+                    # "News Item"): quote them, otherwise a space would
+                    # split the term and leak half of it out of the
+                    # field query. escape() keeps a quote inside a term
+                    # from breaking out of the quoting.
                     result = f"{fieldname}:"
                     result += (
                         "("
                         + " OR ".join([
-                            replace_reserved(term) for term in condition["in"]
+                            f'"{escape(replace_reserved(term))}"'
+                            for term in condition["in"]
                         ])
                         + ")"
                     )

@@ -11,6 +11,7 @@ from kitconcept.solr.rag.pipeline import ERROR_NOT_CONFIGURED
 from kitconcept.solr.rag.pipeline import RagResult
 from kitconcept.solr.rag.pipeline import run_rag_search
 from kitconcept.solr.services.solr import security_filter
+from kitconcept.solr.services.solr_utils_extra import SolrExtraConditions
 from plone.restapi.services import Service
 from zExceptions import BadRequest
 
@@ -24,6 +25,12 @@ class RagSearch(Service):
             raise BadRequest("Missing parameter: q")
         path_prefix = self.request.form.get("path_prefix", "").strip() or None
         lang = self.request.form.get("lang", "").strip() or None
+        # Same filter mechanism and encoding as the @solr and
+        # @solr-suggest endpoints (search dialog filter chips): the
+        # conditions restrict what the answer may be grounded on.
+        extra_filters = SolrExtraConditions.from_encoded(
+            self.request.form.get("extra_conditions")
+        ).query_list()
 
         config = get_rag_config()
         if config is None:
@@ -37,6 +44,7 @@ class RagSearch(Service):
                 security_filter(),
                 path_prefix=path_prefix,
                 lang=lang,
+                extra_filters=extra_filters or None,
             )
         return {
             "answer": result.answer,

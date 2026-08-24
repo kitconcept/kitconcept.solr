@@ -56,8 +56,15 @@ METADATA_ATTRIBUTES = frozenset({
     "path_string",
     "path_parents",
     "path_depth",
+    "portal_type",
+    "Creator",
+    "modified",
+    "review_state",
 })
-# Parent fields denormalized onto every chunk document.
+# Parent fields denormalized onto every chunk document. The
+# type/creator/date/state quartet lets the retrieval prefilters apply
+# the same extra_conditions the classic search consumes (the search
+# dialog's filter chips, intranet ticket 585).
 PARENT_DATA_ATTRIBUTES = [
     "Title",
     "allowedRolesAndUsers",
@@ -65,6 +72,10 @@ PARENT_DATA_ATTRIBUTES = [
     "path_string",
     "path_parents",
     "path_depth",
+    "portal_type",
+    "Creator",
+    "modified",
+    "review_state",
 ]
 # Safety cap against pathological documents: at ~400 tokens per chunk
 # this covers roughly 40k tokens of text per document.
