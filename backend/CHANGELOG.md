@@ -9,6 +9,31 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0a0 (2026-08-24)
+
+
+### New features:
+
+- Support the new Volto editor's (Plate) block storage in the RAG chunking - both kinds of pages coexist in the same site. @reebalazs [#79](https://github.com/kitconcept/kitconcept-solr/issues/79)
+- Ship the German RAG test corpus as a plone.exportimport dump in setuphandlers/examplecontent (curated export of the fictional intranet demo site: 409 objects, 80 images, 7 example users), with an import-example-content make target, an importer script that skips uninstalled portal types, and a SITE_DEFAULT_LANGUAGE option for create-site. @reebalazs [#79](https://github.com/kitconcept/kitconcept-solr/issues/79)
+- Hybrid retrieval for the RAG search: parent-level Reciprocal Rank Fusion of the knn chunk ranking with the classic keyword query (an exact copy of the @solr main query incl. searchwords boost and showinsearch exclusion); prompt context labeled by document title instead of leaking bracketed reference numbers. @reebalazs [#79](https://github.com/kitconcept/kitconcept-solr/issues/79)
+- Add the @rag-search endpoint: single-turn RAG search on a query pipeline (embed, permission-trimmed knn chunk retrieval, parent collapse, grounded answer generation) with structured error results. Exclude Image content from chunking. @reebalazs [#79](https://github.com/kitconcept/kitconcept-solr/issues/79)
+- Suggest: support the ``extra_conditions`` filter parameter - the same
+  mechanism and encoding as the ``@solr`` endpoint - so livesearch
+  consumers can filter by type, creator, modification date or review
+  state. An explicit type filter wins over the built-in type exclusion
+  list. @reebalazs [#121](https://github.com/kitconcept/kitconcept-solr/issues/121)
+
+
+### Bug fixes:
+
+- RAG: strip the model's reasoning also when the completion contains only a
+  closing ``</think>`` tag (some model templates consume the opening tag,
+  observed with qwen3:4b via Ollama), so chain-of-thought is never shown to
+  users. @reebalazs [#79](https://github.com/kitconcept/kitconcept-solr/issues/79)
+- RAG: fix Plate chunking, by extracting text also from blocks that are not listed in
+  ``blocks_layout`` @reebalazs [#112](https://github.com/kitconcept/kitconcept-solr/issues/112)
+
 ## 2.0.0 (2026-08-22)
 
 

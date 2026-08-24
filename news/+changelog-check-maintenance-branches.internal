@@ -1,1 +1,0 @@
-Run the changelog check also for pull requests against maintenance branches (`*.x`), not only `main`. @reebalazs

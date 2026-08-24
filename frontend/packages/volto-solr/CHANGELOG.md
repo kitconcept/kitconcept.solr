@@ -8,6 +8,15 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0-alpha.0 (2026-08-24)
+
+### Feature
+
+- solrSearchSuggestions accepts encoded extra conditions (new
+  encodeExtraConditions helper), and the search page keeps the
+  extra_conditions URL parameter across in-page interactions. @reebalazs [#121](https://github.com/kitconcept/kitconcept-solr/issue/121)
+- A local (subtree) search on the search page also scopes the AI retrieval, so the answer's grounding matches the classic results: the ragSearch action takes an optional pathPrefix. @reebalazs 
+
 ## 2.0.0 (2026-08-22)
 
 ## 2.0.0-rc.0 (2026-08-14)

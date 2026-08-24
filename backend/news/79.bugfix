@@ -1,4 +1,0 @@
-RAG: strip the model's reasoning also when the completion contains only a
-closing ``</think>`` tag (some model templates consume the opening tag,
-observed with qwen3:4b via Ollama), so chain-of-thought is never shown to
-users. @reebalazs
