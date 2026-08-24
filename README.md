@@ -5,12 +5,14 @@
 
 An opinionated Solr integration for Plone.
 
-This repository contains the 2.x version of the following packages:
+This repository contains the 3.x version (in development) of the following packages:
 
 | Package | Description |
 | --- | --- |
 | kitconcept.solr | Backend package |
 | @kitconcept/volto-solr | Volto frontend package |
+
+**If you are looking for the stable 2.x version of kitconcept.solr check the [2.x branch](https://github.com/kitconcept/kitconcept.solr/tree/2.x)**
 
 **If you are looking for the 1.x version of kitconcept.solr check the [1.x branch](https://github.com/kitconcept/kitconcept.solr/tree/1.x)**
 
