@@ -186,13 +186,16 @@ class TestBuildSources:
         assert sources[0]["title"] == "Vacation policy"
         assert sources[0]["@id"] == "http://nohost/plone/vacation-policy"
 
-    def test_parent_without_context_chunk_has_empty_snippet(self, conn):
+    def test_parent_without_context_chunk_is_not_cited(self, conn):
+        # A parent that contributed no context chunk must not appear
+        # as a source: the answer cannot know anything about it (the
+        # observable symptom was an Image cited with an empty snippet
+        # while the answer denied knowing the image).
         with mock.patch.object(
             pipeline_module, "fetch_parents", return_value=dict(PARENTS)
         ):
             sources = build_sources(conn, ["uid-a", "uid-b"], CHUNKS[:1])
-        assert sources[1]["snippet"] == ""
-        assert sources[1]["title"] == "Cafeteria"
+        assert [s["UID"] for s in sources] == ["uid-a"]
 
 
 class TestSearchChunks:
@@ -256,9 +259,40 @@ class TestHybridRetrieval:
             "Type": "Page",
             "path_string": "/plone/third",
         }
-        with mock.patch.object(pipeline_module, "fetch_parents", return_value=parents):
+        chunk_c = {
+            "UID": "uid-c#rag-0",
+            "parent_uid": "uid-c",
+            "parent_title": "Third doc",
+            "chunk_text": "Third doc leading text.",
+            "path_string": "/plone/third",
+        }
+        with (
+            mock.patch.object(pipeline_module, "fetch_parents", return_value=parents),
+            mock.patch.object(
+                pipeline_module, "fetch_leading_chunks", return_value=[chunk_c]
+            ),
+        ):
             result = run_rag_search("q", CONFIG, SECURITY_FQ)
         assert "uid-c" in [s["UID"] for s in result.sources]
+
+    def test_keyword_only_parent_without_chunks_is_not_cited(self, environment):
+        # A keyword match on a document that has no chunks (e.g. an
+        # Image indexed before the type was excluded, or a document
+        # whose embedding failed) contributes nothing to the answer,
+        # so it must not be cited. fetch_leading_chunks returns [] via
+        # the environment fixture.
+        environment["keyword"].return_value = ["uid-a", "uid-c"]
+        parents = dict(PARENTS)
+        parents["uid-c"] = {
+            "UID": "uid-c",
+            "Title": "a green cat",
+            "Description": "",
+            "Type": "Image",
+            "path_string": "/plone/green-cat.jpg",
+        }
+        with mock.patch.object(pipeline_module, "fetch_parents", return_value=parents):
+            result = run_rag_search("q", CONFIG, SECURITY_FQ)
+        assert "uid-c" not in [s["UID"] for s in result.sources]
 
     def test_extra_filters_reach_both_legs(self, environment):
         run_rag_search(
@@ -368,6 +402,12 @@ class TestSearchKeyword:
         params = self.fake_search(conn)
         assert SECURITY_FQ in params["fq"]
         assert "-is_rag_chunk:true" in params["fq"]
+
+    def test_chunking_excluded_types_are_filtered(self, conn):
+        # Types excluded from chunking (e.g. Image) can never
+        # contribute context, so the keyword leg must not rank them.
+        params = self.fake_search(conn)
+        assert '-portal_type:"Image"' in params["fq"]
 
     def test_question_is_escaped(self, conn):
         conn.search.return_value = mock.Mock()

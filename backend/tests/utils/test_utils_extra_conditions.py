@@ -174,3 +174,19 @@ class TestUtilsExtraConditionsString:
         obj = SolrExtraConditions(config)
         with pytest.raises(BadRequest):
             obj.query_list()
+
+
+class TestFromEncodedEmpty:
+    def test_empty_string_means_no_conditions(self, caplog):
+        # A bare extra_conditions= URL parameter (the results page URL
+        # rewrite produces those) is not invalid input: no conditions,
+        # and no warning logged.
+        import logging
+
+        with caplog.at_level(logging.WARNING, logger="kitconcept.solr"):
+            conditions = SolrExtraConditions.from_encoded("")
+        assert conditions.query_list() == []
+        assert caplog.records == []
+
+    def test_none_means_no_conditions(self):
+        assert SolrExtraConditions.from_encoded(None).query_list() == []
