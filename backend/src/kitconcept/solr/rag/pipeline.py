@@ -37,6 +37,7 @@ from dataclasses import field
 from kitconcept.solr.rag.client import LLMClient
 from kitconcept.solr.rag.client import LLMClientError
 from kitconcept.solr.rag.config import RagConfig
+from kitconcept.solr.rag.processor import EXCLUDED_PORTAL_TYPES
 from kitconcept.solr.rag.config import RETRIEVAL_HYBRID
 from kitconcept.solr.rag.config import RRF_K
 from kitconcept.solr.rag.config import TOP_K
@@ -226,6 +227,14 @@ def search_keyword(
         f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
     )
     filter_queries = [security_filter, "-is_rag_chunk:true"]
+    # Mirror the chunking policy: types excluded from chunking (see
+    # EXCLUDED_PORTAL_TYPES) can never contribute context, so the
+    # keyword leg must not surface them either - otherwise they end up
+    # cited as sources with an empty snippet while the answer cannot
+    # know anything about them.
+    filter_queries.extend(
+        f'-portal_type:"{ptype}"' for ptype in sorted(EXCLUDED_PORTAL_TYPES)
+    )
     if extra_filters:
         filter_queries.extend(extra_filters)
     if path_prefix:
@@ -319,7 +328,9 @@ def build_sources(
     Parent-document retrieval: the user sees the parent documents as
     the sources. Parent metadata is fetched from Solr in one query and
     merged with a snippet from the best-ranked context chunk of each
-    parent (empty when a parent contributed no context).
+    parent. A parent without any context chunk contributed nothing to
+    the answer and is not cited (e.g. a keyword match on a document
+    that has no chunks, or a parent past the context cap).
     """
     best_chunk: dict[str, dict] = {}
     for chunk in context_chunks:
@@ -332,8 +343,10 @@ def build_sources(
 
     sources = []
     for parent_uid in fused_parents:
+        chunk = best_chunk.get(parent_uid)
+        if chunk is None:
+            continue
         parent = parents.get(parent_uid, {})
-        chunk = best_chunk.get(parent_uid, {})
         path_string = parent.get("path_string") or chunk.get("path_string", "")
         url = (
             portal_url + path_string[len(portal_path) :]

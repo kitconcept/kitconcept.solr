@@ -28,7 +28,10 @@ class SolrExtraConditions:
 
     @classmethod
     def from_encoded(cls, raw: str):
-        if raw is not None:
+        # An empty string (e.g. a bare extra_conditions= URL
+        # parameter from the results page) means no conditions, like an
+        # absent parameter - not invalid input worth a log warning.
+        if raw:
             try:
                 config = json.loads(base64.b64decode(raw))
             except (

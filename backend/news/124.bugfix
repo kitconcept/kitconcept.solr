@@ -1,0 +1,1 @@
+RAG: documents that contributed no context (e.g. Images, which are excluded from chunking) are no longer retrieved by the keyword leg nor cited as sources. @reebalazs
