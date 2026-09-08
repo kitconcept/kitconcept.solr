@@ -7,6 +7,31 @@
 -->
 
 <!-- towncrier release notes start -->
+## 3.0.0a1 (2026-09-08)
+
+### Backend
+
+
+#### Bug fixes:
+
+- RAG: documents that contributed no context (e.g. Images, which are excluded from chunking) are no longer retrieved by the keyword leg nor cited as sources. @reebalazs [#124](https://github.com/kitconcept/kitconcept-solr/issues/124)
+
+
+
+### Frontend
+
+No significant changes.
+
+
+### Project
+
+
+#### Documentation
+
+- README: state that main is the in-development 3.x line and point to the stable `2.x` branch. @reebalazs 
+
+
+
 ## 3.0.0a0 (2026-08-24)
 
 ### Backend
