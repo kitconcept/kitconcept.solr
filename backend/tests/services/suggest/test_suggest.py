@@ -51,6 +51,14 @@ class TestSuggestDefaultBaseSearch(TestSuggestDefault):
     url = "/@solr-suggest?query=chomsky"
     expected_result: ClassVar[list] = [
         {
+            # images are suggested by default, like on the results page
+            "@id": "http://localhost:59793/plone/noamchomsky",
+            "@type": "Image",
+            "description": "",
+            "title": "Prof. Dr. Noam Chomsky",
+            "type_title": "Image",
+        },
+        {
             "@id": "http://localhost:59793/plone/mydocument",
             "@type": "Document",
             "description": "",
@@ -124,9 +132,10 @@ class TestSuggestExtraConditionsType(TestSuggestDefault):
 
 
 class TestSuggestExtraConditionsTypeOverridesExclusion(TestSuggestDefault):
-    """An explicit type filter wins over the built-in type exclusion
-    list: Image is normally excluded from suggestions, but a user who
-    filters for images must see them."""
+    """An explicit type filter restricts the suggestions to the
+    selected type - for images that means only the image is left (and
+    for the types still on the built-in exclusion list, the filter
+    would override the exclusion)."""
 
     url = "/@solr-suggest?query=chomsky&extra_conditions=" + encode_conditions([
         ["portal_type", "string", {"in": ["Image"]}]
@@ -159,7 +168,11 @@ class TestSuggestExtraConditionsDateRange(TestSuggestDefault):
 
     def test_recent_content_kept(self, get_suggest_result_path):
         paths = [get_suggest_result_path(item) for item in self.data["suggestions"]]
-        assert paths == ["/plone/mydocument", "/plone/mynews"]
+        assert paths == [
+            "/plone/noamchomsky",
+            "/plone/mydocument",
+            "/plone/mynews",
+        ]
 
 
 class TestSuggestExtraConditionsDateRangePast(TestSuggestDefault):

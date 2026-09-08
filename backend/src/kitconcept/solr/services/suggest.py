@@ -54,9 +54,9 @@ class SolrSuggest(Service):
         )
         extra_fq = extra_conditions.query_list()
         # An explicit type filter wins over the built-in exclusions:
-        # the exclusion list keeps noise (e.g. images) out of the
-        # default suggestions, but a user who filters for exactly such
-        # a type must see it.
+        # the exclusion list keeps fragment/redirect types (FAQ items,
+        # glossary entries, links) out of the default suggestions, but
+        # a user who filters for exactly such a type must see it.
         has_type_filter = any(
             row and row[0] in ("portal_type", "Type")
             for row in extra_conditions.config
@@ -66,8 +66,11 @@ class SolrSuggest(Service):
             []
             if has_type_filter
             else [
+                # Images are deliberately NOT excluded: the results
+                # page finds them, so the type-ahead must too (team
+                # decision, intranet ticket 570 review).
                 (
-                    "-portal_type:Image -portal_type:Glossary -portal_type:FAQ "
+                    "-portal_type:Glossary -portal_type:FAQ "
                     "-portal_type:(FAQ Item) -portal_type:(FAQ Category) "
                     "-portal_type:Link"
                 )
