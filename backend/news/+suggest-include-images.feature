@@ -1,0 +1,1 @@
+Suggestions include images by default: the results page finds images, so the type-ahead does too (team decision from the intranet ticket 570 review). The built-in exclusion list keeps only fragment/redirect types (Glossary, FAQ, Link). @reebalazs
