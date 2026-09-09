@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0a2 (2026-09-09)
+
+
+### New features:
+
+- Suggestions include images by default: the results page finds images, so the type-ahead does too (team decision from the intranet ticket 570 review). The built-in exclusion list keeps only fragment/redirect types (Glossary, FAQ, Link). @reebalazs 
+
 ## 3.0.0a1 (2026-09-08)
 
 
