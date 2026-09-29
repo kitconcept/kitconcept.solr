@@ -52,7 +52,7 @@ const EventResultItem = ({ item }) => (
       </div>
     )}
     <div className="tileFooter">
-      <div>
+      <div className="tileFooterDate">
         <IconForContentType type={item['@type']} />
         <ResultItemDate
           date={item?.extras?.start ? item.extras.start : item?.effective}

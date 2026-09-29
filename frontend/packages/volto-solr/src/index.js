@@ -12,6 +12,7 @@ import {
 } from '@kitconcept/volto-solr/components';
 import * as searchResultItems from '@kitconcept/volto-solr/components/theme/SolrSearch/resultItems';
 import fileSVG from '@plone/volto/icons/file.svg';
+import pageSVG from '@plone/volto/icons/page.svg';
 import reducers from './reducers';
 import routes from './routes';
 import qs from 'query-string';
@@ -48,6 +49,7 @@ const applyConfig = (config) => {
   // content type templates. By default the content icons settings are
   // used, but this can be overridden.
   config.settings.contentTypeSearchResultIcons = {
+    Page: config.settings.contentIcons.Document || pageSVG,
     ...config.settings.contentIcons,
   };
   config.settings.contentTypeSearchResultDefaultIcon = fileSVG;
