@@ -140,6 +140,7 @@ class SolrSearch(Service):
         #
         # In addition. support empty search to search all terms, in case this
         # is configured.
+        query = query.strip()
         term = f"({escape(replace_reserved(query))})" if query else "*"
 
         # Search
@@ -177,7 +178,7 @@ class SolrSearch(Service):
                 f"OR Subject:{term} OR searchwords:({term})^1000) -showinsearch:False"
             ),
             "wt": "json",
-            "hl": "true" if highlighting_utils.enabled else "false",
+            "hl": "true" if query and highlighting_utils.enabled else "false",
             "hl.fl": highlighting_utils.fields,
             # RAG chunk documents carry no indexed text fields, so they
             # cannot match the query above; the filter is defense in
