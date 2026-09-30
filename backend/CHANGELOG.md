@@ -9,6 +9,13 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0a3 (2026-09-30)
+
+
+### Bug fixes:
+
+- Fix search result highlighting for empty queries @iRohitSingh [#empty-query-highlighting](https://github.com/kitconcept/kitconcept-solr/issues/empty-query-highlighting)
+
 ## 3.0.0a2 (2026-09-09)
 
 

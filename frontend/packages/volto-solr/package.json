@@ -1,6 +1,6 @@
 {
   "name": "@kitconcept/volto-solr",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "description": "An opinionated Solr integration for Plone.",
   "exports": {
     ".": "./src/index.js",

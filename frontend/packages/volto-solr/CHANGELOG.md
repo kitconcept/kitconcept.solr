@@ -8,6 +8,13 @@
 
 <!-- towncrier release notes start -->
 
+## 3.0.0-alpha.3 (2026-09-30)
+
+### Bugfix
+
+- Fix page icon for Page search results instead of falling back to the
+  file icon @iRohitSingh [#page-search-icon](https://github.com/kitconcept/kitconcept-solr/issue/page-search-icon)
+
 ## 3.0.0-alpha.2 (2026-09-09)
 
 ## 3.0.0-alpha.1 (2026-09-08)
